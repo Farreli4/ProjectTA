@@ -365,9 +365,8 @@
                             <tr>
                               <th>No.</th>
                               <th>Nama</th>
-                              <th>NIM</th>
+                              <th>NIP</th>
                               <th>Program Studi</th>
-                              <th>Kelas</th>
                               <th>Nomor Telepon</th>
                               <th></th>
                             </tr>
