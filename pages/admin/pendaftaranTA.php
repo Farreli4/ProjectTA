@@ -322,8 +322,8 @@
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="pendaftaranta.php">Tugas Akhir</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Seminar</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Ujian</a></li>
+                <li class="nav-item"> <a class="nav-link" href="pendaftaranseminar.php">Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="pendaftaranujian.php">Ujian</a></li>
               </ul>
             </div>
           </li>
