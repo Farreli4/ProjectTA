@@ -2,31 +2,20 @@
     position: relative;
     border-radius: 15px;
     overflow: hidden;
-
+    width: 100%;    
 }
 
-.card-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('../../img/alur.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    z-index: 1;
-}
 
-.card-background:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.471); 
-    z-index: 2;
+
+@media screen and (max-width: 480px) {
+    .card-tale {
+        height: 150px !important;  /* Fixed height for mobile */
+    }
+    
+    .card-background {
+        background-size: 100% auto;  /* Full width, auto height */
+    }
+
 }
 
 .card-body {
@@ -75,4 +64,28 @@
     position: relative;
     border-radius: 15px;
     overflow: hidden;
+}
+
+.card-background2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../img/student.png');
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: left;
+    z-index: 1;
+}
+
+.card-background2:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(115, 38, 38, 0); 
+    z-index: 2;
 }

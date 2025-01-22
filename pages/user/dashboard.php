@@ -20,8 +20,48 @@
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
   <link rel="stylesheet" type="text/css" href="../../assets/css/css/user/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/css/user/dashboard.css">
+  <style>
+    .card-backgroun {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://www.seekpng.com/png/detail/310-3105135_literacy-arrow-up-icon-png.png');
+    background-repeat: no-repeat;
+    background-size: 120% 100%;
+    background-position: center;
+    z-index: 1;
+    }
+
+    .card-backgroun:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(36, 53, 69, 0.57); 
+    z-index: 2;
+    }
+
+    .link {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.3s ease;
+    }
+
+    .link:hover,
+.link:focus,
+.link:active {
+    text-decoration: none; 
+    color: aquamarine;
+}
+
+  </style>
 </head>
-</head>
+
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
@@ -167,14 +207,14 @@
             <div class="col-md-3 mb-4 grid-margin transparent">
               <div class="stretch-card transparent h-50">
                 <div class="card card-tale" style="height: calc(165% + 1.5rem);">
-                <div class="card-background">
+                <a href="panduan.php" class="link">
+                <div class="card-backgroun"></div>
                   <div class="card-body">
-                    <a href="panduan.php"></a>
                     <i class="icon-paper menu-icon"></i>
-                    <h4 class="mb-5">Alur & Panduan<h4/>
+                    <span class="mb-5">Alur & Panduan<span/>
                     </div>
-                  </div>
                 </div>
+                </a>
               </div>
             </div>
           
@@ -184,55 +224,72 @@
                 <!-- First row -->
                 <div class="col-md-4 mb-4 stretch-card transparent">
                   <div class="card card-dark-blue">
+                  <a href="uploadTA.php" class="link">
                   <div class="card-background1"></div>
                     <div class="card-body" style="display: flex;">
                       <i class="icon-layout menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4" style="margin-left:50px; margin-top: 0; ">Upload Tugas Akhir</span>
+                      <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Upload Tugas Akhir</span>
                     </div>
                   </div>
+                  </a>
                 </div>
                 <div class="col-md-4 mb-4 stretch-card transparent">
                   <div class="card card-light-blue">
+                  <a href="uploadSeminar.php" class="link"> 
+                  <div class="card-background1"></div>
                     <div class="card-body" style="display: flex;">
                       <i class="icon-layout menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4">Upload Seminar Proposal</span>
+                      <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Upload Seminar Proposal</span>
                     </div>
                   </div>
+                  </a>
                 </div>
                 
                 <div class="col-md-4 mb-4 stretch-card transparent">
                   <div class="card card-tale">
+                  <a href="uploadUjian.php" class="link"> 
+                  <div class="card-background1"></div>
                     <div class="card-body" style="display: flex;">
                       <i class="icon-layout menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4">Upload Ujian</span>
+                      <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Upload Ujian</span>
                     </div>
                   </div>
+                  </a>
                 </div>
 
                 <!-- Second row -->
                 <div class="col-md-4 mb-4 stretch-card transparent">
                   <div class="card card-light-danger">
+                  <a href="pengajuanTA.php" class="link">
+                  <div class="card-background2"></div>
                     <div class="card-body" style="display: flex;">
                       <i class="icon-columns menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4">Pengajuan Tugas Akhir</span>
+                      <span class="mb-4" style="margin-left:70px; margin-top: 0;">Pengajuan Tugas Akhir</span>
                     </div>
                   </div>
+                  </a>
                 </div>
                 <div class="col-md-4 mb-4 stretch-card transparent">
                   <div class="card card-light-blue">
+                  <a href="pengajuanSeminar.php" class="link">
+                  <div class="card-background2"></div>
                     <div class="card-body" style="display: flex;">
                       <i class="icon-columns menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4">Pengajuan Seminar Proposal</span>
+                      <span class="mb-4" style="margin-left:70px; margin-top: 0;">Pengajuan Seminar Proposal</span>
                     </div>
                   </div>
+                  </a>
                 </div>
                 <div class="col-md-4 mb-4 stretch-card transparent">
                   <div class="card card-light-danger">
+                  <a href="pengajuanUjian.php" class="link"> 
+                  <div class="card-background2"></div>
                     <div class="card-body" style="display: flex;">
                       <i class="icon-columns menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4">Pengajuan Ujian   </span>
+                      <span class="mb-4" style="margin-left:70px; margin-top: 0;">Pengajuan Ujian   </span>
                     </div>
                   </div>
+                  </a>
                 </div>
               </div>
             </div>

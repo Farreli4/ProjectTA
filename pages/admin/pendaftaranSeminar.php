@@ -1,3 +1,4 @@
+<?php include '../../config/connection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,9 +13,7 @@
   <link rel="stylesheet" href="../../Template/skydash/vendors/css/vendor.bundle.base.css">
   <!-- endinject -->
   <!-- Plugin css for this page -->
-  <link rel="stylesheet" href="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="../../Template/skydash/vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" type="text/css" href="../../Template/skydash/js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
@@ -379,19 +378,51 @@
                     <div class="col-12">
                       <div class="table-responsive">
                         <table id="example" class="display expandable-table" style="width:100%">
-                          <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nama</th>
-                                <th>NIM</th>
-                                <th>Rencana Seminar</th>
-                                <th>Jadwal</th>
-                                <th>Status</th>
-                                <th>Update Status</th>
-                                <th>Dokumen</th>
-                            </tr>
-                          </thead>
-                      </table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama</th>
+                                    <th>NIM</th>
+                                    <th>Jadwal</th>
+                                    <th>Status</th>
+                                    <th>Update Status</th>
+                                    <th>Dokumen</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+                                $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, seminar_proposal.tanggal_seminar, seminar_proposal.status_seminar
+                                FROM mahasiswa 
+                                LEFT JOIN seminar_proposal ON mahasiswa.id_mahasiswa = seminar_proposal.id_mahasiswa 
+                                WHERE 1";
+                                $result = $conn->query($sql1);
+
+                                while ($row = mysqli_fetch_array($result)) {
+                                  echo "<tr>";
+                                  echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                                  echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                                  echo "<td>" . $row['nim'] . "</td>";
+                                  echo "<td>" . $row["tanggal_seminar"] . "</td>";
+                                  echo "<td>";
+                                  echo "<form action='update_status.php' method='POST'>";
+                                  echo "<select class='js-example-basic-single w-30' name='status_seminar' required>";
+                                  echo "<option value='dijadwalkan'" . ($row['status_seminar'] == 'dijadwalkan' ? ' selected' : '') . ">dijadwalkan</option>";
+                                  echo "<option value='ditunda'" . ($row['status_seminar'] == 'ditunda' ? ' selected' : '') . ">ditunda</option>";
+                                  echo "<option value='selesai'" . ($row['status_seminar'] == 'selesai' ? ' selected' : '') . ">selesai</option>";
+                                  echo "</select>";
+                                  echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
+                                  echo "<td>";
+                                  echo "<button type='submit'>Update Status</button>";
+                                  echo "</form>";
+                                  echo "<i class=' mdi mdi-file-document'></i>";
+                              }
+                              $conn->close()
+                                ?>
+                            </tbody>
+                        </table>
+
                       </div>
                     </div>
                   </div>
@@ -426,9 +457,6 @@
   <!-- endinject -->
   <!-- Plugin js for this page -->
   <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-  <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-  <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
   <!-- End plugin js for this page -->
   <!-- inject:js -->
