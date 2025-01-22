@@ -363,46 +363,49 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 grid-margin transparent">
-              <div class="row">
-              <a href= "pendaftaranTA.php">
-                <div class="col-md-10 mb-4 stretch-card transparent">
-                  <div class="card card-dark-blue">
-                    <div class="card-body">
-                      <p class="mb-4">Total Pendaftar Tugas Akhir</p>
-                      <p class="fs-30 mb-2">4006</p>
-                      <p>10.00% (30 days)</p>
-                    </div>
-                  </div>
-                </div>
-              </a>
-              <a href= "pendaftaranSeminar.php">
-                <div class="col-md-10 mb-4 stretch-card transparent">
-                  <div class="card card-dark-blue">
-                    <div class="card-body">
-                      <p class="mb-4">Total Pendaftar Seminar</p>
-                      <p class="fs-30 mb-2">61344</p>
-                      <p>22.00% (30 days)</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </a>
-              <a href= "pendaftaranUjian.php">
-              <div class="row">
-                <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
-                  <div class="card card-light-blue">
-                    <div class="card-body">
-                      <p class="mb-4">Total Pendaftar Ujian</p>
-                      <p class="fs-30 mb-2">34040</p>
-                      <p>2.00% (30 days)</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="col-md-12 grid-margin transparent">
+  <div class="row">
+    <!-- Card 1 -->
+    <div class="col-md-4 mb-4 stretch-card transparent">
+      <a href="pendaftaranTA.php">
+        <div class="card card-dark-blue">
+          <div class="card-body">
+            <p class="mb-4">Total Pendaftar Tugas Akhir</p>
+            <p class="fs-30 mb-2">4006</p>
+            <p>10.00% (30 days)</p>
           </div>
-          </a>
+        </div>
+      </a>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="col-md-4 mb-4 stretch-card transparent">
+      <a href="pendaftaranSeminar.php">
+        <div class="card card-dark-blue">
+          <div class="card-body">
+            <p class="mb-4">Total Pendaftar Seminar</p>
+            <p class="fs-30 mb-2">61344</p>
+            <p>22.00% (30 days)</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col-md-4 mb-4 stretch-card transparent">
+      <a href="pendaftaranUjian.php">
+        <div class="card card-light-blue">
+          <div class="card-body">
+            <p class="mb-4">Total Pendaftar Ujian</p>
+            <p class="fs-30 mb-2">34040</p>
+            <p>2.00% (30 days)</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">

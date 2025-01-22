@@ -157,11 +157,11 @@
                 <div class="content-wrapper">
                     <!--BOX-->
                     <div class="container">
-                    <h3>Pendaftaran Tugas Akhir</h3>
+                    <h3>Pendaftaran Ujian Akhir</h3>
         <div class="document-grid">
             <!-- Form Pendaftaran -->
             <div class="document-card">
-                <div class="document-title">Form Pendaftaran</div>
+                <div class="document-title">Lembar Persetujuan Laporan Tugas Akhir</div>
                 <div class="status-badge status-terverifikasi">Terverifikasi</div>
                 <div class="document-info">
                     <strong>Diupload:</strong> 20 Jan 2024<br>
@@ -171,32 +171,51 @@
 
             <!-- Jurnal Magang -->
             <div class="document-card">
-                <div class="document-title">Jurnal Magang</div>
-                <div class="status-badge status-revisi">Revisi</div>
+                <div class="document-title">Formulir Pendaftaran Ujian Tugas Akhir</div>
+                <div class="status-badge status-terverifikasi">Terverifikasi</div>
                 <div class="document-info">
-                    <strong>Catatan:</strong> Perlu perbaikan format penulisan<br>
-                    <strong>Diupload:</strong> 19 Jan 2024
+                    <strong>Diupload:</strong> 19 Jan 2024<br>
+                    <strong>Diverifikasi:</strong> 21 Jan 2024
                 </div>
             </div>
 
             <!-- Nilai Magang -->
             <div class="document-card">
-                <div class="document-title">Nilai Magang</div>
-                <div class="status-badge status-menunggu">Menunggu Verifikasi</div>
+                <div class="document-title">Lembar Kehadiran Seminar Proposal</div>
+                <div class="status-badge status-terverifikasi">Terverifikasi</div>
                 <div class="document-info">
-                    <strong>Diupload:</strong> 21 Jan 2024
+                    <strong>Diupload:</strong> 21 Jan 2024<br>
+                    <strong>Diverifikasi:</strong> 21 Jan 2024
                 </div>
             </div>
 
 
             <!-- Laporan Magang -->
             <div class="document-card">
-                <div class="document-title">Laporan Magang</div>
+                <div class="document-title">Buku Konsultasi Tugas Akhir</div>
+                <div class="status-badge status-menunggu">Menunggu Verifikasi</div>
+                <div class="document-info">
+                <strong>Diupload:</strong> 21 Jan 2024
+                </div>
+            </div>
+
+            <div class="document-card">
+                <div class="document-title">Berita Acara</div>
                 <div class="status-badge status-empty">Belum Diupload</div>
                 <div class="document-info">
                     Silakan upload dokumen untuk diverifikasi
                 </div>
             </div>
+
+
+            <div class="document-card">
+                <div class="document-title">Pas Foto</div>
+                <div class="status-badge status-empty">Belum Diupload</div>
+                <div class="document-info">
+                    Silakan upload dokumen untuk diverifikasi
+                </div>
+            </div>
+
         </div>
         <div class="status-header">
             <h1 class="header-title">Status Dokumen Pengajuan</h1>

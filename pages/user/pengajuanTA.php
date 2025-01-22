@@ -161,7 +161,7 @@
         <div class="document-grid">
             <!-- Form Pendaftaran -->
             <div class="document-card">
-                <div class="document-title">Form Pendaftaran</div>
+                <div class="document-title">Form Pendaftaran dan Persetujuan Tema</div>
                 <div class="status-badge status-terverifikasi">Terverifikasi</div>
                 <div class="document-info">
                     <strong>Diupload:</strong> 20 Jan 2024<br>
@@ -171,17 +171,17 @@
 
             <!-- Jurnal Magang -->
             <div class="document-card">
-                <div class="document-title">Jurnal Magang</div>
-                <div class="status-badge status-revisi">Revisi</div>
+                <div class="document-title">Bukti Pembayaran</div>
+                <div class="status-badge status-terverifikasi">Terverifikasi</div>
                 <div class="document-info">
-                    <strong>Catatan:</strong> Perlu perbaikan format penulisan<br>
-                    <strong>Diupload:</strong> 19 Jan 2024
+                    <strong>Diupload:</strong> 20 Jan 2024<br>
+                    <strong>Diverifikasi:</strong> 29 Jan 2024
                 </div>
             </div>
 
             <!-- Nilai Magang -->
             <div class="document-card">
-                <div class="document-title">Nilai Magang</div>
+                <div class="document-title">Bukti Transkrip Nilai</div>
                 <div class="status-badge status-menunggu">Menunggu Verifikasi</div>
                 <div class="document-info">
                     <strong>Diupload:</strong> 21 Jan 2024
@@ -191,10 +191,10 @@
 
             <!-- Laporan Magang -->
             <div class="document-card">
-                <div class="document-title">Laporan Magang</div>
-                <div class="status-badge status-empty">Belum Diupload</div>
+                <div class="document-title">Bukti Lulus Mata kuliah Magang / PI</div>
+                <div class="status-badge status-menunggu">Menunggu Verifikasi</div>
                 <div class="document-info">
-                    Silakan upload dokumen untuk diverifikasi
+                    <strong>Diupload:</strong> 21 Jan 2024
                 </div>
             </div>
         </div>
