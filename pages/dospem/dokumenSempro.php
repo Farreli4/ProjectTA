@@ -320,20 +320,27 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/documentation/documentation.html">
+            <a class="nav-link" href="daftarmahasiswa.php">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Daftar Mahasiswa</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="documentation.php">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Documentation</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="pages/documentation/documentation.html">
-              <i class="icon-paper menu-icon"></i>
+              <i class="ti-power-off  menu-icon"></i>
               <span class="menu-title">Logout</span>
             </a>
           </li>
         </ul>
       </nav>
-      <!-- partial -->
+
+      <!-- MAIN-->
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
@@ -346,56 +353,227 @@
               </div>
             </div>
           </div>
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Striped Table</h4>
+                <p class="card-description">
+                  Add class <code>.table-striped</code>
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>
+                          User
+                        </th>
+                        <th>
+                          First name
+                        </th>
+                        <th>
+                          Progress
+                        </th>
+                        <th>
+                          Amount
+                        </th>
+                        <th>
+                          Deadline
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="py-1">
+                          <img src="../../images/faces/face1.jpg" alt="image" />
+                        </td>
+                        <td>
+                          Herman Beck
+                        </td>
+                        <td>
+                          <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </td>
+                        <td>
+                          $ 77.99
+                        </td>
+                        <td>
+                          May 15, 2015
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="py-1">
+                          <img src="../../images/faces/face2.jpg" alt="image" />
+                        </td>
+                        <td>
+                          Messsy Adam
+                        </td>
+                        <td>
+                          <div class="progress">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </td>
+                        <td>
+                          $245.30
+                        </td>
+                        <td>
+                          July 1, 2015
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="py-1">
+                          <img src="../../images/faces/face3.jpg" alt="image" />
+                        </td>
+                        <td>
+                          John Richards
+                        </td>
+                        <td>
+                          <div class="progress">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </td>
+                        <td>
+                          $138.00
+                        </td>
+                        <td>
+                          Apr 12, 2015
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="py-1">
+                          <img src="../../images/faces/face4.jpg" alt="image" />
+                        </td>
+                        <td>
+                          Peter Meggik
+                        </td>
+                        <td>
+                          <div class="progress">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </td>
+                        <td>
+                          $ 77.99
+                        </td>
+                        <td>
+                          May 15, 2015
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="py-1">
+                          <img src="../../images/faces/face5.jpg" alt="image" />
+                        </td>
+                        <td>
+                          Edward
+                        </td>
+                        <td>
+                          <div class="progress">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </td>
+                        <td>
+                          $ 160.25
+                        </td>
+                        <td>
+                          May 03, 2015
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="py-1">
+                          <img src="../../images/faces/face6.jpg" alt="image" />
+                        </td>
+                        <td>
+                          John Doe
+                        </td>
+                        <td>
+                          <div class="progress">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </td>
+                        <td>
+                          $ 123.21
+                        </td>
+                        <td>
+                          April 05, 2015
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="py-1">
+                          <img src="../../images/faces/face7.jpg" alt="image" />
+                        </td>
+                        <td>
+                          Henry Tom
+                        </td>
+                        <td>
+                          <div class="progress">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </td>
+                        <td>
+                          $ 150.00
+                        </td>
+                        <td>
+                          June 16, 2015
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
 
+
+          <!-- content ends -->
+
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                Copyright © 2025.
+                <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+                All rights reserved.
+              </span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                <a href="https://wa.me/628112951003" target="_blank">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                  +6281 1295 1003
+                </a>
+              </span>
+            </div>
+
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
+            </div>
+          </footer>
+          <!-- partial -->
         </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-              Copyright © 2025.
-              <a href="https://www.bootstrapdash.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-              All rights reserved.
-            </span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-              +6281 1295 1003
-            </span>
-          </div>
-
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
-          </div>
-        </footer>
-        <!-- partial -->
+        <!-- main-panel ends -->
       </div>
-      <!-- main-panel ends -->
+      <!-- page-body-wrapper ends -->
     </div>
-    <!-- page-body-wrapper ends -->
-  </div>
-  <!-- container-scroller -->
+    <!-- container-scroller -->
 
-  <!-- plugins:js -->
-  <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-  <script src="../..Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-  <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
+    <!-- plugins:js -->
+    <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
+    <script src="../..Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="../../Template/skydash/js/off-canvas.js"></script>
-  <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="../../Template/skydash/js/template.js"></script>
-  <script src="../../Template/skydash/js/settings.js"></script>
-  <script src="../../Template/skydash/js/todolist.js"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
-  <script src="../../Template/skydash/js/dashboard.js"></script>
-  <script src="../../Template/skydash/s/Chart.roundedBarCharts.js"></script>
-  <!-- End custom js for this page-->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="../../Template/skydash/js/off-canvas.js"></script>
+    <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
+    <script src="../../Template/skydash/js/template.js"></script>
+    <script src="../../Template/skydash/js/settings.js"></script>
+    <script src="../../Template/skydash/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="../../Template/skydash/js/dashboard.js"></script>
+    <script src="../../Template/skydash/s/Chart.roundedBarCharts.js"></script>
+    <!-- End custom js for this page-->
 </body>
 
 </html>

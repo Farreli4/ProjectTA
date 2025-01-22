@@ -180,11 +180,11 @@ function getFileStatus($nim, $tipe_file)
 
                             <h4>Perhatikan petunjuk sebelum melakukan Upload:</h4>
                             <ul class="requirements-list">
-                                <li>Upload Jurnal magang kamu yang sudah di tandatangani</li>
+                                <li>Upload Transkrip Nilai dengan IPK >= 2.50, SKS minimal 100, nilai C tidak lebih dari 5 mata kuliah dan tidak ada nilai D atau E</li>
                                 <li>Upload Surat dengan format <span style="color: red;">PDF</span></li>
-                                <li>Format penamaan dokumen: NIM_JURNAL_Nama (Contoh: <?php echo htmlspecialchars($nim); ?>_JURNAL_SISKA_EMILIA)</li>
+                                <li>Format penamaan dokumen: NIM_NamaFile_Nama (Contoh: K<?php echo htmlspecialchars($nim); ?>_Bukti Transkrip Nilai_Muhammad Anthony)</li>
                                 <li>Maksimal ukuran dokumen 2 Mb</li>
-                                <li>Pastikan Jurnal Magang yang akan diupload sudah benar</li>
+                                <li>Pastikan dokumen yang akan diupload sudah benar</li>
                             </ul>
 
                             <table class="file-table">
@@ -199,11 +199,10 @@ function getFileStatus($nim, $tipe_file)
                                 <tbody>
                                     <?php
                                     $files = [
-                                        'Form Pendaftaran',
-                                        'Jurnal Magang',
-                                        'Penilaian Magang',
-                                        'Laporan Magang',
-                                        'TTD Dosen Pembimbing'
+                                        'Form Pendaftaran dan Persetujuan Tema',
+                                        'Bukti Pembayaran',
+                                        'Bukti Transkrip Nilai',
+                                        'Bukti Kelulusan Mata kuliah Magang / PI',
                                     ];
 
                                     foreach ($files as $file) {

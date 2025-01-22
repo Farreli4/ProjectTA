@@ -53,8 +53,8 @@
     }
 
     .link:hover,
-.link:focus,
-.link:active {
+    .link:focus,
+    .link:active {
     text-decoration: none; 
     color: aquamarine;
 }
@@ -174,7 +174,7 @@
               <span class="menu-title">Pengajuan Seminar</span>
             </a>
           </li>
-          <li class="nav-item" href="pengajuanUjian.php">
+          <l  i class="nav-item" href="pengajuanUjian.php">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Pengajuan Ujian</span>

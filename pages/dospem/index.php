@@ -20,6 +20,47 @@
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+
+  <link rel="stylesheet" type="text/css" href="../../assets/css/css/dospem/dospem.css">
+  <link rel="stylesheet" href="../../assets/css/css/dospem/dospem.css">
+  <style>
+  .card-backgroun {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://www.seekpng.com/png/detail/310-3105135_literacy-arrow-up-icon-png.png');
+    background-repeat: no-repeat;
+    background-size: 120% 100%;
+    background-position: center;
+    z-index: 1;
+    }
+
+    .card-backgroun:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(36, 53, 69, 0.57); 
+    z-index: 2;
+    }
+
+    .link {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.3s ease;
+    }
+
+    .link:hover,
+.link:focus,
+.link:active {
+    text-decoration: none; 
+    color: aquamarine;
+}
+</style>
 </head>
 
 <body>
@@ -303,9 +344,6 @@
               </ul>
             </div>
           </li>
-
-
-
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">
               <i class="icon-ban menu-icon"></i>
@@ -320,20 +358,27 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/documentation/documentation.html">
+            <a class="nav-link" href="daftarmahasiswa.php">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Daftar Mahasiswa</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="documentation.php">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Documentation</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/documentation/documentation.html">
-              <i class="icon-paper menu-icon"></i>
+            <a class="nav-link" href="../../Template/skydash/pages/samples/login.html">
+              <i class="ti-power-off  menu-icon"></i>
               <span class="menu-title">Logout</span>
             </a>
           </li>
         </ul>
       </nav>
-      <!-- partial -->
+
+      <!-- MAIN-->
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
@@ -346,56 +391,150 @@
               </div>
             </div>
           </div>
+          <!--BOX-->
+          <div class="row">
+            <!-- Large left box -->
+            <div class="col-md-3 mb-4 grid-margin transparent">
+              <div class="stretch-card transparent h-50">
+                <div class="card card-tale" style="height: calc(165% + 1.5rem);">
+                  <a href="alurpanduan.php" class="link">
+                    <div class="card-backgroun"></div>
+                    <div class="card-body">
+                      <i class=" menu-icon"></i>
+                      <span class="mb-5">Alur & Panduan<span />
+                    </div>
+                </div>
+                </a>
+              </div>
+            </div>
 
+            <!-- Right side boxes -->
+            <div class="col-md-8 grid-margin transparent">
+              <div class="row">
+                <!-- First row -->
+                <div class="col-md-4 mb-4 stretch-card transparent">
+                  <div class="card card-dark-blue">
+                    <a href="dokumenTA.php" class="link">
+                      <div class="card-background1"></div>
+                      <div class="card-body" style="display: flex;">
+                        <i class=" menu-icon" style="margin-right: 10px;"></i>
+                        <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Dokumen Tugas Akhir</span>
+                      </div>
+                  </div>
+                  </a>
+                </div>
+                <div class="col-md-4 mb-4 stretch-card transparent">
+                  <div class="card card-light-blue">
+                    <a href="dokumenSempro.php" class="link">
+                      <div class="card-background1"></div>
+                      <div class="card-body" style="display: flex;">
+                        <i class=" menu-icon" style="margin-right: 10px;"></i>
+                        <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Dokumen Seminar Proposal</span>
+                      </div>
+                  </div>
+                  </a>
+                </div>
+
+                <div class="col-md-4 mb-4 stretch-card transparent">
+                  <div class="card card-tale">
+                    <a href="dokumenUjian.php" class="link">
+                      <div class="card-background1"></div>
+                      <div class="card-body" style="display: flex;">
+                        <i class=" menu-icon" style="margin-right: 10px;"></i>
+                        <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Dokumen Ujian</span>
+                      </div>
+                  </div>
+                  </a>
+                </div>
+
+                <!-- Second row -->
+                <div class="col-md-4 mb-4 stretch-card transparent">
+                  <div class="card card-light-danger">
+                    <a href="daftarmahasiswa.php" class="link">
+                      <div class="card-background2"></div>
+                      <div class="card-body" style="display: flex;">
+                        <i class=" menu-icon" style="margin-right: 10px;"></i>
+                        <span class="mb-4" style="margin-left:50px; margin-top: 0;">Daftar Mahasiswa</span>
+                      </div>
+                  </div>
+                  </a>
+                </div>
+                <div class="col-md-4 mb-4 stretch-card transparent">
+                  <div class="card card-light-blue">
+                    <a href="documentation.php" class="link">
+                      <div class="card-background4"></div>
+                      <div class="card-body" style="display: flex;">
+                        <i class="menu icon " style="margin-right: 10px;"></i>
+                        <span class="mb-4" style="margin-left:30px; margin-top: 0;">Documentation</span>
+                      </div>
+                  </div>
+                  </a>
+                </div>
+                <div class="col-md-4 mb-4 stretch-card transparent">
+                  <div class="card card-light-danger">
+                    <a href="../../Template/skydash/pages/samples/login.html" class="link">
+                      <div class="card-background3"></div>
+                      <div class="card-body" style="display: flex;">
+                        <i class=" menu-icon" style="margin-right: 10px;"></i>
+                        <span class="mb-4" style="margin-left:70px; margin-top: 0;">Logout</span> </span>
+                      </div>
+                  </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- content ends -->
+
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                Copyright © 2025.
+                <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+                All rights reserved.
+              </span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                <a href="https://wa.me/628112951003" target="_blank">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                  +6281 1295 1003
+                </a>
+              </span>
+            </div>
+
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
+            </div>
+          </footer>
+          <!-- partial -->
         </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-              Copyright © 2025.
-              <a href="https://www.bootstrapdash.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-              All rights reserved.
-            </span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-              +6281 1295 1003
-            </span>
-          </div>
-
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
-          </div>
-        </footer>
-        <!-- partial -->
+        <!-- main-panel ends -->
       </div>
-      <!-- main-panel ends -->
+      <!-- page-body-wrapper ends -->
     </div>
-    <!-- page-body-wrapper ends -->
-  </div>
-  <!-- container-scroller -->
+    <!-- container-scroller -->
 
-  <!-- plugins:js -->
-  <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-  <script src="../..Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-  <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
+    <!-- plugins:js -->
+    <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
+    <script src="../..Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="../../Template/skydash/js/off-canvas.js"></script>
-  <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="../../Template/skydash/js/template.js"></script>
-  <script src="../../Template/skydash/js/settings.js"></script>
-  <script src="../../Template/skydash/js/todolist.js"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
-  <script src="../../Template/skydash/js/dashboard.js"></script>
-  <script src="../../Template/skydash/s/Chart.roundedBarCharts.js"></script>
-  <!-- End custom js for this page-->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="../../Template/skydash/js/off-canvas.js"></script>
+    <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
+    <script src="../../Template/skydash/js/template.js"></script>
+    <script src="../../Template/skydash/js/settings.js"></script>
+    <script src="../../Template/skydash/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="../../Template/skydash/js/dashboard.js"></script>
+    <script src="../../Template/skydash/s/Chart.roundedBarCharts.js"></script>
+    <!-- End custom js for this page-->
 </body>
 
 </html>
