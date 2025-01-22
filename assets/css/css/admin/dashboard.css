@@ -1,0 +1,15 @@
+.card.card-dark-blue {
+    background-color: #193042;
+    color: #fff; /* Teks tetap terlihat jelas */
+    border: none;
+    padding: 1rem;
+    border-radius: 8px; /* Opsional */
+}
+
+.card.card-light-blue {
+    background-color: #193042;
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+}
