@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=folder_open" />
   <style>
     .popup {
@@ -357,9 +358,9 @@
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="pendaftaranTA.php">Tugas Akhir</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranSeminar.php">Seminar</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranUjian.php">Ujian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenSeminar.php">Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenUjian.php">Ujian</a></li>
               </ul>
             </div>
           </li>
@@ -374,7 +375,7 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-            <div class="col-md-6 grid-margin transparent">
+            <div class="col-md-10 grid-margin transparent">
               <div class="row">
                 <div class="col-md-6 stretch-card transparent">
                   <div class="card card-light-danger">
@@ -386,8 +387,53 @@
                   </div>
                 </div>
                 <div class="col-md-6 mt-3">
-                  <canvas id="south-america-chart"></canvas>
-                <div id="south-america-legend"></div>
+                <?php
+                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+
+                  if ($conn->connect_error) {
+                      die("Connection failed: " . $conn->connect_error);
+                  }
+
+                  $sql = "SELECT status_seminar, COUNT(*) as count FROM seminar_proposal
+                          WHERE status_seminar IN ('dijadwalkan', 'ditunda', 'selesai')
+                          GROUP BY status_seminar";
+                  $result = $conn->query($sql);
+
+                  $xValues = [];
+                  $yValues = [];
+
+                  if ($result->num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                          $xValues[] = $row['status_seminar']; 
+                          $yValues[] = $row['count'];
+                      }
+                  }
+                  $conn->close();
+                  ?>
+                  <canvas id="myChart2"></canvas>
+                  <script>
+                    var xValues = <?php echo json_encode($xValues); ?>; 
+                    var yValues = <?php echo json_encode($yValues); ?>;
+
+                    var barColors = ["#FF6384", "#36A2EB", "#FFCE56"];
+
+                    new Chart("myChart2", {
+                        type: "doughnut",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                backgroundColor: barColors,
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display: true,
+                                text: "Jumlah Pendaftar"
+                            }
+                        }
+                    });
+                </script>
             </div>
             </div>
           </div>
@@ -429,11 +475,11 @@
                                   echo "<td>" . $row['nim'] . "</td>";
                                   echo "<td>" . $row["tanggal_seminar"] . "</td>";
                                   echo "<td>";
-                                  echo "<form action='update_status.php' method='POST'>";
+                                  echo "<form action='update_seminar.php' method='POST'>";
                                   echo "<select class='js-example-basic-single w-30' name='status_seminar' required>";
-                                  echo "<option value='dijadwalkan'" . ($row['status_seminar'] == 'dijadwalkan' ? ' selected' : '') . ">dijadwalkan</option>";
-                                  echo "<option value='ditunda'" . ($row['status_seminar'] == 'ditunda' ? ' selected' : '') . ">ditunda</option>";
-                                  echo "<option value='selesai'" . ($row['status_seminar'] == 'selesai' ? ' selected' : '') . ">selesai</option>";
+                                  echo "<option value='dijadwalkan'" . ($row['status_seminar'] == 'dijadwalkan' ? ' selected' : '') . ">Dijadwalkan</option>";
+                                  echo "<option value='ditunda'" . ($row['status_seminar'] == 'ditunda' ? ' selected' : '') . ">Ditunda</option>";
+                                  echo "<option value='selesai'" . ($row['status_seminar'] == 'selesai' ? ' selected' : '') . ">Selesai</option>";
                                   echo "</select>";
                                   echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
                                   echo "<td>";

@@ -19,6 +19,14 @@
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=folder_open" />
+  <style>
+    #nonclick{
+      pointer-events: none;
+    }
+  </style>
 </head>
 <body>
   <div class="container-scroller">
@@ -334,9 +342,9 @@
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="pendaftaranTA.php">Tugas Akhir</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranSeminar.php">Seminar</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranUjian.php">Ujian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenSeminar.php">Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenUjian.php">Ujian</a></li>
               </ul>
             </div>
           </li>
@@ -351,7 +359,7 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-            <div class="col-md-6 grid-margin transparent">
+            <div class="col-md-10 grid-margin transparent">
               <div class="row">
                 <div class="col-md-6 stretch-card transparent">
                   <div class="card card-light-danger">
@@ -363,8 +371,53 @@
                   </div>
                 </div>
                 <div class="col-md-6 mt-3">
-                  <canvas id="south-america-chart"></canvas>
-                <div id="south-america-legend"></div>
+                <?php
+                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+
+                  if ($conn->connect_error) {
+                      die("Connection failed: " . $conn->connect_error);
+                  }
+
+                  $sql = "SELECT status_pengajuan, COUNT(*) as count FROM tugas_akhir
+                          WHERE status_pengajuan IN ('Disetujui', 'Revisi', 'Ditolak') 	
+                          GROUP BY status_pengajuan";
+                  $result = $conn->query($sql);
+
+                  $xValues = [];
+                  $yValues = [];
+
+                  if ($result->num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                          $xValues[] = $row['status_pengajuan']; 
+                          $yValues[] = $row['count'];
+                      }
+                  }
+                  $conn->close();
+                  ?>
+                  <canvas id="myChart2"></canvas>
+                  <script>
+                    var xValues = <?php echo json_encode($xValues); ?>; 
+                    var yValues = <?php echo json_encode($yValues); ?>;
+
+                    var barColors = ["#FF6384", "#36A2EB", "#FFCE56"];
+
+                    new Chart("myChart2", {
+                        type: "doughnut",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                backgroundColor: barColors,
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display: true,
+                                text: "Jumlah Pendaftar"
+                            }
+                        }
+                    });
+                </script>
             </div>
             </div>
           </div>
@@ -390,6 +443,38 @@
                               <th></th>
                             </tr>
                           </thead>
+                          <tbody>
+                                <?php
+                                $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+                                $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, tugas_akhir.status_pengajuan
+                                FROM mahasiswa 
+                                LEFT JOIN tugas_akhir ON mahasiswa.id_mahasiswa = tugas_akhir.id_mahasiswa 
+                                WHERE 1";
+                                $result = $conn->query($sql1);
+
+                                while ($row = mysqli_fetch_array($result)) {
+                                  echo "<tr>";
+                                  echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                                  echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                                  echo "<td>" . $row['nim'] . "</td>";
+                                  echo "<td>";
+                                  echo "<a href='#popup'>";
+                                  echo "<<span class='material-symbols-outlined'>folder_open</span>>";
+                                  echo "</a>";
+                                  echo "<td>";
+                                  if ($row['status_pengajuan'] == "Revisi") {
+                                    echo "<a class='btn btn-warning btn-rounded btn-fw' id='nonclick'>Revisi</a>";
+                                  }elseif ($row['status_pengajuan'] == "Disetujui") {
+                                    echo "<a class='btn btn-success btn-rounded btn-fw' id='nonclick'>Disetujui</a>";
+                                  }else {
+                                    echo "<a class='btn btn-danger btn-rounded btn-fw' id='nonclick'>Ditolak</a>";
+                                  };
+                                  echo "<td>";
+                                  echo "<button class='btn btn-info btn-rounded btn-fw'>Revisi</button>";
+                              }
+                              $conn->close()
+                                ?>
+                            </tbody>
                       </table>
                       </div>
                     </div>

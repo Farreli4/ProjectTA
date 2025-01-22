@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=folder_open" />
 </head>
 <body>
   <div class="container-scroller">
@@ -334,9 +336,9 @@
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="pendaftaranTA.php">Tugas Akhir</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftarnSeminar.php">Seminar</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranUjian.php">Ujian</a></li>
+              <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenseminar.php">Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenujian.php">Ujian</a></li>
               </ul>
             </div>
           </li>
@@ -351,7 +353,7 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-            <div class="col-md-6 grid-margin transparent">
+            <div class="col-md-10 grid-margin transparent">
               <div class="row">
                 <div class="col-md-6 stretch-card transparent">
                   <div class="card card-light-danger">
@@ -363,8 +365,53 @@
                   </div>
                 </div>
                 <div class="col-md-6 mt-3">
-                  <canvas id="south-america-chart"></canvas>
-                <div id="south-america-legend"></div>
+                <?php
+                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+
+                  if ($conn->connect_error) {
+                      die("Connection failed: " . $conn->connect_error);
+                  }
+
+                  $sql = "SELECT status_pengajuan, COUNT(*) as count FROM tugas_akhir
+                          WHERE status_pengajuan IN ('Disetujui', 'Revisi', 'Ditolak') 	
+                          GROUP BY status_pengajuan";
+                  $result = $conn->query($sql);
+
+                  $xValues = [];
+                  $yValues = [];
+
+                  if ($result->num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                          $xValues[] = $row['status_pengajuan']; 
+                          $yValues[] = $row['count'];
+                      }
+                  }
+                  $conn->close();
+                  ?>
+                  <canvas id="myChart2"></canvas>
+                  <script>
+                    var xValues = <?php echo json_encode($xValues); ?>; 
+                    var yValues = <?php echo json_encode($yValues); ?>;
+
+                    var barColors = ["#FF6384", "#36A2EB", "#FFCE56"];
+
+                    new Chart("myChart2", {
+                        type: "doughnut",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                backgroundColor: barColors,
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display: true,
+                                text: "Jumlah Pendaftar"
+                            }
+                        }
+                    });
+                </script>
             </div>
             </div>
           </div>
