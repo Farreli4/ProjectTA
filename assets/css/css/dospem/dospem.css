@@ -1,0 +1,137 @@
+.card-tale {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    width: 100%;    
+}
+
+
+
+@media screen and (max-width: 480px) {
+    .card-tale {
+        height: 150px !important;  /* Fixed height for mobile */
+    }
+    
+    .card-background {
+        background-size: 100% auto;  /* Full width, auto height */
+    }
+
+}
+
+.card-body {
+    position: relative;
+    z-index: 3; 
+    padding: 1.5rem;
+    padding-top: 2rem;
+}
+
+.card-body span {
+    display: block;
+    margin-top: 10px;
+    font-weight: 900;
+}
+
+.card-body h4 {
+    display: block;
+    font-weight: 900;
+}
+
+.card-background1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../img/book.png');
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: left;
+    z-index: 1;
+}
+
+.card-background1:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(115, 38, 38, 0); /* Warna dark blue dengan opacity */
+    z-index: 2;
+}
+
+.card-dark-blue {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-background2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../img/student.png');
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: left;
+    z-index: 1;
+}
+
+.card-background2:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(115, 38, 38, 0); 
+    z-index: 2;
+}
+.card-background3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../img/logout.png');
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: left;
+    z-index: 1;
+}
+
+.card-background3:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(115, 38, 38, 0); 
+    z-index: 2;
+}
+.card-background4 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../img/dokumentasi.png');
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: left;
+    z-index: 1;
+}
+
+.card-background4:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(115, 38, 38, 0); 
+    z-index: 2;
+}
