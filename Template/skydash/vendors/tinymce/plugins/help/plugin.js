@@ -561,8 +561,8 @@
         name: 'Table'
       },
       {
-        key: 'template',
-        name: 'Template'
+        key: '../../Template',
+        name: '../../Template'
       },
       {
         key: 'textcolor',

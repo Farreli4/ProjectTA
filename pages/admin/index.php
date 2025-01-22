@@ -20,6 +20,9 @@
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+
+  <link rel="stylesheet" type="text/css" href="../../assets/css/css/admin/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/css/admin/.css">
 </head>
 <body>
   <div class="container-scroller">
@@ -356,53 +359,51 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12 grid-margin transparent">
-  <div class="row">
-    <!-- Card 1 -->
-    <div class="col-md-4 mb-4 stretch-card transparent">
-      <a href="pendaftaranTA.php">
-        <div class="card card-dark-blue">
-          <div class="card-body">
-            <p class="mb-4">Total Pendaftar Tugas Akhir</p>
-            <p class="fs-30 mb-2">4006</p>
-            <p>10.00% (30 days)</p>
-          </div>
-        </div>
-      </a>
-    </div>
+          
+          <div class="row">
+            <!-- Card 1 -->
+            <div class="col-md-4 mb-4 stretch-card transparent">
+              <a href="pendaftaranTA.php">
+                <div class="card card-dark-blue">
+                  <div class="card-body text-center">
+                    <p class="mb-4">Total Pendaftar Tugas Akhir</p>
+                    <p class="fs-30 mb-2">4006</p>
+                  </div>
+                </div>
+              </a>
+            </div>
 
-    <!-- Card 2 -->
-    <div class="col-md-4 mb-4 stretch-card transparent">
-      <a href="pendaftaranSeminar.php">
-        <div class="card card-dark-blue">
-          <div class="card-body">
-            <p class="mb-4">Total Pendaftar Seminar</p>
-            <p class="fs-30 mb-2">61344</p>
-            <p>22.00% (30 days)</p>
-          </div>
-        </div>
-      </a>
-    </div>
+            <!-- Card 2 -->
+            <div class="col-md-4 mb-4 stretch-card transparent">
+              <a href="pendaftaranSeminar.php">
+                <div class="card card-dark-blue">
+                  <div class="card-body text-center">
+                    <p class="mb-4">Total Pendaftar Seminar</p>
+                    <p class="fs-30 mb-2">61344</p>
+                  </div>
+                </div>
+              </a>
+            </div>
 
-    <!-- Card 3 -->
-    <div class="col-md-4 mb-4 stretch-card transparent">
-      <a href="pendaftaranUjian.php">
-        <div class="card card-light-blue">
-          <div class="card-body">
-            <p class="mb-4">Total Pendaftar Ujian</p>
-            <p class="fs-30 mb-2">34040</p>
-            <p>2.00% (30 days)</p>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
+            <!-- Card 3 -->
+            <div class="col-md-4 mb-4 stretch-card transparent">
+              <a href="pendaftaranUjian.php">
+                <div class="card card-light-blue">
+                  <div class="card-body text-center">
+                    <p class="mb-4">Total Pendaftar Ujian</p>
+                    <p class="fs-30 mb-2">34040</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+</div>
+
 </div>
 
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin ../../Template</a> from BootstrapDash. All rights reserved.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
           </div>
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -430,7 +431,7 @@
   <!-- inject:js -->
   <script src="../../Template/skydash/js/off-canvas.js"></script>
   <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="../../Template/skydash/js/template.js"></script>
+  <script src="../../Template/skydash/js/../../Template.js"></script>
   <script src="../../Template/skydash/js/settings.js"></script>
   <script src="../../Template/skydash/js/todolist.js"></script>
   <!-- endinject -->

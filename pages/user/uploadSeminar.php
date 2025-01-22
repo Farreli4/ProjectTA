@@ -10,6 +10,43 @@ function getFileStatus($nim, $tipe_file)
     // Ini contoh, sesuaikan dengan database Anda
     return "Revisi"; // atau "Lulus" atau "Tolak"
 }
+
+// Proses upload file jika ada
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
+    $uploadDir = 'uploads/';  // Buat folder 'uploads' di direktori yang sama
+
+    // Pastikan direktori upload ada
+    if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    $file = $_FILES['file_upload'];
+    $fileType = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $fileCategory = $_POST['file_type'] ?? '';
+
+    // Format nama file
+    $newFileName = $nim . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
+    $uploadPath = $uploadDir . $newFileName;
+
+    // Validasi file
+    if ($fileType != "pdf") {
+        echo "<script>alert('Maaf, hanya file PDF yang diperbolehkan.');</script>";
+    } elseif ($file['size'] > 2000000) { // 2MB
+        echo "<script>alert('Maaf, ukuran file terlalu besar (max 2MB).');</script>";
+    } else {
+        if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+            echo "<script>alert('File berhasil diupload.');</script>";
+        } else {
+            echo "<script>alert('Maaf, terjadi error saat upload file.');</script>";
+        }
+    }
+}
+
+$driveLinks = [
+    'Form Pendaftaran Seminar Proposal' => 'https://drive.google.com/your-link-1',
+    'Lembar Persetujuan Proposal Tugas Akhir' => 'https://drive.google.com/your-link-1',
+    'Buku Konsultasi TA' => 'https://drive.google.com/your-link-2',
+];
 ?>
 
 <!DOCTYPE html>
@@ -32,9 +69,51 @@ function getFileStatus($nim, $tipe_file)
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
-    <link rel="stylesheet" href="../../assets/css/css/user.css" >
+    <link rel="stylesheet" href="../../assets/css/css/user.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+    <style>
+        .download-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #ffffff;
+            color: #6C63FF;
+            border: 1px solid #6C63FF;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #6C63FF;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        /* Menambahkan style untuk visited state */
+        .download-btn:visited {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #ffffff;
+            color: #6C63FF;
+            border: 1px solid #6C63FF;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        /* Menambahkan style untuk active state */
+        .download-btn:active {
+            background-color: #5850e6;
+            color: #ffffff;
+        }
+
+        /* Menambahkan style untuk focus state */
+        .download-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+        }
+    </style>
 
 </head>
 
@@ -118,7 +197,7 @@ function getFileStatus($nim, $tipe_file)
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="panduan.html">
+                        <a class="nav-link" href="panduan.php">
                             <i class="icon-paper menu-icon"></i>
                             <span class="menu-title">Alur & Panduan</span>
                         </a>
@@ -138,26 +217,26 @@ function getFileStatus($nim, $tipe_file)
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item" href="pengajuanTA.php">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pengajuanTA.php">
                             <i class="icon-columns menu-icon"></i>
                             <span class="menu-title">Pengajuan TA</span>
                         </a>
                     </li>
-                    <li class="nav-item" href="pengajuanSeminar.php">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pengajuanSeminar.php">
                             <i class="icon-columns menu-icon"></i>
-                            <span class="menu-title">Pengajuan Sempro</span>
+                            <span class="menu-title">Pengajuan Seminar</span>
                         </a>
                     </li>
-                    <li class="nav-item" href="pengajuanUjian.php">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pengajuanUjian.php">
                             <i class="icon-columns menu-icon"></i>
                             <span class="menu-title">Pengajuan Ujian</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                        <a class="nav-link" href="../../login.php">
                             <i class="icon-head menu-icon"></i>
                             <span class="menu-title">Log Out</span>
                         </a>
@@ -169,13 +248,13 @@ function getFileStatus($nim, $tipe_file)
                 <div class="content-wrapper">
                     <!--BOX-->
                     <div class="content-wrapper">
-                    <h3>Welcome <?php echo htmlspecialchars($nama_mahasiswa); ?></h3>
-                            <h6>NIM: <?php echo htmlspecialchars($nim); ?></h6>
+                        <h3>Welcome <?php echo htmlspecialchars($nama_mahasiswa); ?></h3>
+                        <h6>NIM: <?php echo htmlspecialchars($nim); ?></h6>
 
-                            <div class="alert-info">
-                                Disini kamu dapat melakukan upload Jurnal Magang. Setelah Jurnal terupload,
-                                tunggu 1-2 hari kerja sampai notifikasi berubah menjadi terverifikasi
-                            </div>
+                        <div class="alert-info">
+                            Disini kamu dapat melakukan upload Jurnal Magang. Setelah Jurnal terupload,
+                            tunggu 1-2 hari kerja sampai notifikasi berubah menjadi terverifikasi
+                        </div>
                         <div class="upload-container">
 
                             <h4>Perhatikan petunjuk sebelum melakukan Upload:</h4>
@@ -224,17 +303,20 @@ function getFileStatus($nim, $tipe_file)
                                         <tr>
                                             <td><?php echo htmlspecialchars($file); ?></td>
                                             <td>
-                                                <form action="upload_process.php" method="post" enctype="multipart/form-data">
+                                                <form action="" method="post" enctype="multipart/form-data">
+                                                    <input type="file" name="file_upload" accept=".pdf" style="display: none;" id="file_<?php echo md5($file); ?>">
                                                     <input type="hidden" name="file_type" value="<?php echo htmlspecialchars($file); ?>">
-                                                    <button type="submit" class="upload-btn">Upload</button>
+                                                    <button type="button" class="upload-btn" onclick="document.getElementById('file_<?php echo md5($file); ?>').click()">Upload</button>
                                                 </form>
                                             </td>
                                             <td><span class="status <?php echo $statusClass; ?>"><?php echo $status; ?></span></td>
                                             <td>
-                                                <form action="download_file.php" method="get">
-                                                    <input type="hidden" name="file_type" value="<?php echo htmlspecialchars($file); ?>">
-                                                    <button type="submit" class="download-btn">Download</button>
-                                                </form>
+                                                <a href="<?php echo htmlspecialchars($driveLinks[$file]); ?>"
+                                                    target="_blank"
+                                                    class="download-btn"
+                                                    rel="noopener noreferrer">
+                                                    Download
+                                                </a>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -289,7 +371,7 @@ function getFileStatus($nim, $tipe_file)
         <!-- inject:js -->
         <script src="../../Template/skydash/js/off-canvas.js"></script>
         <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-        <script src="../../Template/skydash/js/template.js"></script>
+        <script src="../../Template/skydash/js/../../Template.js"></script>
         <script src="../../Template/skydash/js/settings.js"></script>
         <script src="../../Template/skydash/js/todolist.js"></script>
         <!-- endinject -->

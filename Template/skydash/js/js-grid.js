@@ -42,7 +42,7 @@
           {
             name: "Married",
             title: "Is Married",
-            itemTemplate: function(value, item) {
+            item../../Template: function(value, item) {
               return $("<div>")
                 .addClass("form-check mt-0")
                 .append(
@@ -103,7 +103,7 @@
           {
             name: "Married",
             title: "Is Married",
-            itemTemplate: function(value, item) {
+            item../../Template: function(value, item) {
               return $("<div>")
                 .addClass("form-check mt-0")
                 .append(
@@ -160,7 +160,7 @@
           {
             name: "Married",
             title: "Is Married",
-            itemTemplate: function(value, item) {
+            item../../Template: function(value, item) {
               return $("<div>")
                 .addClass("form-check mt-0")
                 .append(

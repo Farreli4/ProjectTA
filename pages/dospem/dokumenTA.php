@@ -314,7 +314,7 @@
             </a>
             <div class="collapse" id="error">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="Template/skydash/pages/samples/error-404.html"> 404 </a></li>
+                <li class="nav-item"> <a class="nav-link" href="../../Template/skydash/pages/samples/error-404.html"> 404 </a></li>
                 <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
               </ul>
             </div>
@@ -332,7 +332,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/documentation/documentation.html">
+            <a class="nav-link" href="../../Template/skydash/pages/samples/login.html">
               <i class="ti-power-off  menu-icon"></i>
               <span class="menu-title">Logout</span>
             </a>
@@ -354,168 +354,91 @@
             </div>
           </div>
 
+          <!-- tabel -->
           <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">Striped Table</h4>
+                <h4 class="card-title">Dokumen Tugas Akhir</h4>
                 <p class="card-description">
-                  Add class <code>.table-striped</code>
+                  Pemeriksanaan kelengkapan dan kesesuaian dokumen<code>Tugas Akhir</code>
                 </p>
                 <div class="table-responsive">
                   <table class="table table-striped">
                     <thead>
                       <tr>
                         <th>
-                          User
+                          ID
                         </th>
                         <th>
-                          First name
+                          Nama
                         </th>
                         <th>
-                          Progress
+                          Nim
                         </th>
                         <th>
-                          Amount
+                          Doc
                         </th>
                         <th>
-                          Deadline
+                          Status
+                        </th>
+                        <th>
+                          Update
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td class="py-1">
-                          <img src="../../images/faces/face1.jpg" alt="image" />
+                          1
                         </td>
                         <td>
                           Herman Beck
                         </td>
                         <td>
-                          <div class="progress">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                          354635
+
+                        </td>
+                        <td>
+                          ....
+                        </td>
+                        <td>
+                          <div class="btn-group">
+                            <button type="button" id="statusButton" class="btn btn-primary">Status Dokumen</button>
+                            <button type="button" id="toggleButton" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="#" onclick="changeStatus('Verified', 'btn-success')">Verified</a>
+                              <a class="dropdown-item" href="#" onclick="changeStatus('Revisi', 'btn-danger')">Revisi</a>
+                              <a class="dropdown-item" href="#" onclick="changeStatus('Sedang diproses', 'btn-warning')">Sedang diproses</a>
+                            </div>
                           </div>
                         </td>
+
+                        <script>
+                          function changeStatus(status, colorClass) {
+                            var mainButton = document.getElementById('statusButton');
+                            var toggleButton = document.getElementById('toggleButton');
+
+                            // Hapus semua kelas warna Bootstrap dari kedua tombol
+                            mainButton.classList.remove('btn-primary', 'btn-success', 'btn-danger', 'btn-warning');
+                            toggleButton.classList.remove('btn-primary', 'btn-success', 'btn-danger', 'btn-warning');
+
+                            // Tambahkan teks dan kelas warna baru ke kedua tombol
+                            mainButton.innerText = status;
+                            mainButton.classList.add(colorClass);
+                            toggleButton.classList.add(colorClass);
+                          }
+                        </script>
+
                         <td>
-                          $ 77.99
-                        </td>
-                        <td>
-                          May 15, 2015
+
+                          <button type="button" class="btn btn-outline-primary btn-fw">Update</button>
                         </td>
                       </tr>
-                      <tr>
-                        <td class="py-1">
-                          <img src="../../images/faces/face2.jpg" alt="image" />
-                        </td>
-                        <td>
-                          Messsy Adam
-                        </td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </td>
-                        <td>
-                          $245.30
-                        </td>
-                        <td>
-                          July 1, 2015
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="py-1">
-                          <img src="../../images/faces/face3.jpg" alt="image" />
-                        </td>
-                        <td>
-                          John Richards
-                        </td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </td>
-                        <td>
-                          $138.00
-                        </td>
-                        <td>
-                          Apr 12, 2015
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="py-1">
-                          <img src="../../images/faces/face4.jpg" alt="image" />
-                        </td>
-                        <td>
-                          Peter Meggik
-                        </td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </td>
-                        <td>
-                          $ 77.99
-                        </td>
-                        <td>
-                          May 15, 2015
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="py-1">
-                          <img src="../../images/faces/face5.jpg" alt="image" />
-                        </td>
-                        <td>
-                          Edward
-                        </td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </td>
-                        <td>
-                          $ 160.25
-                        </td>
-                        <td>
-                          May 03, 2015
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="py-1">
-                          <img src="../../images/faces/face6.jpg" alt="image" />
-                        </td>
-                        <td>
-                          John Doe
-                        </td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </td>
-                        <td>
-                          $ 123.21
-                        </td>
-                        <td>
-                          April 05, 2015
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="py-1">
-                          <img src="../../images/faces/face7.jpg" alt="image" />
-                        </td>
-                        <td>
-                          Henry Tom
-                        </td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </td>
-                        <td>
-                          $ 150.00
-                        </td>
-                        <td>
-                          June 16, 2015
-                        </td>
-                      </tr>
+
+
                     </tbody>
                   </table>
                 </div>
@@ -558,7 +481,7 @@
     <!-- endinject -->
     <!-- Plugin js for this page -->
     <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-    <script src="../..Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="../..../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
     <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
     <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
@@ -566,7 +489,7 @@
     <!-- inject:js -->
     <script src="../../Template/skydash/js/off-canvas.js"></script>
     <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-    <script src="../../Template/skydash/js/template.js"></script>
+    <script src="../../Template/skydash/js/../../Template.js"></script>
     <script src="../../Template/skydash/js/settings.js"></script>
     <script src="../../Template/skydash/js/todolist.js"></script>
     <!-- endinject -->

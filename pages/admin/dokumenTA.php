@@ -205,7 +205,7 @@
   <!-- inject:js -->
   <script src="../../Template/skydash/js/off-canvas.js"></script>
   <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="../../Template/skydash/js/template.js"></script>
+  <script src="../../Template/skydash/js/../../Template.js"></script>
   <script src="../../Template/skydash/js/settings.js"></script>
   <script src="../../Template/skydash/js/todolist.js"></script>
   <!-- endinject -->

@@ -106,7 +106,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="panduan.html">
+                        <a class="nav-link" href="panduan.php">
                             <i class="icon-paper menu-icon"></i>
                             <span class="menu-title">Alur & Panduan</span>
                         </a>
@@ -126,26 +126,26 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item" href="pengajuanTA.php">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pengajuanTA.php">
                             <i class="icon-columns menu-icon"></i>
                             <span class="menu-title">Pengajuan TA</span>
                         </a>
                     </li>
-                    <li class="nav-item" href="pengajuanSeminar.php">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pengajuanSeminar.php">
                             <i class="icon-columns menu-icon"></i>
-                            <span class="menu-title">Pengajuan Sempro</span>
+                            <span class="menu-title">Pengajuan Seminar</span>
                         </a>
                     </li>
-                    <li class="nav-item" href="pengajuanUjian.php">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pengajuanUjian.php">
                             <i class="icon-columns menu-icon"></i>
                             <span class="menu-title">Pengajuan Ujian</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                        <a class="nav-link" href="../../login.php">
                             <i class="icon-head menu-icon"></i>
                             <span class="menu-title">Log Out</span>
                         </a>
@@ -235,7 +235,7 @@
         <!-- inject:js -->
         <script src="../../Template/skydash/js/off-canvas.js"></script>
         <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-        <script src="../../Template/skydash/js/template.js"></script>
+        <script src="../../Template/skydash/js/../../Template.js"></script>
         <script src="../../Template/skydash/js/settings.js"></script>
         <script src="../../Template/skydash/js/todolist.js"></script>
         <!-- endinject -->

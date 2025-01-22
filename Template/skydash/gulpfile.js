@@ -90,7 +90,7 @@ gulp.task('injectCommonAssets', function () {
         './css/*.css', 
         './js/off-canvas.js', 
         './js/hoverable-collapse.js', 
-        './js/template.js', 
+        './js/../../Template.js', 
         './js/settings.js', 
         './js/todolist.js'
     ], {read: false}), {relative: true}))
@@ -135,7 +135,7 @@ gulp.task('clean:vendors', function () {
     ]);
 });
 
-/*Building vendor scripts needed for basic template rendering*/
+/*Building vendor scripts needed for basic ../../Template rendering*/
 gulp.task('buildBaseVendorScripts', function() {
     return gulp.src([
         './node_modules/jquery/dist/jquery.min.js', 
@@ -147,7 +147,7 @@ gulp.task('buildBaseVendorScripts', function() {
       .pipe(gulp.dest('./vendors/js'));
 });
 
-/*Building vendor styles needed for basic template rendering*/
+/*Building vendor styles needed for basic ../../Template rendering*/
 gulp.task('buildBaseVendorStyles', function() {
     return gulp.src(['./node_modules/perfect-scrollbar/css/perfect-scrollbar.css'])
       .pipe(concat('vendor.bundle.base.css'))

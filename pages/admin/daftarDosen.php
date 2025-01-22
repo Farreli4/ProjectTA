@@ -20,6 +20,9 @@
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+
+  <link rel="stylesheet" type="text/css" href="../../assets/css/css/admin/dosen.css">
+  <link rel="stylesheet" href="../../assets/css/css/admin/dosen.css">
 </head>
 <body>
   <div class="container-scroller">
@@ -102,10 +105,6 @@
               <a class="dropdown-item">
                 <i class="ti-settings text-primary"></i>
                 Settings
-              </a>
-              <a class="dropdown-item">
-                <i class="ti-power-off text-primary"></i>
-                Logout
               </a>
             </div>
           </li>
@@ -302,15 +301,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="daftarMahasiswa.php">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Daftar Mahasiswa</span>
+            <a class="nav-link" href="daftarDosen.php">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Daftar Dosen</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="daftarDosen.php">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Daftar Dosen</span>
+            <a class="nav-link" href="daftarMahasiswa.php">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Daftar Mahasiswa</span>
             </a>
           </li>
           <li class="nav-item">
@@ -321,31 +320,25 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranta.php">Tugas Akhir</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranseminar.php">Seminar</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranujian.php">Ujian</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
-              <span class="menu-title">Dokumen</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="pendaftaranTA.php">Tugas Akhir</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranSeminar.phpl">Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="pendaftaranTA.php">Tugas Akhir</a></li>
+                <li class="nav-item"> <a class="nav-link" href="pendaftaranSeminar.php">Seminar</a></li>
                 <li class="nav-item"> <a class="nav-link" href="pendaftaranUjian.php">Ujian</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/documentation/documentation.html">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="icon-paper menu-icon"></i>
-              <span class="menu-title">Logout</span>
+              <span class="menu-title">Dokumen</span>
+              <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="ui-basic">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenSeminar.php">Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenUjian.php">Ujian</a></li>
+              </ul>
+            </div>
           </li>
         </ul>
       </nav>
@@ -389,7 +382,7 @@
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin ../../Template</a> from BootstrapDash. All rights reserved.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
           </div>
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -417,7 +410,7 @@
   <!-- inject:js -->
   <script src="../../Template/skydash/js/off-canvas.js"></script>
   <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="../../Template/skydash/js/template.js"></script>
+  <script src="../../Template/skydash/js/../../Template.js"></script>
   <script src="../../Template/skydash/js/settings.js"></script>
   <script src="../../Template/skydash/js/todolist.js"></script>
   <!-- endinject -->
