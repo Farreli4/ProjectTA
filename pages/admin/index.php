@@ -359,7 +359,7 @@
             <div class="col-md-6 grid-margin transparent">
               <div class="row">
               <a href= "pendaftaranTA.php">
-                <div class="col-md-6 mb-4 stretch-card transparent">
+                <div class="col-md-10 mb-4 stretch-card transparent">
                   <div class="card card-tale">
                     <div class="card-body">
                       <p class="mb-4">Total Pendaftar Tugas Akhir</p>
@@ -370,7 +370,7 @@
                 </div>
               </a>
               <a href= "pendaftaranSeminar.php">
-                <div class="col-md-6 mb-4 stretch-card transparent">
+                <div class="col-md-10 mb-4 stretch-card transparent">
                   <div class="card card-dark-blue">
                     <div class="card-body">
                       <p class="mb-4">Total Pendaftar Seminar</p>
@@ -381,7 +381,7 @@
                 </div>
               </div>
               </a>
-              <a href= "pendaftaranUjian.php">end{code}
+              <a href= "pendaftaranUjian.php">
               <div class="row">
                 <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                   <div class="card card-light-blue">
