@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,7 +60,7 @@
 
                         <!-- NOTIFIKASI -->
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                         <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+                            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
                         </div>
                     </li>
 
@@ -106,7 +104,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="panduan.html">
+                        <a class="nav-link" href="panduan.php">
                             <i class="icon-paper menu-icon"></i>
                             <span class="menu-title">Alur & Panduan</span>
                         </a>
@@ -120,32 +118,32 @@
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item"> <a class="nav-link" href="uploadTA.php">Upload TA</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="uploadSeminar.php">Upload Sempro</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="uploadSeminar.php">Upload Seminar</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="uploadUjian.php">Upload Ujian</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="lampiran.php">Lampiran</a></li>
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item" href="pengajuanTA.php">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pengajuanTA.php">
                             <i class="icon-columns menu-icon"></i>
                             <span class="menu-title">Pengajuan TA</span>
                         </a>
                     </li>
-                    <li class="nav-item" href="pengajuanSeminar.php">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pengajuanSeminar.php">
                             <i class="icon-columns menu-icon"></i>
-                            <span class="menu-title">Pengajuan Sempro</span>
+                            <span class="menu-title">Pengajuan Seminar</span>
                         </a>
                     </li>
-                    <li class="nav-item" href="pengajuanUjian.php">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pengajuanUjian.php">
                             <i class="icon-columns menu-icon"></i>
                             <span class="menu-title">Pengajuan Ujian</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                        <a class="nav-link" href="../../login.php">
                             <i class="icon-head menu-icon"></i>
                             <span class="menu-title">Log Out</span>
                         </a>
@@ -157,88 +155,88 @@
                 <div class="content-wrapper">
                     <!--BOX-->
                     <div class="container">
-                    <h3>Pendaftaran Ujian Akhir</h3>
-        <div class="document-grid">
-            <!-- Form Pendaftaran -->
-            <div class="document-card">
-                <div class="document-title">Lembar Persetujuan Laporan Tugas Akhir</div>
-                <div class="status-badge status-terverifikasi">Terverifikasi</div>
-                <div class="document-info">
-                    <strong>Diupload:</strong> 20 Jan 2024<br>
-                    <strong>Diverifikasi:</strong> 21 Jan 2024
-                </div>
-            </div>
+                        <h3>Pendaftaran Ujian Akhir</h3>
+                        <div class="document-grid">
+                            <!-- Form Pendaftaran -->
+                            <div class="document-card">
+                                <div class="document-title">Lembar Persetujuan Laporan Tugas Akhir</div>
+                                <div class="status-badge status-terverifikasi">Terverifikasi</div>
+                                <div class="document-info">
+                                    <strong>Diupload:</strong> 20 Jan 2024<br>
+                                    <strong>Diverifikasi:</strong> 21 Jan 2024
+                                </div>
+                            </div>
 
-            <!-- Jurnal Magang -->
-            <div class="document-card">
-                <div class="document-title">Formulir Pendaftaran Ujian Tugas Akhir</div>
-                <div class="status-badge status-terverifikasi">Terverifikasi</div>
-                <div class="document-info">
-                    <strong>Diupload:</strong> 19 Jan 2024<br>
-                    <strong>Diverifikasi:</strong> 21 Jan 2024
-                </div>
-            </div>
+                            <!-- Jurnal Magang -->
+                            <div class="document-card">
+                                <div class="document-title">Formulir Pendaftaran Ujian Tugas Akhir</div>
+                                <div class="status-badge status-terverifikasi">Terverifikasi</div>
+                                <div class="document-info">
+                                    <strong>Diupload:</strong> 19 Jan 2024<br>
+                                    <strong>Diverifikasi:</strong> 21 Jan 2024
+                                </div>
+                            </div>
 
-            <!-- Nilai Magang -->
-            <div class="document-card">
-                <div class="document-title">Lembar Kehadiran Seminar Proposal</div>
-                <div class="status-badge status-terverifikasi">Terverifikasi</div>
-                <div class="document-info">
-                    <strong>Diupload:</strong> 21 Jan 2024<br>
-                    <strong>Diverifikasi:</strong> 21 Jan 2024
-                </div>
-            </div>
-
-
-            <!-- Laporan Magang -->
-            <div class="document-card">
-                <div class="document-title">Buku Konsultasi Tugas Akhir</div>
-                <div class="status-badge status-menunggu">Menunggu Verifikasi</div>
-                <div class="document-info">
-                <strong>Diupload:</strong> 21 Jan 2024
-                </div>
-            </div>
-
-            <div class="document-card">
-                <div class="document-title">Berita Acara</div>
-                <div class="status-badge status-empty">Belum Diupload</div>
-                <div class="document-info">
-                    Silakan upload dokumen untuk diverifikasi
-                </div>
-            </div>
+                            <!-- Nilai Magang -->
+                            <div class="document-card">
+                                <div class="document-title">Lembar Kehadiran Seminar Proposal</div>
+                                <div class="status-badge status-terverifikasi">Terverifikasi</div>
+                                <div class="document-info">
+                                    <strong>Diupload:</strong> 21 Jan 2024<br>
+                                    <strong>Diverifikasi:</strong> 21 Jan 2024
+                                </div>
+                            </div>
 
 
-            <div class="document-card">
-                <div class="document-title">Pas Foto</div>
-                <div class="status-badge status-empty">Belum Diupload</div>
-                <div class="document-info">
-                    Silakan upload dokumen untuk diverifikasi
-                </div>
-            </div>
+                            <!-- Laporan Magang -->
+                            <div class="document-card">
+                                <div class="document-title">Buku Konsultasi Tugas Akhir</div>
+                                <div class="status-badge status-menunggu">Menunggu Verifikasi</div>
+                                <div class="document-info">
+                                    <strong>Diupload:</strong> 21 Jan 2024
+                                </div>
+                            </div>
 
-        </div>
-        <div class="status-header">
-            <h1 class="header-title">Status Dokumen Pengajuan</h1>
-            <button class="submission-button" onclick="showNotification()">Pengajuan Tugas Akhir</button>
-        </div>
+                            <div class="document-card">
+                                <div class="document-title">Berita Acara</div>
+                                <div class="status-badge status-empty">Belum Diupload</div>
+                                <div class="document-info">
+                                    Silakan upload dokumen untuk diverifikasi
+                                </div>
+                            </div>
 
-    </div>
 
-    <div id="notification" class="notification">
-        Pengajuan berhasil dikirim! Menunggu verifikasi admin.
-    </div>
+                            <div class="document-card">
+                                <div class="document-title">Pas Foto</div>
+                                <div class="status-badge status-empty">Belum Diupload</div>
+                                <div class="document-info">
+                                    Silakan upload dokumen untuk diverifikasi
+                                </div>
+                            </div>
 
-    <script>
-        function showNotification() {
-            const notification = document.getElementById('notification');
-            notification.style.display = 'block';
-            
-            // Hide notification after 3 seconds
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
-    </script>
+                        </div>
+                        <div class="status-header">
+                            <h1 class="header-title">Status Dokumen Pengajuan</h1>
+                            <button class="submission-button" onclick="showNotification()">Pengajuan Tugas Akhir</button>
+                        </div>
+
+                    </div>
+
+                    <div id="notification" class="notification">
+                        Pengajuan berhasil dikirim! Menunggu verifikasi admin.
+                    </div>
+
+                    <script>
+                        function showNotification() {
+                            const notification = document.getElementById('notification');
+                            notification.style.display = 'block';
+
+                            // Hide notification after 3 seconds
+                            setTimeout(() => {
+                                notification.style.display = 'none';
+                            }, 3000);
+                        }
+                    </script>
                     <!-- content-wrapper ends -->
                     <!-- partial:partials/_footer.html -->
 

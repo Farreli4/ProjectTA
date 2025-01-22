@@ -21,14 +21,15 @@
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
 </head>
 </head>
+
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
-     <!--NAVBAR KIRI-->
+    <!--NAVBAR KIRI-->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="images/logo.svg" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="images/logo.svg" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -60,11 +61,11 @@
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
             </div>
           </li>
-          
+
           <!--PROFIL-->
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile"/>
+              <img src="images/faces/face28.jpg" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
@@ -79,7 +80,7 @@
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
-      
+
       <div id="right-sidebar" class="settings-panel">
 
         <div class="tab-content" id="setting-content">
@@ -95,7 +96,7 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="dashboard.php">
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -114,33 +115,33 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Upload TA</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Upload Seminar</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Upload Ujian</a></li>
+                <li class="nav-item"> <a class="nav-link" href="uploadTA.php">Upload TA</a></li>
+                <li class="nav-item"> <a class="nav-link" href="uploadSeminar.php">Upload Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="uploadUjian.php">Upload Ujian</a></li>
                 <li class="nav-item"> <a class="nav-link" href="lampiran.php">Lampiran</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+            <a class="nav-link" href="pengajuanTA.php">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Pengajuan TA</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+            <a class="nav-link" href="pengajuanSeminar.php">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Pengajuan Seminar</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+            <a class="nav-link" href="pengajuanUjian.php">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Pengajuan Ujian</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" href="../../login.php">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Log Out</span>
             </a>
@@ -160,44 +161,42 @@
               </div>
             </div>
           </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer" style="display: flex;">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block" style="text-align: center; justify-content: center;">Copyright © 2023. <a href="https://www.bootstrapdash.com/" target="_blank">Politeknik NEST</a> Teknologi Informasi</span>
-          </div>
-        </footer> 
-        <!-- partial -->
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer" style="display: flex;">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block" style="text-align: center; justify-content: center;">Copyright © 2023. <a href="https://www.bootstrapdash.com/" target="_blank">Politeknik NEST</a> Teknologi Informasi</span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
       </div>
-      <!-- main-panel ends -->
-    </div>   
-    <!-- page-body-wrapper ends -->
-  </div>
-  <!-- container-scroller -->
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
 
-  <!-- plugins:js -->
-  <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-  <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-  <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
+    <!-- plugins:js -->
+    <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
+    <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="../../Template/skydash/js/off-canvas.js"></script>
-  <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="../../Template/skydash/js/template.js"></script>
-  <script src="../../Template/skydash/js/settings.js"></script>
-  <script src="../../Template/skydash/js/todolist.js"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
-  <script src="../../Template/skydash/js/dashboard.js"></script>
-  <script src="../../Template/skydash/js/Chart.roundedBarCharts.js"></script>
-  <!-- End custom js for this page-->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="../../Template/skydash/js/off-canvas.js"></script>
+    <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
+    <script src="../../Template/skydash/js/template.js"></script>
+    <script src="../../Template/skydash/js/settings.js"></script>
+    <script src="../../Template/skydash/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="../../Template/skydash/js/dashboard.js"></script>
+    <script src="../../Template/skydash/js/Chart.roundedBarCharts.js"></script>
+    <!-- End custom js for this page-->
 </body>
 
 </html>
-
- 

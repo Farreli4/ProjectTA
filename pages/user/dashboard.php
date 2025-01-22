@@ -162,26 +162,26 @@
               </ul>
             </div>
           </li>
-          <li class="nav-item" href="pengajuanTA.php">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+          <li class="nav-item">
+            <a class="nav-link" href="pengajuanTA.php">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Pengajuan TA</span>
             </a>
           </li>
-          <li class="nav-item" href="pengajuanSeminar">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+          <li class="nav-item">
+            <a class="nav-link" href="pengajuanSeminar.php">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Pengajuan Seminar</span>
             </a>
           </li>
-          <l  i class="nav-item" href="pengajuanUjian.php">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+          <li class="nav-item">
+            <a class="nav-link" href="pengajuanUjian.php">
               <i class="icon-columns menu-icon"></i>
               <span class="menu-title">Pengajuan Ujian</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" href="../../login.php">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Log Out</span>
             </a>
