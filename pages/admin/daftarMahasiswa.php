@@ -20,6 +20,9 @@
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+
+  <link rel="stylesheet" type="text/css" href="../../assets/css/css/admin/mahasiswa.css">
+  <link rel="stylesheet" href="../../assets/css/css/admin/mahasiswa.css">
 </head>
 <body>
   <div class="container-scroller">

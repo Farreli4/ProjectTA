@@ -1,32 +1,5 @@
-.card.card-dark-blue {
-    background: #193042;
-    color: #ffffff;
-  }
-  
-  .card.card-dark-blue:hover {
-    background: #c9cdce;
-  }
-  
-  .card.card-light-blue {
-    background: #193042;
-    color: #ffffff;
-  }
-  
-  .card.card-light-blue:hover {
-    background: #c9cdce;
-  }
-  
-  .card.card-light-danger {
-    background: #F3797E;
-    color: #ffffff;
-  }
-  
-  .card.card-light-danger:hover {
-    background: #f59095;
-  }
-  
-  /* Sidebar */
-.sidebar {
+ /* Sidebar */
+ .sidebar {
     min-height: calc(100vh - 60px);
     background: #fff;
     font-family: "Nunito", sans-serif;
@@ -334,37 +307,27 @@
     }
   }
   
-  
-.main-panel {
-    transition: width 0.25s ease, margin 0.25s ease;
-    width: calc(100% - 235px);
-    min-height: calc(100vh - 60px);
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-  }
-  
-  @media (max-width: 991px) {
-    .main-panel {
-      margin-left: 0;
-      width: 100%;
-    }
-  }
-  
-  .content-wrapper {
-    background: #F5F7FF;
-    padding: 2.375rem 2.375rem;
-    width: 100%;
-    -webkit-flex-grow: 1;
-    flex-grow: 1;
-  }
-  
-  @media (max-width: 767px) {
-    .content-wrapper {
-      padding: 1.5rem 1.5rem;
-    }
-  }
-  
+
+  /* Warna latar belakang tabel */
+#example {
+    background-color: #1a3041;
+    color: #fff; /* Teks tetap terlihat */
+}
+
+/* Gaya header tabel */
+#example thead th {
+    background-color: #16303b; /* Warna lebih gelap untuk header */
+    color: #fff;
+}
+
+/* Gaya border tabel */
+#example td, #example th {
+    border: 1px solid #3a506b; /* Warna border */
+}
+
+/* Gaya hover */
+#example tbody tr:hover {
+    background-color: #25475a; /* Warna saat baris di-hover */
+}
 
   
