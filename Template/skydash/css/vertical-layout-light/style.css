@@ -8,10 +8,10 @@
   ===== Table of Contents =====
 
   * Bootstrap functions
-  * ../../Template variables
+  * Template variables
   * SCSS Compass Functions
   * Boostrap Main SCSS
-  * ../../Template mixins
+  * Template mixins
     + Animation Mixins
     + Badge Mixins
     + Button Mixins
@@ -113,7 +113,7 @@
 /*-------------------------------------------------------------------*/
 /* === Import Bootstrap functions and variables === */
 /*-------------------------------------------------------------------*/
-/* === Import ../../Template variables === */
+/* === Import template variables === */
 /*-------------------------------------------------------------------*/
 /* === SCSS Compass Functions === */
 @-moz-keyframes flash {
@@ -8999,7 +8999,7 @@ summary {
   cursor: pointer;
 }
 
-../../Template {
+template {
   display: none;
 }
 
@@ -16996,14 +16996,14 @@ button.bg-dark:focus,
   margin: 0.5rem !important;
 }
 
-.mt-2, .../../Template-demo > .btn-group, .fc .../../Template-demo > .fc-button-group,
-.../../Template-demo > .btn-group-vertical, .../../Template-demo .circle-progress,
+.mt-2, .template-demo > .btn-group, .fc .template-demo > .fc-button-group,
+.template-demo > .btn-group-vertical, .template-demo .circle-progress,
 .my-2 {
   margin-top: 0.5rem !important;
 }
 
-.mr-2, .../../Template-demo > .btn, .fc .../../Template-demo > button, .ajax-upload-dragdrop .../../Template-demo > .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .../../Template-demo > .swal2-styled, .wizard > .actions .../../Template-demo > a, .../../Template-demo > .btn-group, .fc .../../Template-demo > .fc-button-group,
-.../../Template-demo > .btn-group-vertical, .../../Template-demo > .dropdown,
+.mr-2, .template-demo > .btn, .fc .template-demo > button, .ajax-upload-dragdrop .template-demo > .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .template-demo > .swal2-styled, .wizard > .actions .template-demo > a, .template-demo > .btn-group, .fc .template-demo > .fc-button-group,
+.template-demo > .btn-group-vertical, .template-demo > .dropdown,
 .mx-2 {
   margin-right: 0.5rem !important;
 }
@@ -17022,17 +17022,17 @@ button.bg-dark:focus,
   margin: 1rem !important;
 }
 
-.mt-3, .../../Template-demo > .btn, .fc .../../Template-demo > button, .ajax-upload-dragdrop .../../Template-demo > .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .../../Template-demo > .swal2-styled, .wizard > .actions .../../Template-demo > a, .../../Template-demo > .btn-toolbar,
+.mt-3, .template-demo > .btn, .fc .template-demo > button, .ajax-upload-dragdrop .template-demo > .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .template-demo > .swal2-styled, .wizard > .actions .template-demo > a, .template-demo > .btn-toolbar,
 .my-3 {
   margin-top: 1rem !important;
 }
 
-.mr-3, .../../Template-demo > .btn-toolbar,
+.mr-3, .template-demo > .btn-toolbar,
 .mx-3 {
   margin-right: 1rem !important;
 }
 
-.mb-3, .../../Template-demo .circle-progress-block,
+.mb-3, .template-demo .circle-progress-block,
 .my-3 {
   margin-bottom: 1rem !important;
 }
@@ -17149,7 +17149,7 @@ button.bg-dark:focus,
 
 .pr-2,
 .px-2,
-.../../Template-demo .circle-progress-block {
+.template-demo .circle-progress-block {
   padding-right: 0.5rem !important;
 }
 
@@ -17160,7 +17160,7 @@ button.bg-dark:focus,
 
 .pl-2,
 .px-2,
-.../../Template-demo .circle-progress-block {
+.template-demo .circle-progress-block {
   padding-left: 0.5rem !important;
 }
 
@@ -19084,7 +19084,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 /*-------------------------------------------------------------------*/
-/* === ../../Template mixins === */
+/* === Template mixins === */
 /* Miscellaneous Mixins */
 .list-wrapper ul li .form-check, .list-wrapper ul li .form-check .form-check-label, .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-name, .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-designation, .email-wrapper .mail-list-container .mail-list .content .sender-name, .email-wrapper .message-body .attachments-sections ul li .details p.file-name, .settings-panel .chat-list .list .info p {
   text-overflow: ellipsis;
@@ -19847,52 +19847,52 @@ code {
 }
 
 /* Demo Styles */
-.../../Template-demo .slider-wrap {
+.template-demo .slider-wrap {
   height: 100px;
 }
 
-.../../Template-demo .progress {
+.template-demo .progress {
   margin-top: 1.5rem;
 }
 
-.../../Template-demo > h2,
-.../../Template-demo > h3,
-.../../Template-demo > h4,
-.../../Template-demo > h5,
-.../../Template-demo > h6,
-.../../Template-demo > h1 {
+.template-demo > h2,
+.template-demo > h3,
+.template-demo > h4,
+.template-demo > h5,
+.template-demo > h6,
+.template-demo > h1 {
   border-top: 1px solid #CED4DA;
   padding: 0.5rem 0 0;
 }
 
-.../../Template-demo .ul-slider.noUi-horizontal {
+.template-demo .ul-slider.noUi-horizontal {
   margin-top: 2rem;
 }
 
-.../../Template-demo .ul-slider.noUi-vertical {
+.template-demo .ul-slider.noUi-vertical {
   margin-right: 2rem;
 }
 
-.../../Template-demo > .dropdown {
+.template-demo > .dropdown {
   display: inline-block;
   margin-bottom: 0.5rem;
 }
 
-.../../Template-demo nav .breadcrumb {
+.template-demo nav .breadcrumb {
   margin-bottom: 1.375rem;
 }
 
-.../../Template-demo nav:last-child .breadcrumb {
+.template-demo nav:last-child .breadcrumb {
   margin-bottom: 0;
 }
 
-.../../Template-demo .editable-form > .form-group {
+.template-demo .editable-form > .form-group {
   border-bottom: 1px solid #CED4DA;
   padding-bottom: 0.8rem;
   margin-bottom: 0.8rem;
 }
 
-.../../Template-demo .circle-progress {
+.template-demo .circle-progress {
   padding: 15px;
 }
 

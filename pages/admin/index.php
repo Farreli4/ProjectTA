@@ -2,6 +2,10 @@
 <html lang="en">
 
 <head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,7 +26,7 @@
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
 
   <link rel="stylesheet" type="text/css" href="../../assets/css/css/admin/dashboard.css">
-  <link rel="stylesheet" href="../../assets/css/css/admin/.css">
+  <link rel="stylesheet" href="../../assets/css/css/admin/dashboard.css">
 </head>
 <body>
   <div class="container-scroller">
@@ -431,7 +435,7 @@
   <!-- inject:js -->
   <script src="../../Template/skydash/js/off-canvas.js"></script>
   <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="../../Template/skydash/js/../../Template.js"></script>
+  <script src="../../Template/skydash/js/Template.js"></script>
   <script src="../../Template/skydash/js/settings.js"></script>
   <script src="../../Template/skydash/js/todolist.js"></script>
   <!-- endinject -->
