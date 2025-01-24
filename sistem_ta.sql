@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 24, 2025 at 05:51 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jan 24, 2025 at 09:37 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -67,10 +67,11 @@ CREATE TABLE `mahasiswa` (
   `nim` varchar(25) NOT NULL,
   `prodi` varchar(100) NOT NULL,
   `kelas` varchar(25) NOT NULL,
+  `form_pendaftaran` blob NOT NULL,
   `form_persetujuan` varchar(255) DEFAULT NULL,
-  `bukti_pembayaran` tinyint(1) NOT NULL,
-  `bukti_transkip` tinyint(1) NOT NULL,
-  `sistem_magang` tinyint(1) NOT NULL,
+  `bukti_pembayaran` blob NOT NULL,
+  `bukti_transkip` blob NOT NULL,
+  `sistem_magang` blob NOT NULL,
   `nomor_telepon` varchar(25) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -79,10 +80,10 @@ CREATE TABLE `mahasiswa` (
 -- Dumping data for table `mahasiswa`
 --
 
-INSERT INTO `mahasiswa` (`id_mahasiswa`, `nama_mahasiswa`, `username`, `pass`, `nim`, `prodi`, `kelas`, `form_persetujuan`, `bukti_pembayaran`, `bukti_transkip`, `sistem_magang`, `nomor_telepon`, `create_at`) VALUES
-(1, 'Rai', '', '', 'K3522064', '', '', NULL, 0, 0, 0, '', '2025-01-22 02:00:40'),
-(2, 'Izza', '', '', 'K3533029', '', '', NULL, 0, 0, 0, '', '2025-01-22 07:35:32'),
-(3, 'Nur', '', '', 'K3522078', '', '', NULL, 0, 0, 0, '', '2025-01-22 09:09:32');
+INSERT INTO `mahasiswa` (`id_mahasiswa`, `nama_mahasiswa`, `username`, `pass`, `nim`, `prodi`, `kelas`, `form_pendaftaran`, `form_persetujuan`, `bukti_pembayaran`, `bukti_transkip`, `sistem_magang`, `nomor_telepon`, `create_at`) VALUES
+(1, 'Rai', '', '', 'K3522064', '', '', '', NULL, 0x30, 0x30, 0x30, '', '2025-01-22 02:00:40'),
+(2, 'Izza', '', '', 'K3533029', '', '', '', NULL, 0x30, 0x30, 0x30, '', '2025-01-22 07:35:32'),
+(3, 'Nur', '', '', 'K3522078', '', '', '', NULL, 0x30, 0x30, 0x30, '', '2025-01-22 09:09:32');
 
 -- --------------------------------------------------------
 
@@ -108,7 +109,7 @@ CREATE TABLE `seminar_proposal` (
 --
 
 INSERT INTO `seminar_proposal` (`id_mahasiswa`, `dosen_pembimbing`, `penyaji_seminar`, `kehadiran`, `sppsp`, `lbta`, `tanggal_disetujui`, `status_seminar`, `tanggal_seminar`, `create_at`) VALUES
-(1, '', 'Rai', 0, '', '', '2004-06-16', 'selesai', '2004-06-18', '2025-01-22 08:49:00'),
+(1, '', 'Rai', 0, '', '', '2004-06-16', 'ditunda', '2004-06-18', '2025-01-24 07:06:01'),
 (2, 'nama_dosen1', 'Izza', 0, '', '', '0000-00-00', 'dijadwalkan', '2020-10-23', '2025-01-24 03:43:16'),
 (3, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'dijadwalkan', '2025-01-24', '2025-01-24 04:13:03');
 
