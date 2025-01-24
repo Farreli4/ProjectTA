@@ -1,3 +1,4 @@
+<?php include '../../config/connection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -372,6 +373,24 @@
                               <th></th>
                             </tr>
                           </thead>
+                          <tbody>
+                                <?php
+                                $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
+                                $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, kelas, nomor_telepon FROM mahasiswa WHERE 1";
+                                $result = $conn->query($sql1);
+
+                                while ($row = mysqli_fetch_array($result)) {
+                                  echo "<tr>";
+                                  echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                                  echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                                  echo "<td>" . $row['nim'] . "</td>";
+                                  echo "<td>" . $row['prodi'] . "</td>";
+                                  echo "<td>" . $row['kelas'] . "</td>";
+                                  echo "<td>" . $row['nomor_telepon'] . "</td>";
+                              }
+                              $conn->close();
+                                ?>
+                            </tbody>
                       </table>
                       </div>
                     </div>

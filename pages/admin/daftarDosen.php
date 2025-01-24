@@ -367,6 +367,23 @@
                               <th></th>
                             </tr>
                           </thead>
+                          <tbody>
+                                <?php
+                                $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
+                                $sql1 = "SELECT id_dosen, nama_dosen, nip, prodi, nomor_telepon FROM dosen_pembimbing WHERE 1";
+                                $result = $conn->query($sql1);
+
+                                while ($row = mysqli_fetch_array($result)) {
+                                  echo "<tr>";
+                                  echo "<td>" . $row['id_dosen'] . "</td>";
+                                  echo "<td>" . $row['nama_dosen'] . "</td>";
+                                  echo "<td>" . $row['nip'] . "</td>";
+                                  echo "<td>" . $row['prodi'] . "</td>";
+                                  echo "<td>" . $row['nomor_telepon'] . "</td>";
+                              }
+                              $conn->close();
+                                ?>
+                            </tbody>
                       </table>
                       </div>
                     </div>
