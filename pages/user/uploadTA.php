@@ -213,9 +213,9 @@ $driveLinks = [
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item"> <a class="nav-link" href="uploadTA.php">Upload TA</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="uploadSeminar">Upload Sempro</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="uploadSeminar.php">Upload Sempro</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="uploadUjian.php">Upload Ujian</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="lampiran">Lampiran</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="lampiran.php">Lampiran</a></li>
                             </ul>
                         </div>
                     </li>
@@ -360,7 +360,7 @@ $driveLinks = [
         <!-- container-scroller -->
 
         <!-- plugins:js -->
-        <script src="../../Template/skydash/skydash/vendors/js/vendor.bundle.base.js"></script>
+        <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
         <!-- endinject -->
         <!-- Plugin js for this page -->
         <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>

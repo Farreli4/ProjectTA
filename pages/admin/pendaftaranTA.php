@@ -34,8 +34,8 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.php"><img src="../../Template/skydash/images/logo.svg" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../Template/skydash/images/logo-mini.svg" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5" href="index.php"><img src="../../Template/skydash/images/logo2.png" class="mr-2" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../Template/skydash/images/Logo.webp" alt="logo"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -336,12 +336,12 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Dokumen</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-basic">
+            <div class="collapse" id="ui-basic2">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
                 <li class="nav-item"> <a class="nav-link" href="dokumenSeminar.php">Seminar</a></li>
@@ -458,15 +458,23 @@
                                   echo "<<span class='material-symbols-outlined'>folder_open</span>>";
                                   echo "</a>";
                                   echo "<td>";
-                                  if ($row['status_pengajuan'] == "Revisi") {
-                                    echo "<a class='btn btn-warning btn-rounded btn-fw' id='nonclick'>Revisi</a>";
-                                  }elseif ($row['status_pengajuan'] == "Disetujui") {
-                                    echo "<a class='btn btn-success btn-rounded btn-fw' id='nonclick'>Disetujui</a>";
-                                  }else {
-                                    echo "<a class='btn btn-danger btn-rounded btn-fw' id='nonclick'>Ditolak</a>";
-                                  };
+                                  echo "<form action='update_pengajuan.php' method='POST'>";
+                                  echo '<div class="dropdown">';
+                                  echo '    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">';
+                                  echo $row['status_pengajuan'];
+                                  echo '    </button>';
+                                  echo '    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">';
+                                  echo "        <button class='dropdown-item' type='submit' name='status_pengajuan' value='Revisi'>Revisi</button>";
+                                  echo "        <button class='dropdown-item' type='submit' name='status_pengajuan' value='Ditolak'>Ditolak</button>";
+                                  echo "        <button class='dropdown-item' type='submit' name='status_pengajuan' value='Disetujui'>Disetujui</button>";
+                                  echo '    </div>';
+                                  echo "</div>";
+                                  echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
+                                  echo "</form>";
                                   echo "<td>";
                                   echo "<button class='btn btn-info btn-rounded btn-fw'>Revisi</button>";
+                                  echo "<td>";
+                                  echo "<button class='btn btn-inverse-success btn-fw'>Verifikasi</button>";
                               }
                               $conn->close()
                                 ?>

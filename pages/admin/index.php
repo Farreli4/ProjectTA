@@ -1,3 +1,4 @@
+<?php include '../../config/connection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,6 +22,7 @@
   <link rel="stylesheet" type="text/css" href="../../Template/skydash/js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
@@ -33,8 +35,8 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.php"><img src="../../Template/skydash/images/logo.svg" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../Template/skydash/images/logo-mini.svg" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5" href="index.php"><img src="../../Template/skydash/images/logo2.png" class="mr-2" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../Template/skydash/images/Logo.webp" alt="logo"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -358,7 +360,6 @@
               <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                   <h3 class="font-weight-bold">Selamat Datang di Politeknik NEST</h3>
-                  <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span class="text-primary">3 unread alerts!</span></h6>
                 </div>
               </div>
             </div>
@@ -366,7 +367,7 @@
           
           <div class="row">
             <!-- Card 1 -->
-            <div class="col-md-4 mb-4 stretch-card transparent">
+            <div class="col-md-4 mb-4">
               <a href="pendaftaranTA.php">
                 <div class="card card-dark-blue">
                   <div class="card-body text-center">
@@ -378,7 +379,7 @@
             </div>
 
             <!-- Card 2 -->
-            <div class="col-md-4 mb-4 stretch-card transparent">
+            <div class="col-md-4 mb-4">
               <a href="pendaftaranSeminar.php">
                 <div class="card card-dark-blue">
                   <div class="card-body text-center">
@@ -390,7 +391,7 @@
             </div>
 
             <!-- Card 3 -->
-            <div class="col-md-4 mb-4 stretch-card transparent">
+            <div class="col-md-4 mb-4">
               <a href="pendaftaranUjian.php">
                 <div class="card card-light-blue">
                   <div class="card-body text-center">
@@ -400,21 +401,189 @@
                 </div>
               </a>
             </div>
-</div>
 
-</div>
+            <div class="row">
+              <!-- Chart 1 -->
+              <div class="col-md-4">
+                <canvas id="myChart2"></canvas>
+              </div>
+              <!-- Chart 2 -->
+              <div class="col-md-4">
+                <canvas id="myChart3"></canvas>
+              </div>
+              <!-- Chart 3 -->
+              <div class="col-md-4">
+                <canvas id="myChart4"></canvas>
+              </div>
+            </div>
+                <?php
+                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin ../../Template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
+                  if ($conn->connect_error) {
+                      die("Connection failed: " . $conn->connect_error);
+                  }
+
+                  $sql = "SELECT status_pengajuan, COUNT(*) as count FROM tugas_akhir
+                          WHERE status_pengajuan IN ('Disetujui', 'Revisi', 'Ditolak') 	
+                          GROUP BY status_pengajuan";
+                  $result = $conn->query($sql);
+
+                  $xValues = [];
+                  $yValues = [];
+
+                  if ($result->num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                          $xValues[] = $row['status_pengajuan']; 
+                          $yValues[] = $row['count'];
+                      }
+                  }
+                  $conn->close();
+                  ?>
+                  <canvas id="myChart2"></canvas>
+                  <script>
+                    var xValues = <?php echo json_encode($xValues); ?>; 
+                    var yValues = <?php echo json_encode($yValues); ?>;
+
+                    var barColors = ["#FF6384", "#36A2EB", "#FFCE56"];
+
+                    new Chart("myChart2", {
+                        type: "doughnut",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                backgroundColor: barColors,
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display: true,
+                                text: "Jumlah Pendaftar"
+                            }
+                        }
+                    });
+                </script>
+
+                <?php
+                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+
+                  if ($conn->connect_error) {
+                      die("Connection failed: " . $conn->connect_error);
+                  }
+
+                  $sql = "SELECT status_seminar, COUNT(*) as count FROM seminar_proposal
+                          WHERE status_seminar IN ('dijadwalkan', 'ditunda', 'selesai')
+                          GROUP BY status_seminar";
+                  $result = $conn->query($sql);
+
+                  $xValues = [];
+                  $yValues = [];
+
+                  if ($result->num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                          $xValues[] = $row['status_seminar']; 
+                          $yValues[] = $row['count'];
+                      }
+                  }
+                  $conn->close();
+                  ?>
+                  <canvas id="myChart4"></canvas>
+                  <script>
+                    var xValues = <?php echo json_encode($xValues); ?>; 
+                    var yValues = <?php echo json_encode($yValues); ?>;
+
+                    var barColors = ["#FF6384", "#36A2EB", "#FFCE56"];
+
+                    new Chart("myChart4", {
+                        type: "doughnut",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                backgroundColor: barColors,
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display: true,
+                                text: "Jumlah Pendaftar"
+                            }
+                        }
+                    });
+                </script>
+
+                <?php
+                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+
+                  if ($conn->connect_error) {
+                      die("Connection failed: " . $conn->connect_error);
+                  }
+
+                  $sql = "SELECT status_pengajuan, COUNT(*) as count FROM tugas_akhir
+                          WHERE status_pengajuan IN ('Disetujui', 'Revisi', 'Ditolak') 	
+                          GROUP BY status_pengajuan";
+                  $result = $conn->query($sql);
+
+                  $xValues = [];
+                  $yValues = [];
+
+                  if ($result->num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                          $xValues[] = $row['status_pengajuan']; 
+                          $yValues[] = $row['count'];
+                      }
+                  }
+                  $conn->close();
+                  ?>
+                  <canvas id="myChart3"></canvas>
+                  <script>
+                    var xValues = <?php echo json_encode($xValues); ?>; 
+                    var yValues = <?php echo json_encode($yValues); ?>;
+
+                    var barColors = ["#FF6384", "#36A2EB", "#FFCE56"];
+
+                    new Chart("myChart3", {
+                        type: "doughnut",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                backgroundColor: barColors,
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display: true,
+                                text: "Jumlah Pendaftar"
+                            }
+                        }
+                    });
+                </script>
+                <!-- partial:partials/_footer.html -->
+              <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                    Copyright © 2025.
+                    <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+                    All rights reserved.
+                  </span>
+                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                    <a href="https://wa.me/628112951003" target="_blank">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                      +6281 1295 1003
+                    </a>
+                  </span>
+                </div>
+
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://politekniknest.ac.id/" target="_blank">Anak Magang UNS</a></span>
+                </div>
+              </footer>
+              <!-- partial -->
+
+                
           </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
-        <!-- partial -->
+        </div>
       </div>
       <!-- main-panel ends -->
     </div>   

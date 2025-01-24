@@ -1,3 +1,28 @@
+<?php
+session_start();
+$nama_mahasiswa = $_SESSION['nama'] ?? 'DB';
+$nim = $_SESSION['nim'] ?? '12345678';
+
+$driveLinks = [
+  'Form Pendaftaran dan Persetujuan Tema' => 'https://drive.google.com/your-link-1',
+  'Form Pendaftaran Seminar Proposal' => 'https://drive.google.com/your-link-1',
+  'Lembar Persetujuan Proposal Tugas Akhir' => 'https://drive.google.com/your-link-1',
+  'Buku Konsultasi Tugas Akhir' => 'https://drive.google.com/your-link-4',
+  'Form Pendaftaran Ujian Tugas Akhir' => 'https://drive.google.com/your-link-2',
+  'Lembar Kehadiran Seminar Proposal' => 'https://drive.google.com/your-link-3',
+];
+
+$fileMetadata = [
+  'Form Pendaftaran dan Persetujuan Tema' => 'Form berisi pendaftaran dan persetujuan tema', 
+  'Form Pendaftaran Seminar Proposal' => 'Form berisi pendaftaran seminar proposal', 
+  'Lembar Persetujuan Proposal Tugas Akhir' => 'Harus ditandatangani dosen pembimbing 1 dan 2',
+  'Buku Konsultasi Tugas Akhir' => 'Dokumentasi konsultasi dengan dosen pembimbing',
+  'Form Pendaftaran Ujian Tugas Akhir' => 'Untuk mendaftar ujian TA',
+  'Lembar Kehadiran Seminar Proposal' => 'Minimal 5x kehadiran seminar proposal',
+  'Lembar Persetujuan Proposal Tugas Akhir' => 'Harus ditandatangani dosen pembimbing 1 dan 2',
+];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,8 +30,9 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Panduan</title>
+  <title>Skydash Admin</title>
   <!-- plugins:css -->
+  <link rel="stylesheet" href="../../Template/skydash/vendors/feather/feather.css">
   <link rel="stylesheet" href="../../Template/skydash/vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="../../Template/skydash/vendors/css/vendor.bundle.base.css">
   <!-- endinject -->
@@ -17,9 +43,10 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../assets/css/css/user.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
-</head>
+
 </head>
 
 <body>
@@ -116,7 +143,7 @@
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="uploadTA.php">Upload TA</a></li>
-                <li class="nav-item"> <a class="nav-link" href="uploadSeminar.php">Upload Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="uploadSeminar">Upload Sempro</a></li>
                 <li class="nav-item"> <a class="nav-link" href="uploadUjian.php">Upload Ujian</a></li>
                 <li class="nav-item"> <a class="nav-link" href="lampiran.php">Lampiran</a></li>
               </ul>
@@ -151,23 +178,76 @@
       <!-- MAIN-->
       <div class="main-panel">
         <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="row">
-                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Welcome Aa</h3>
-                  <h6 class="font-weight-normal mb-0">Website Pengumpulan Tugas Akhir <span class="text-primary">Politeknik NEST Sukoharjp</span></h6>
-                </div>
-              </div>
+          <!--BOX-->
+          <div class="content-wrapper">
+            <h3>Welcome <?php echo htmlspecialchars($nama_mahasiswa); ?></h3>
+            <h6>NIM: <?php echo htmlspecialchars($nim); ?></h6>
+
+            <div class="alert-info">
+              Disini kamu dapat melakukan upload Jurnal Magang. Setelah Jurnal terupload,
+              tunggu 1-2 hari kerja sampai notifikasi berubah menjadi terverifikasi
+            </div>
+            <div class="upload-container">
+
+              <table class="file-table" style="margin-top: 0;">
+                <thead>
+                  <tr>
+                    <th>NO</th>
+                    <th>NAMA FILE</th>
+                    <th>DOWNLOAD</th>
+                    <th>KETERANGAN</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  $fileList = array_keys($fileMetadata);
+                  foreach ($fileList as $index => $file) {
+                    $keterangan = $fileMetadata[$file];
+                  ?>
+                    <tr>
+                      <td><?php echo $index + 1; ?></td>
+                      <td><?php echo htmlspecialchars($file); ?></td>
+                      <td>
+                        <a href="<?php echo htmlspecialchars($driveLinks[$file]); ?>"
+                          target="_blank"
+                          class="download-btn"
+                          rel="noopener noreferrer">
+                          Download
+                        </a>
+                      </td>
+                      <td><?php echo htmlspecialchars($keterangan); ?></td>
+                    </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
             </div>
           </div>
+
+          <!-- Process Upload -->
+          <?php
+          if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['jurnal'])) {
+            $uploadDir = 'uploads/';
+            $uploadFile = $uploadDir . basename($_FILES['jurnal']['name']);
+
+            // Validasi file
+            $fileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
+            if ($fileType != "pdf") {
+              echo "<script>alert('Maaf, hanya file PDF yang diperbolehkan.');</script>";
+            } elseif ($_FILES["jurnal"]["size"] > 2000000) { // 2MB
+              echo "<script>alert('Maaf, ukuran file terlalu besar (max 2MB).');</script>";
+            } else {
+              if (move_uploaded_file($_FILES['jurnal']['tmp_name'], $uploadFile)) {
+                echo "<script>alert('File berhasil diupload.');</script>";
+                // Di sini Anda bisa menambahkan kode untuk update database
+              } else {
+                echo "<script>alert('Maaf, terjadi error saat upload file.');</script>";
+              }
+            }
+          }
+          ?>
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
-          <footer class="footer" style="display: flex;">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block" style="text-align: center; justify-content: center;">Copyright © 2023. <a href="https://www.bootstrapdash.com/" target="_blank">Politeknik NEST</a> Teknologi Informasi</span>
-            </div>
-          </footer>
+
           <!-- partial -->
         </div>
         <!-- main-panel ends -->
@@ -185,12 +265,11 @@
     <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
     <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
-<<<<<<< HEAD
     <!-- End plugin js for this page -->
     <!-- inject:js -->
     <script src="../../Template/skydash/js/off-canvas.js"></script>
     <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-    <script src="../../Template/skydash/js/template.js"></script>
+    <script src="../../Template/skydash/js/../../Template.js"></script>
     <script src="../../Template/skydash/js/settings.js"></script>
     <script src="../../Template/skydash/js/todolist.js"></script>
     <!-- endinject -->
@@ -198,20 +277,5 @@
     <script src="../../Template/skydash/js/dashboard.js"></script>
     <script src="../../Template/skydash/js/Chart.roundedBarCharts.js"></script>
     <!-- End custom js for this page-->
-=======
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="../../Template/skydash/js/off-canvas.js"></script>
-  <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="../../Template/skydash/js/../../Template.js"></script>
-  <script src="../../Template/skydash/js/settings.js"></script>
-  <script src="../../Template/skydash/js/todolist.js"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
-  <script src="../../Template/skydash/js/dashboard.js"></script>
-  <script src="../../Template/skydash/js/Chart.roundedBarCharts.js"></script>
-  <!-- End custom js for this page-->
->>>>>>> 92252735daa2f858beb52e538afcef9ad660a9dc
-</body>
 
 </html>

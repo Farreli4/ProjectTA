@@ -249,7 +249,7 @@
         <!-- container-scroller -->
 
         <!-- plugins:js -->
-        <script src="../../Template/skydash/skydash/vendors/js/vendor.bundle.base.js"></script>
+        <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
         <!-- endinject -->
         <!-- Plugin js for this page -->
         <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>

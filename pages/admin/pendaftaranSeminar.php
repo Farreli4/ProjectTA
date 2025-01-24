@@ -55,8 +55,8 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.php"><img src="../../Template/skydash/images/logo.svg" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../Template/skydash/images/logo-mini.svg" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5" href="index.php"><img src="../../Template/skydash/images/logo2.png" class="mr-2" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../Template/skydash/images/Logo.webp" alt="logo"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -474,9 +474,10 @@
                                   echo "<td>" . $row['id_mahasiswa'] . "</td>";
                                   echo "<td>" . $row['nama_mahasiswa'] . "</td>";
                                   echo "<td>" . $row['nim'] . "</td>";
-                                  echo "<td>" . $row["tanggal_seminar"] . "</td>";
                                   echo "<td>";
                                   echo "<form action='update_seminar.php' method='POST'>";
+                                  echo "<input type='date' name='tanggal_seminar' value='" . $row["tanggal_seminar"] . "' required>";
+                                  echo "<td>";
                                   echo "<select class='js-example-basic-single w-30' name='status_seminar' required>";
                                   echo "<option value='dijadwalkan'" . ($row['status_seminar'] == 'dijadwalkan' ? ' selected' : '') . ">Dijadwalkan</option>";
                                   echo "<option value='ditunda'" . ($row['status_seminar'] == 'ditunda' ? ' selected' : '') . ">Ditunda</option>";
