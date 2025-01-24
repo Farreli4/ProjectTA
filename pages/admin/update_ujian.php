@@ -4,12 +4,12 @@ include '../../config/connection.php';
 
 $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
-if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan'])) {
+if (isset($_POST['id_mahasiswa']) && isset($_POST['status_ujian'])) {
     $id_mahasiswa = $_POST['id_mahasiswa'];
-    $status_pengajuan = $_POST['status_pengajuan'];
+    $status_ujian = $_POST['status_ujian'];
 
-    $valid_statuses = ['Revisi', 'Ditolak', 'Disetujui'];
-    if (!in_array($status_pengajuan, $valid_statuses)) {
+    $valid_statuses = ['dijadwalkan', 'selesai'];
+    if (!in_array($status_ujian, $valid_statuses)) {
         echo "Invalid status value.";
         exit;
     }
@@ -30,7 +30,7 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan'])) {
         exit;
     }
 
-    $check_sql = "SELECT id_mahasiswa FROM tugas_akhir WHERE id_mahasiswa = ?";
+    $check_sql = "SELECT id_mahasiswa FROM ujian WHERE id_mahasiswa = ?";
     $check_stmt = $conn->prepare($check_sql);
     
     if ($check_stmt === false) {
@@ -42,14 +42,14 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan'])) {
     $check_stmt->store_result();
 
     if ($check_stmt->num_rows > 0) {
-        $sql = "UPDATE tugas_akhir SET status_pengajuan = ? WHERE id_mahasiswa = ?";
+        $sql = "UPDATE ujian SET status_ujian = ? WHERE id_mahasiswa = ?";
         $stmt = $conn->prepare($sql);
 
         if ($stmt === false) {
             die("Error preparing statement: " . $conn->error);
         }
 
-        $stmt->bind_param("si", $status_pengajuan, $id_mahasiswa);
+        $stmt->bind_param("si", $status_ujian, $id_mahasiswa);
 
         if ($stmt->execute()) {
             echo "Status updated successfully.";
@@ -59,14 +59,14 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan'])) {
 
         $stmt->close();
     } else {
-        $sql = "INSERT INTO tugas_akhir (id_mahasiswa, status_pengajuan) VALUES (?, ?)";
+        $sql = "INSERT INTO ujian (id_mahasiswa, status_ujian) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
 
         if ($stmt === false) {
             die("Error preparing statement: " . $conn->error);
         }
 
-        $stmt->bind_param("is", $id_mahasiswa, $status_pengajuan);
+        $stmt->bind_param("is", $id_mahasiswa, $status_ujian);
 
         if ($stmt->execute()) {
             echo "Status added successfully.";
@@ -85,6 +85,6 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan'])) {
 
 $conn->close();
 
-header("Location: pendaftaranta.php");
+header("Location: pendaftaranujian.php");
 exit();
 ?>

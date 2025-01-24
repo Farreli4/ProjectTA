@@ -369,9 +369,9 @@
                       die("Connection failed: " . $conn->connect_error);
                   }
 
-                  $sql = "SELECT status_pengajuan, COUNT(*) as count FROM tugas_akhir
-                          WHERE status_pengajuan IN ('Disetujui', 'Revisi', 'Ditolak') 	
-                          GROUP BY status_pengajuan";
+                  $sql = "SELECT status_ujian, COUNT(*) as count FROM ujian
+                          WHERE status_ujian IN ('dijadwalkan', 'selesai') 	
+                          GROUP BY status_ujian";
                   $result = $conn->query($sql);
 
                   $xValues = [];
@@ -379,7 +379,7 @@
 
                   if ($result->num_rows > 0) {
                       while ($row = $result->fetch_assoc()) {
-                          $xValues[] = $row['status_pengajuan']; 
+                          $xValues[] = $row['status_ujian']; 
                           $yValues[] = $row['count'];
                       }
                   }
@@ -390,7 +390,7 @@
                     var xValues = <?php echo json_encode($xValues); ?>; 
                     var yValues = <?php echo json_encode($yValues); ?>;
 
-                    var barColors = ["#FF6384", "#36A2EB", "#FFCE56"];
+                    var barColors = ["#FF6384", "#36A2EB"]
 
                     new Chart("myChart2", {
                         type: "doughnut",
@@ -434,6 +434,45 @@
                               <th></th>
                             </tr>
                           </thead>
+                          <tbody>
+                                <?php
+                                $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+                                $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, ujian.status_ujian
+                                FROM mahasiswa 
+                                LEFT JOIN ujian ON mahasiswa.id_mahasiswa = ujian.id_mahasiswa 
+                                WHERE 1";
+                                $result = $conn->query($sql1);
+
+                                while ($row = mysqli_fetch_array($result)) {
+                                  echo "<tr>";
+                                  echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                                  echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                                  echo "<td>" . $row['nim'] . "</td>";
+                                  echo "<td>";
+                                  echo "<a href='#popup'>";
+                                  echo "<<span class='material-symbols-outlined'>folder_open</span>>";
+                                  echo "</a>";
+                                  echo "<td>";
+                                  echo "<form action='update_ujian.php' method='POST'>";
+                                  echo '<div class="dropdown">';
+                                  echo '    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">';
+                                  echo $row['status_ujian'];
+                                  echo '    </button>';
+                                  echo '    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">';
+                                  echo "        <button class='dropdown-item' type='submit' name='status_ujian' value='dijadwalkan'>Dijadwalkan</button>";
+                                  echo "        <button class='dropdown-item' type='submit' name='status_ujian' value='selesai'>Selesai</button>";
+                                  echo '    </div>';
+                                  echo "</div>";
+                                  echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
+                                  echo "</form>";
+                                  echo "<td>";
+                                  echo "<button class='btn btn-info btn-rounded btn-fw'>Revisi</button>";
+                                  echo "<td>";
+                                  echo "<button class='btn btn-inverse-success btn-fw'>Verifikasi</button>";
+                              }
+                              $conn->close()
+                                ?>
+                            </tbody>
                       </table>
                       </div>
                     </div>
