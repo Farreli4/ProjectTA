@@ -474,9 +474,10 @@
                                   echo "<td>" . $row['id_mahasiswa'] . "</td>";
                                   echo "<td>" . $row['nama_mahasiswa'] . "</td>";
                                   echo "<td>" . $row['nim'] . "</td>";
-                                  echo "<td>" . $row["tanggal_seminar"] . "</td>";
                                   echo "<td>";
                                   echo "<form action='update_seminar.php' method='POST'>";
+                                  echo "<input type='date' name='tanggal_seminar' value='" . $row["tanggal_seminar"] . "' required>";
+                                  echo "<td>";
                                   echo "<select class='js-example-basic-single w-30' name='status_seminar' required>";
                                   echo "<option value='dijadwalkan'" . ($row['status_seminar'] == 'dijadwalkan' ? ' selected' : '') . ">Dijadwalkan</option>";
                                   echo "<option value='ditunda'" . ($row['status_seminar'] == 'ditunda' ? ' selected' : '') . ">Ditunda</option>";
