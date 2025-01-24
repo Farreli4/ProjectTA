@@ -40,16 +40,16 @@
     var global$2 = tinymce.util.Tools.resolve('tinymce.util.XHR');
 
     var getCreationDateClasses = function (editor) {
-      return editor.getParam('../../Template_cdate_classes', 'cdate');
+      return editor.getParam('template_cdate_classes', 'cdate');
     };
     var getModificationDateClasses = function (editor) {
-      return editor.getParam('../../Template_mdate_classes', 'mdate');
+      return editor.getParam('template_mdate_classes', 'mdate');
     };
     var getSelectedContentClasses = function (editor) {
-      return editor.getParam('../../Template_selected_content_classes', 'selcontent');
+      return editor.getParam('template_selected_content_classes', 'selcontent');
     };
     var getPreviewReplaceValues = function (editor) {
-      return editor.getParam('../../Template_preview_replace_values');
+      return editor.getParam('template_preview_replace_values');
     };
     var getContentStyle = function (editor) {
       return editor.getParam('content_style', '', 'string');
@@ -57,17 +57,17 @@
     var shouldUseContentCssCors = function (editor) {
       return editor.getParam('content_css_cors', false, 'boolean');
     };
-    var get../../TemplateReplaceValues = function (editor) {
-      return editor.getParam('../../Template_replace_values');
+    var getTemplateReplaceValues = function (editor) {
+      return editor.getParam('template_replace_values');
     };
-    var get../../Templates = function (editor) {
-      return editor.getParam('../../Templates');
+    var getTemplates = function (editor) {
+      return editor.getParam('templates');
     };
     var getCdateFormat = function (editor) {
-      return editor.getParam('../../Template_cdate_format', editor.translate('%Y-%m-%d'));
+      return editor.getParam('template_cdate_format', editor.translate('%Y-%m-%d'));
     };
     var getMdateFormat = function (editor) {
-      return editor.getParam('../../Template_mdate_format', editor.translate('%Y-%m-%d'));
+      return editor.getParam('template_mdate_format', editor.translate('%Y-%m-%d'));
     };
     var getBodyClassFromHash = function (editor) {
       var bodyClass = editor.getParam('body_class', '', 'hash');
@@ -116,27 +116,27 @@
       return fmt;
     };
 
-    var create../../TemplateList = function (editor, callback) {
+    var createTemplateList = function (editor, callback) {
       return function () {
-        var ../../TemplateList = get../../Templates(editor);
-        if (typeof ../../TemplateList === 'function') {
-          ../../TemplateList(callback);
+        var templateList = getTemplates(editor);
+        if (typeof templateList === 'function') {
+          templateList(callback);
           return;
         }
-        if (typeof ../../TemplateList === 'string') {
+        if (typeof templateList === 'string') {
           global$2.send({
-            url: ../../TemplateList,
+            url: templateList,
             success: function (text) {
               callback(JSON.parse(text));
             }
           });
         } else {
-          callback(../../TemplateList);
+          callback(templateList);
         }
       };
     };
-    var replace../../TemplateValues = function (html, ../../TemplateValues) {
-      global$1.each(../../TemplateValues, function (v, k) {
+    var replaceTemplateValues = function (html, templateValues) {
+      global$1.each(templateValues, function (v, k) {
         if (typeof v === 'function') {
           v = v(k);
         }
@@ -145,7 +145,7 @@
       return html;
     };
     var replaceVals = function (editor, e) {
-      var dom = editor.dom, vl = get../../TemplateReplaceValues(editor);
+      var dom = editor.dom, vl = getTemplateReplaceValues(editor);
       global$1.each(dom.select('*', e), function (e) {
         global$1.each(vl, function (v, k) {
           if (dom.hasClass(e, k)) {
@@ -159,11 +159,11 @@
     var hasClass = function (n, c) {
       return new RegExp('\\b' + c + '\\b', 'g').test(n.className);
     };
-    var insert../../Template = function (editor, _ui, html) {
+    var insertTemplate = function (editor, _ui, html) {
       var el;
       var dom = editor.dom;
       var sel = editor.selection.getContent();
-      html = replace../../TemplateValues(html, get../../TemplateReplaceValues(editor));
+      html = replaceTemplateValues(html, getTemplateReplaceValues(editor));
       el = dom.create('div', null, html);
       var n = dom.select('.mceTmpl', el);
       if (n && n.length > 0) {
@@ -187,7 +187,7 @@
     };
 
     var register = function (editor) {
-      editor.addCommand('mceInsert../../Template', curry(insert../../Template, editor));
+      editor.addCommand('mceInsertTemplate', curry(insertTemplate, editor));
     };
 
     var setup = function (editor) {
@@ -380,52 +380,52 @@
         var dirAttr = directionality ? ' dir="' + encode(directionality) + '"' : '';
         html = '<!DOCTYPE html>' + '<html>' + '<head>' + '<base href="' + encode(editor.documentBaseURI.getURI()) + '">' + contentCssEntries_1 + preventClicksOnLinksScript + '</head>' + '<body class="' + encode(bodyClass) + '"' + dirAttr + '>' + html + '</body>' + '</html>';
       }
-      return replace../../TemplateValues(html, getPreviewReplaceValues(editor));
+      return replaceTemplateValues(html, getPreviewReplaceValues(editor));
     };
-    var open = function (editor, ../../TemplateList) {
-      var create../../Templates = function () {
-        if (!../../TemplateList || ../../TemplateList.length === 0) {
-          var message = editor.translate('No ../../Templates defined.');
+    var open = function (editor, templateList) {
+      var createTemplates = function () {
+        if (!templateList || templateList.length === 0) {
+          var message = editor.translate('No templates defined.');
           editor.notificationManager.open({
             text: message,
             type: 'info'
           });
           return Optional.none();
         }
-        return Optional.from(global$1.map(../../TemplateList, function (../../Template, index) {
-          var isUrl../../Template = function (t) {
+        return Optional.from(global$1.map(templateList, function (template, index) {
+          var isUrlTemplate = function (t) {
             return t.url !== undefined;
           };
           return {
             selected: index === 0,
-            text: ../../Template.title,
+            text: template.title,
             value: {
-              url: isUrl../../Template(../../Template) ? Optional.from(../../Template.url) : Optional.none(),
-              content: !isUrl../../Template(../../Template) ? Optional.from(../../Template.content) : Optional.none(),
-              description: ../../Template.description
+              url: isUrlTemplate(template) ? Optional.from(template.url) : Optional.none(),
+              content: !isUrlTemplate(template) ? Optional.from(template.content) : Optional.none(),
+              description: template.description
             }
           };
         }));
       };
-      var createSelectBoxItems = function (../../Templates) {
-        return map(../../Templates, function (t) {
+      var createSelectBoxItems = function (templates) {
+        return map(templates, function (t) {
           return {
             text: t.text,
             value: t.text
           };
         });
       };
-      var find../../Template = function (../../Templates, ../../TemplateTitle) {
-        return find(../../Templates, function (t) {
-          return t.text === ../../TemplateTitle;
+      var findTemplate = function (templates, templateTitle) {
+        return find(templates, function (t) {
+          return t.text === templateTitle;
         });
       };
       var loadFailedAlert = function (api) {
-        editor.windowManager.alert('Could not load the specified ../../Template.', function () {
-          return api.focus('../../Template');
+        editor.windowManager.alert('Could not load the specified template.', function () {
+          return api.focus('template');
         });
       };
-      var get../../TemplateContent = function (t) {
+      var getTemplateContent = function (t) {
         return new global$4(function (resolve, reject) {
           t.value.url.fold(function () {
             return resolve(t.value.content.getOr(''));
@@ -442,13 +442,13 @@
           });
         });
       };
-      var onChange = function (../../Templates, updateDialog) {
+      var onChange = function (templates, updateDialog) {
         return function (api, change) {
-          if (change.name === '../../Template') {
-            var new../../TemplateTitle = api.getData().../../Template;
-            find../../Template(../../Templates, new../../TemplateTitle).each(function (t) {
+          if (change.name === 'template') {
+            var newTemplateTitle = api.getData().template;
+            findTemplate(templates, newTemplateTitle).each(function (t) {
               api.block('Loading...');
-              get../../TemplateContent(t).then(function (previewHtml) {
+              getTemplateContent(t).then(function (previewHtml) {
                 updateDialog(api, t, previewHtml);
               }).catch(function () {
                 updateDialog(api, t, '');
@@ -459,12 +459,12 @@
           }
         };
       };
-      var onSubmit = function (../../Templates) {
+      var onSubmit = function (templates) {
         return function (api) {
           var data = api.getData();
-          find../../Template(../../Templates, data.../../Template).each(function (t) {
-            get../../TemplateContent(t).then(function (previewHtml) {
-              insert../../Template(editor, false, previewHtml);
+          findTemplate(templates, data.template).each(function (t) {
+            getTemplateContent(t).then(function (previewHtml) {
+              insertTemplate(editor, false, previewHtml);
               api.close();
             }).catch(function () {
               api.disable('save');
@@ -473,11 +473,11 @@
           });
         };
       };
-      var openDialog = function (../../Templates) {
-        var selectBoxItems = createSelectBoxItems(../../Templates);
+      var openDialog = function (templates) {
+        var selectBoxItems = createSelectBoxItems(templates);
         var buildDialogSpec = function (bodyItems, initialData) {
           return {
-            title: 'Insert ../../Template',
+            title: 'Insert Template',
             size: 'large',
             body: {
               type: 'panel',
@@ -497,22 +497,22 @@
                 primary: true
               }
             ],
-            onSubmit: onSubmit(../../Templates),
-            onChange: onChange(../../Templates, updateDialog)
+            onSubmit: onSubmit(templates),
+            onChange: onChange(templates, updateDialog)
           };
         };
-        var updateDialog = function (dialogApi, ../../Template, previewHtml) {
+        var updateDialog = function (dialogApi, template, previewHtml) {
           var content = getPreviewContent(editor, previewHtml);
           var bodyItems = [
             {
               type: 'selectbox',
-              name: '../../Template',
-              label: '../../Templates',
+              name: 'template',
+              label: 'Templates',
               items: selectBoxItems
             },
             {
               type: 'htmlpanel',
-              html: '<p aria-live="polite">' + htmlEscape(../../Template.value.description) + '</p>'
+              html: '<p aria-live="polite">' + htmlEscape(template.value.description) + '</p>'
             },
             {
               label: 'Preview',
@@ -522,50 +522,50 @@
             }
           ];
           var initialData = {
-            ../../Template: ../../Template.text,
+            template: template.text,
             preview: content
           };
           dialogApi.unblock();
           dialogApi.redial(buildDialogSpec(bodyItems, initialData));
-          dialogApi.focus('../../Template');
+          dialogApi.focus('template');
         };
         var dialogApi = editor.windowManager.open(buildDialogSpec([], {
-          ../../Template: '',
+          template: '',
           preview: ''
         }));
         dialogApi.block('Loading...');
-        get../../TemplateContent(../../Templates[0]).then(function (previewHtml) {
-          updateDialog(dialogApi, ../../Templates[0], previewHtml);
+        getTemplateContent(templates[0]).then(function (previewHtml) {
+          updateDialog(dialogApi, templates[0], previewHtml);
         }).catch(function () {
-          updateDialog(dialogApi, ../../Templates[0], '');
+          updateDialog(dialogApi, templates[0], '');
           dialogApi.disable('save');
           loadFailedAlert(dialogApi);
         });
       };
-      var opt../../Templates = create../../Templates();
-      opt../../Templates.each(openDialog);
+      var optTemplates = createTemplates();
+      optTemplates.each(openDialog);
     };
 
     var showDialog = function (editor) {
-      return function (../../Templates) {
-        open(editor, ../../Templates);
+      return function (templates) {
+        open(editor, templates);
       };
     };
     var register$1 = function (editor) {
-      editor.ui.registry.addButton('../../Template', {
-        icon: '../../Template',
-        tooltip: 'Insert ../../Template',
-        onAction: create../../TemplateList(editor, showDialog(editor))
+      editor.ui.registry.addButton('template', {
+        icon: 'template',
+        tooltip: 'Insert template',
+        onAction: createTemplateList(editor, showDialog(editor))
       });
-      editor.ui.registry.addMenuItem('../../Template', {
-        icon: '../../Template',
-        text: 'Insert ../../Template...',
-        onAction: create../../TemplateList(editor, showDialog(editor))
+      editor.ui.registry.addMenuItem('template', {
+        icon: 'template',
+        text: 'Insert template...',
+        onAction: createTemplateList(editor, showDialog(editor))
       });
     };
 
     function Plugin () {
-      global.add('../../Template', function (editor) {
+      global.add('template', function (editor) {
         register$1(editor);
         register(editor);
         setup(editor);

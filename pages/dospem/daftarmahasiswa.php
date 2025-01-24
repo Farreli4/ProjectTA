@@ -27,8 +27,8 @@
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo mr-5" href="dospem.html"><img src="../../Template/skydash/images/logo2.png" class="mr-2" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="dospem.html"><img src="../../Template/skydash/images/Logo.webp" alt="logo" /></a>
+                <a class="navbar-brand brand-logo mr-5" href="https://nestpoliteknik.com/"><img src="../../assets/img/logo2.png" class="mr-2" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="https://nestpoliteknik.com/ "><img src="../../assets/img/Logo.webp" alt="logo" /></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -304,21 +304,6 @@
                         </div>
                     </li>
 
-
-
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">
-                            <i class="icon-ban menu-icon"></i>
-                            <span class="menu-title">Error pages</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="error">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="../../Template/skydash/pages/samples/error-404.html"> 404 </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
-                            </ul>
-                        </div>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="daftarmahasiswa.php">
                             <i class="icon-head menu-icon"></i>
@@ -415,8 +400,8 @@
                                                     +62857729423678
                                                 </td>
                                             </tr>
-                                            
-                                            
+
+
                                         </tbody>
                                     </table>
                                 </div>

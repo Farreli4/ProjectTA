@@ -27,8 +27,8 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="dospem.html"><img src="../../Template/skydash/images/logo2.png" class="mr-2" alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href="dospem.html"><img src="../../Template/skydash/images/Logo.webp" alt="logo" /></a>
+        <a class="navbar-brand brand-logo mr-5" href="https://nestpoliteknik.com/"><img src="../../assets/img/logo2.png" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="https://nestpoliteknik.com/ "><img src="../../assets/img/Logo.webp" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -303,22 +303,6 @@
               </ul>
             </div>
           </li>
-
-
-
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">
-              <i class="icon-ban menu-icon"></i>
-              <span class="menu-title">Error pages</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="error">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="../../Template/skydash/pages/samples/error-404.html"> 404 </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
-              </ul>
-            </div>
-          </li>
           <li class="nav-item">
             <a class="nav-link" href="daftarmahasiswa.php">
               <i class="icon-head menu-icon"></i>
@@ -363,44 +347,28 @@
                   Pemeriksanaan kelengkapan dan kesesuaian dokumen<code>Tugas Akhir</code>
                 </p>
                 <div class="table-responsive">
-                  <table class="table table-striped">
+                  <table id="example" class="display expandable-table" style="width:100%">
                     <thead>
                       <tr>
-                        <th>
-                          ID
-                        </th>
-                        <th>
-                          Nama
-                        </th>
-                        <th>
-                          Nim
-                        </th>
-                        <th>
-                          Doc
-                        </th>
-                        <th>
-                          Status
-                        </th>
-                        <th>
-                          Update
-                        </th>
+                        <th>ID</th>
+                        <th>Nama</th>
+                        <th>Nim</th>
+                        <th>Doc</th>
+                        <th>Status</th>
+                        <th>Updated </th>
+                        <th>File</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td class="py-1">
-                          1
-                        </td>
+                        <td class="py-1">1</td>
+                        <td>Herman Beck</td>
+                        <td>354635</td>
                         <td>
-                          Herman Beck
-                        </td>
-                        <td>
-
-                          354635
-
-                        </td>
-                        <td>
-                          ....
+                          <a class="nav-link" href="">
+                            <i class="icon-paper menu-icon"></i>
+                          </a>
+                          </li>
                         </td>
                         <td>
                           <div class="btn-group">
@@ -415,88 +383,102 @@
                             </div>
                           </div>
                         </td>
-
                         <script>
                           function changeStatus(status, colorClass) {
                             var mainButton = document.getElementById('statusButton');
                             var toggleButton = document.getElementById('toggleButton');
-
-                            // Hapus semua kelas warna Bootstrap dari kedua tombol
                             mainButton.classList.remove('btn-primary', 'btn-success', 'btn-danger', 'btn-warning');
                             toggleButton.classList.remove('btn-primary', 'btn-success', 'btn-danger', 'btn-warning');
-
-                            // Tambahkan teks dan kelas warna baru ke kedua tombol
                             mainButton.innerText = status;
                             mainButton.classList.add(colorClass);
                             toggleButton.classList.add(colorClass);
                           }
                         </script>
-
                         <td>
-
                           <button type="button" class="btn btn-outline-primary btn-fw">Update</button>
                         </td>
+                        <td>
+                          <form id="uploadForm" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="jurnal" id="jurnal" accept=".pdf" style="display: none;">
+                            <button type="button" id="uploadButton" class="btn btn-outline-primary btn-fw">Upload</button>
+                            <button type="submit" id="submitButton" class="btn btn-outline-success btn-fw" style="display: none;">Submit</button>
+                          </form>
+                        </td>
+                        <script>
+                          document.getElementById('uploadButton').addEventListener('click', function() {
+                            // Klik otomatis pada input file
+                            document.getElementById('jurnal').click();
+                          });
+
+                          document.getElementById('jurnal').addEventListener('change', function() {
+                            // Periksa apakah file dipilih
+                            if (this.files.length > 0) {
+                              // Perlihatkan tombol submit jika file ada
+                              document.getElementById('submitButton').style.display = 'inline-block';
+                              alert('File terpilih: ' + this.files[0].name);
+                            }
+                          });
+                        </script>
+
                       </tr>
-
-
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- content ends -->
-
-          <!-- partial:partials/_footer.html -->
-          <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                Copyright © 2025.
-                <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-                All rights reserved.
-              </span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                <a href="https://wa.me/628112951003" target="_blank">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-                  +6281 1295 1003
-                </a>
-              </span>
-            </div>
-
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
-            </div>
-          </footer>
-          <!-- partial -->
         </div>
-        <!-- main-panel ends -->
+        <!-- content ends -->
+
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+              Copyright © 2025.
+              <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+              All rights reserved.
+            </span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+              <a href="https://wa.me/628112951003" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                +6281 1295 1003
+              </a>
+            </span>
+          </div>
+
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
+          </div>
+        </footer>
+        <!-- partial -->
       </div>
-      <!-- page-body-wrapper ends -->
+      <!-- main-panel ends -->
     </div>
-    <!-- container-scroller -->
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
 
-    <!-- plugins:js -->
-    <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-    <script src="../..../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
-    <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-    <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
+  <!-- plugins:js -->
+  <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
+  <script src="../..../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
+  <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+  <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="../../Template/skydash/js/off-canvas.js"></script>
-    <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-    <script src="../../Template/skydash/js/../../Template.js"></script>
-    <script src="../../Template/skydash/js/settings.js"></script>
-    <script src="../../Template/skydash/js/todolist.js"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page-->
-    <script src="../../Template/skydash/js/dashboard.js"></script>
-    <script src="../../Template/skydash/s/Chart.roundedBarCharts.js"></script>
-    <!-- End custom js for this page-->
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="../../Template/skydash/js/off-canvas.js"></script>
+  <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
+  <script src="../../Template/skydash/js/../../Template.js"></script>
+  <script src="../../Template/skydash/js/settings.js"></script>
+  <script src="../../Template/skydash/js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="../../Template/skydash/js/dashboard.js"></script>
+  <script src="../../Template/skydash/s/Chart.roundedBarCharts.js"></script>
+  <!-- End custom js for this page-->
 </body>
 
 </html>

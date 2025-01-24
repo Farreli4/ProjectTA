@@ -1,0 +1,93 @@
+
+        .upload-container {
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .alert-info {
+            background-color: #e8f4f8;
+            border: 1px solid #b8e7f3;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .file-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .file-table th,
+        .file-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .file-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .upload-btn {
+            background-color: #4B49AC;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .download-btn {
+            background-color: #fff;
+            color: #4B49AC;
+            padding: 8px 15px;
+            border: 1px solid #4B49AC;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .status-revisi {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-lulus {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-tolak {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .requirements-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .requirements-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .requirements-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #4B49AC;
+        }
+
+        

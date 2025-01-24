@@ -1,7 +1,7 @@
-// Exports the "../../Template" plugin for usage with module loaders
+// Exports the "template" plugin for usage with module loaders
 // Usage:
 //   CommonJS:
-//     require('tinymce/plugins/../../Template')
+//     require('tinymce/plugins/template')
 //   ES2015:
-//     import 'tinymce/plugins/../../Template'
+//     import 'tinymce/plugins/template'
 require('./plugin.js');

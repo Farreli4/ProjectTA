@@ -2075,13 +2075,13 @@ var TempusDominusBootstrap4 = function ($) {
       }
     };
 
-    _proto2._getDatePicker../../Template = function _getDatePicker../../Template() {
-      var head../../Template = $('<thead>').append($('<tr>').append($('<th>').addClass('prev').attr('data-action', 'previous').append(this._iconTag(this._options.icons.previous))).append($('<th>').addClass('picker-switch').attr('data-action', 'pickerSwitch').attr('colspan', "" + (this._options.calendarWeeks ? '6' : '5'))).append($('<th>').addClass('next').attr('data-action', 'next').append(this._iconTag(this._options.icons.next)))),
-          cont../../Template = $('<tbody>').append($('<tr>').append($('<td>').attr('colspan', "" + (this._options.calendarWeeks ? '8' : '7'))));
-      return [$('<div>').addClass('datepicker-days').append($('<table>').addClass('table table-sm').append(head../../Template).append($('<tbody>'))), $('<div>').addClass('datepicker-months').append($('<table>').addClass('table-condensed').append(head../../Template.clone()).append(cont../../Template.clone())), $('<div>').addClass('datepicker-years').append($('<table>').addClass('table-condensed').append(head../../Template.clone()).append(cont../../Template.clone())), $('<div>').addClass('datepicker-decades').append($('<table>').addClass('table-condensed').append(head../../Template.clone()).append(cont../../Template.clone()))];
+    _proto2._getDatePickerTemplate = function _getDatePickerTemplate() {
+      var headTemplate = $('<thead>').append($('<tr>').append($('<th>').addClass('prev').attr('data-action', 'previous').append(this._iconTag(this._options.icons.previous))).append($('<th>').addClass('picker-switch').attr('data-action', 'pickerSwitch').attr('colspan', "" + (this._options.calendarWeeks ? '6' : '5'))).append($('<th>').addClass('next').attr('data-action', 'next').append(this._iconTag(this._options.icons.next)))),
+          contTemplate = $('<tbody>').append($('<tr>').append($('<td>').attr('colspan', "" + (this._options.calendarWeeks ? '8' : '7'))));
+      return [$('<div>').addClass('datepicker-days').append($('<table>').addClass('table table-sm').append(headTemplate).append($('<tbody>'))), $('<div>').addClass('datepicker-months').append($('<table>').addClass('table-condensed').append(headTemplate.clone()).append(contTemplate.clone())), $('<div>').addClass('datepicker-years').append($('<table>').addClass('table-condensed').append(headTemplate.clone()).append(contTemplate.clone())), $('<div>').addClass('datepicker-decades').append($('<table>').addClass('table-condensed').append(headTemplate.clone()).append(contTemplate.clone()))];
     };
 
-    _proto2._getTimePickerMain../../Template = function _getTimePickerMain../../Template() {
+    _proto2._getTimePickerMainTemplate = function _getTimePickerMainTemplate() {
       var topRow = $('<tr>'),
           middleRow = $('<tr>'),
           bottomRow = $('<tr>');
@@ -2162,11 +2162,11 @@ var TempusDominusBootstrap4 = function ($) {
       return $('<div>').addClass('timepicker-picker').append($('<table>').addClass('table-condensed').append([topRow, middleRow, bottomRow]));
     };
 
-    _proto2._getTimePicker../../Template = function _getTimePicker../../Template() {
+    _proto2._getTimePickerTemplate = function _getTimePickerTemplate() {
       var hoursView = $('<div>').addClass('timepicker-hours').append($('<table>').addClass('table-condensed')),
           minutesView = $('<div>').addClass('timepicker-minutes').append($('<table>').addClass('table-condensed')),
           secondsView = $('<div>').addClass('timepicker-seconds').append($('<table>').addClass('table-condensed')),
-          ret = [this._getTimePickerMain../../Template()];
+          ret = [this._getTimePickerMainTemplate()];
 
       if (this._isEnabled('h')) {
         ret.push(hoursView);
@@ -2235,43 +2235,43 @@ var TempusDominusBootstrap4 = function ($) {
       return row.length === 0 ? '' : $('<table>').addClass('table-condensed').append($('<tbody>').append($('<tr>').append(row)));
     };
 
-    _proto2._get../../Template = function _get../../Template() {
-      var ../../Template = $('<div>').addClass(("bootstrap-datetimepicker-widget dropdown-menu " + (this._options.calendarWeeks ? 'tempusdominus-bootstrap-datetimepicker-widget-with-calendar-weeks' : '') + " " + ((this._useFeatherIcons() ? 'tempusdominus-bootstrap-datetimepicker-widget-with-feather-icons' : '') + " ")).trim()),
-          dateView = $('<div>').addClass('datepicker').append(this._getDatePicker../../Template()),
-          timeView = $('<div>').addClass('timepicker').append(this._getTimePicker../../Template()),
+    _proto2._getTemplate = function _getTemplate() {
+      var template = $('<div>').addClass(("bootstrap-datetimepicker-widget dropdown-menu " + (this._options.calendarWeeks ? 'tempusdominus-bootstrap-datetimepicker-widget-with-calendar-weeks' : '') + " " + ((this._useFeatherIcons() ? 'tempusdominus-bootstrap-datetimepicker-widget-with-feather-icons' : '') + " ")).trim()),
+          dateView = $('<div>').addClass('datepicker').append(this._getDatePickerTemplate()),
+          timeView = $('<div>').addClass('timepicker').append(this._getTimePickerTemplate()),
           content = $('<ul>').addClass('list-unstyled'),
           toolbar = $('<li>').addClass(("picker-switch" + (this._options.collapse ? ' accordion-toggle' : '') + " " + ("" + (this._useFeatherIcons() ? 'picker-switch-with-feathers-icons' : ''))).trim()).append(this._getToolbar());
 
       if (this._options.inline) {
-        ../../Template.removeClass('dropdown-menu');
+        template.removeClass('dropdown-menu');
       }
 
       if (this.use24Hours) {
-        ../../Template.addClass('usetwentyfour');
+        template.addClass('usetwentyfour');
       }
 
       if (this.input !== undefined && this.input.prop('readonly') || this._options.readonly) {
-        ../../Template.addClass('bootstrap-datetimepicker-widget-readonly');
+        template.addClass('bootstrap-datetimepicker-widget-readonly');
       }
 
       if (this._isEnabled('s') && !this.use24Hours) {
-        ../../Template.addClass('wider');
+        template.addClass('wider');
       }
 
       if (this._options.sideBySide && this._hasDate() && this._hasTime()) {
-        ../../Template.addClass('timepicker-sbs');
+        template.addClass('timepicker-sbs');
 
         if (this._options.toolbarPlacement === 'top') {
-          ../../Template.append(toolbar);
+          template.append(toolbar);
         }
 
-        ../../Template.append($('<div>').addClass('row').append(dateView.addClass('col-md-6')).append(timeView.addClass('col-md-6')));
+        template.append($('<div>').addClass('row').append(dateView.addClass('col-md-6')).append(timeView.addClass('col-md-6')));
 
         if (this._options.toolbarPlacement === 'bottom' || this._options.toolbarPlacement === 'default') {
-          ../../Template.append(toolbar);
+          template.append(toolbar);
         }
 
-        return ../../Template;
+        return template;
       }
 
       if (this._options.toolbarPlacement === 'top') {
@@ -2294,7 +2294,7 @@ var TempusDominusBootstrap4 = function ($) {
         content.append(toolbar);
       }
 
-      return ../../Template.append(content);
+      return template.append(content);
     };
 
     _proto2._place = function _place(e) {
@@ -3214,7 +3214,7 @@ var TempusDominusBootstrap4 = function ($) {
         this._setValue(currentMoment, 0);
       }
 
-      this.widget = this._get../../Template();
+      this.widget = this._getTemplate();
 
       this._fillDow();
 

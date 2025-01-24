@@ -11,10 +11,10 @@
   ===== Table of Contents =====
 
   * Bootstrap functions
-  * ../../Template variables
+  * Template variables
   * SCSS Compass Functions
   * Boostrap Main SCSS
-  * ../../Template mixins
+  * Template mixins
     + Animation Mixins
     + Badge Mixins
     + Button Mixins
@@ -121,7 +121,7 @@
 @import "../../../node_modules/bootstrap/scss/variables";
 
 /*-------------------------------------------------------------------*/
-/* === Import ../../Template variables === */
+/* === Import template variables === */
 @import "variables";
 
 /*-------------------------------------------------------------------*/
@@ -134,7 +134,7 @@
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 
 /*-------------------------------------------------------------------*/
-/* === ../../Template mixins === */
+/* === Template mixins === */
 @import "mixins/misc";
 @import "mixins/animation";
 @import "mixins/badges";
