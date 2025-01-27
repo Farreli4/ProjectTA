@@ -292,12 +292,11 @@
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="javascript:void(0);" data-target="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">Dokumen</span>
+              <span class="menu-title">Dokumen Persyaratan</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
                 <li class="nav-item"> <a class="nav-link" href="dokumenSempro.php">Seminar Proposal</a></li>
                 <li class="nav-item"> <a class="nav-link" href="dokumenUjian.php">Ujian Akhir</a></li>
               </ul>

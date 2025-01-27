@@ -351,27 +351,14 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>
-                                                    ID Mahasiswa
-                                                </th>
-                                                <th>
-                                                    Name
-                                                </th>
-                                                <th>
-                                                    Username
-                                                </th>
-                                                <th>
-                                                    Nim
-                                                </th>
-                                                <th>
-                                                    Prodi
-                                                </th>
-                                                <th>
-                                                    Kelas
-                                                </th>
-                                                <th>
-                                                    No Telepon
-                                                </th>
+                                                <th>No</th>
+                                                <th>Name</th>
+                                                <th>Nim</th>
+                                                <th>Prodi</th>
+                                                <th>Kelas</th>
+                                                <th>No Telepon</th>
+                                                <th>Tema</th>
+                                                <th>Judul</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -381,11 +368,6 @@
                                                 </td>
                                                 <td>
                                                     Herman Beck
-                                                </td>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
                                                 </td>
                                                 <td>
                                                     ...
@@ -399,8 +381,13 @@
                                                 <td>
                                                     +62857729423678
                                                 </td>
+                                                <td>
+                                                    ...
+                                                </td>
+                                                <td>
+                                                    ...
+                                                </td>
                                             </tr>
-
 
                                         </tbody>
                                     </table>

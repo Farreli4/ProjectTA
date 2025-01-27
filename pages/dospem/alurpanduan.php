@@ -292,18 +292,17 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="javascript:void(0);" data-target="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                             <i class="icon-layout menu-icon"></i>
-                            <span class="menu-title">Dokumen</span>
+                            <span class="menu-title">Dokumen Persyaratan</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="dokumenSempro.php">Seminar Proposal</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="dokumenUjian.php">Ujian Akhir</a></li>
                             </ul>
                         </div>
                     </li>
-                    
+
                     <li class="nav-item">
                         <a class="nav-link" href="daftarmahasiswa.php">
                             <i class="icon-head menu-icon"></i>
@@ -325,50 +324,61 @@
                 </ul>
             </nav>
 
-            <!-- MAIN-->
+            <!-- MAIN -->
             <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="row">
-                        <div class="col-md-12 grid-margin">
+                <!-- Main content card -->
+                <div class="card mb-4"> <!-- Tambahkan margin-bottom -->
+                    <div class="card-body">
+                        <div class="content-wrapper">
                             <div class="row">
-                                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                                    <h3 class="font-weight-bold">Welcome .......</h3>
-                                    <h6 class="font-weight-normal mb-0">Website Sistem Informasi <br> <br> <span class="text-primary">Politeknik Nest Sukoharjo</span></h6>
+                                <div class="col-md-12 grid-margin">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <img src="../../assets/img/alur1.png" class="img-fluid" style="max-width: 100%; height: auto;">
+                                        </div>
+                                        <div class="col-md-12 grid-margin">
+                                            <div class="row">
+                                                <div class="col-12 text-center">
+                                                    <img src="../../assets/img/alur2.png" class="img-fluid" style="max-width: 100%; height: auto;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-center mt-4">
+                                            <a href="alurpanduan.php" class="btn btn-outline-primary btn-fw">
+                                                <i type="button" class="fa fa-download"></i> Download Panduan Penggunaan Sistem
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            <img src="assets/img/alurTA.png" class="img-fluid" style="max-width: 100%; height: auto;">
-                        </div>
+
+                <!-- Footer card -->
+                <div class="card">
+                    <div class="card-body">
+                        <footer class="footer">
+                            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                                <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                                    Copyright © 2025.
+                                    <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+                                    All rights reserved.
+                                </span>
+                                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                                    <a href="https://wa.me/628112951003" target="_blank">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                                        +6281 1295 1003
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                                <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
+                            </div>
+                        </footer>
                     </div>
-                    <!-- content ends -->
-
-                    <!-- partial:partials/_footer.html -->
-                    <footer class="footer">
-                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                                Copyright © 2025.
-                                <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-                                All rights reserved.
-                            </span>
-                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                                <a href="https://wa.me/628112951003" target="_blank">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-                                    +6281 1295 1003
-                                </a>
-                            </span>
-                        </div>
-
-                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
-                        </div>
-                    </footer>
-                    <!-- partial -->
                 </div>
-                <!-- main-panel ends -->
             </div>
+
             <!-- page-body-wrapper ends -->
         </div>
         <!-- container-scroller -->
