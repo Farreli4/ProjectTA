@@ -157,27 +157,37 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="uploadTA.php">Upload TA</a></li>
                 <li class="nav-item"> <a class="nav-link" href="uploadSeminar.php">Upload Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="uploadBeritaAcara.php">Upload Berita Acara</a></li>
                 <li class="nav-item"> <a class="nav-link" href="uploadUjian.php">Upload Ujian</a></li>
-                <li class="nav-item"> <a class="nav-link" href="lampiran.php">Lampiran</a></li>
+                <li class="nav-item"> <a class="nav-link" href="uploadNilai.php">Upload Nilai</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pengajuanTA.php">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-columns menu-icon"></i>
-              <span class="menu-title">Pengajuan TA</span>
+              <span class="menu-title">Pengajuan</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="pengajuanTA.php">Pengajuan TA</a></li>
+                <li class="nav-item"><a class="nav-link" href="pengajuanSeminar.php">Pengajuan Seminar</a></li>
+                <li class="nav-item"><a class="nav-link" href="pengajuanUjian.php">Pengajuan Ujian</a></li>
+                <li class="nav-item"><a class="nav-link" href="pengajuanNilai.php">Pengajuan Nilai</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="hasilNilai.php">
+              <i class="icon-columns menu-icon"></i>
+              <span class="menu-title">Hasil Nilai</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pengajuanSeminar.php">
+            <a class="nav-link" href="lampiran.php">
               <i class="icon-columns menu-icon"></i>
-              <span class="menu-title">Pengajuan Seminar</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pengajuanUjian.php">
-              <i class="icon-columns menu-icon"></i>
-              <span class="menu-title">Pengajuan Ujian</span>
+              <span class="menu-title">Lampiran</span>
             </a>
           </li>
           <li class="nav-item">
