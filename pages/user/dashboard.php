@@ -20,30 +20,29 @@
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
   <link rel="stylesheet" type="text/css" href="../../assets/css/css/user/dashboard.css">
-  <link rel="stylesheet" href="../../assets/css/css/user/dashboard.css">
   <style>
     .card-backgroun {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('https://www.seekpng.com/png/detail/310-3105135_literacy-arrow-up-icon-png.png');
-    background-repeat: no-repeat;
-    background-size: 120% 100%;
-    background-position: center;
-    z-index: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('https://www.seekpng.com/png/detail/310-3105135_literacy-arrow-up-icon-png.png');
+      background-repeat: no-repeat;
+      background-size: 120% 100%;
+      background-position: center;
+      z-index: 1;
     }
 
     .card-backgroun:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(36, 53, 69, 0.57); 
-    z-index: 2;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(36, 53, 69, 0.57);
+      z-index: 2;
     }
 
     .link {
@@ -55,21 +54,216 @@
     .link:hover,
     .link:focus,
     .link:active {
-    text-decoration: none; 
-    color: aquamarine;
+      text-decoration: none;
+      color: aquamarine;
+
+    
+    }
+
+    /* Base card styles */
+.card {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  min-height: 110px;
+  margin-bottom: 1rem;
 }
 
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Card variants */
+.card-tale {
+  background: #4747A1;
+}
+
+.card-dark-blue {
+  background: #2196F3;
+}
+
+.card-light-blue {
+  background: #4B49AC;
+}
+
+.card-light-danger {
+  background: #F3797E;
+}
+
+/* Card body */
+.card-body {
+  position: relative;
+  z-index: 3;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-body span {
+  font-weight: 500;
+  color: #fff;
+}
+
+.card-body i {
+  color: #fff;
+}
+
+/* Background image styles */
+.card-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://www.seekpng.com/png/detail/310-3105135_literacy-arrow-up-icon-png.png');
+  background-repeat: no-repeat;
+  background-size: 120% 100%;
+  background-position: center;
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.card-background:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(36, 53, 69, 0.57);
+  z-index: 2;
+}
+
+.card-background1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../img/alur.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: left;
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.card-background1:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(115, 38, 38, 0);
+  z-index: 2;
+}
+
+.card-background2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../img/student.png');
+  background-repeat: no-repeat;
+  background-size: 40%;
+  background-position: left;
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.card-background2:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(115, 38, 38, 0);
+  z-index: 2;
+}
+
+/* Section styles */
+.section-title {
+  color: #333;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* Link styles */
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+.link:hover,
+.link:focus,
+.link:active {
+  text-decoration: none;
+  color: aquamarine;
+}
+
+/* Layout */
+.main-card {
+  height: calc(100% - 1rem);
+}
+
+.result-box {
+  height: 120px;
+}
+
+/* Grid adjustments */
+.upload-section .col-md-3 {
+  width: 20%;
+  padding: 0 0.5rem;
+}
+
+.submission-section .col-md-3 {
+  width: 25%;
+  padding: 0 0.5rem;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .card {
+    min-height: 100px;
+  }
+  
+  .upload-section .col-md-3,
+  .submission-section .col-md-3 {
+    width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .result-box {
+    height: auto;
+  }
+  
+  .card-tale {
+    height: 150px;
+  }
+  
+  .card-background {
+    background-size: 100% auto;
+  }
+}
   </style>
 </head>
 
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
-     <!--NAVBAR KIRI-->
+    <!--NAVBAR KIRI-->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="images/logo.svg" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="images/logo.svg" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -101,11 +295,11 @@
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
             </div>
           </li>
-          
+
           <!--PROFIL-->
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile"/>
+              <img src="images/faces/face28.jpg" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
@@ -120,7 +314,7 @@
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
-      
+
       <div id="right-sidebar" class="settings-panel">
 
         <div class="tab-content" id="setting-content">
@@ -211,137 +405,213 @@
               </div>
             </div>
           </div>
-          <!--BOX-->
-          <div class="row">
-            <!-- Large left box -->
-            <div class="col-md-3 mb-4 grid-margin transparent">
-              <div class="stretch-card transparent h-50">
-                <div class="card card-tale" style="height: calc(165% + 1.5rem);">
-                <a href="panduan.php" class="link">
-                <div class="card-backgroun"></div>
-                  <div class="card-body">
-                    <i class="icon-paper menu-icon"></i>
-                    <span class="mb-5">Alur & Panduan<span/>
-                    </div>
-                </div>
-                </a>
-              </div>
-            </div>
-          
-            <!-- Right side boxes -->
-            <div class="col-md-8 grid-margin transparent">
-              <div class="row">
-                <!-- First row -->
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-dark-blue">
-                  <a href="uploadTA.php" class="link">
-                  <div class="card-background1"></div>
-                    <div class="card-body" style="display: flex;">
-                      <i class="icon-layout menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Upload Tugas Akhir</span>
-                    </div>
-                  </div>
-                  </a>
-                </div>
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-light-blue">
-                  <a href="uploadSeminar.php" class="link"> 
-                  <div class="card-background1"></div>
-                    <div class="card-body" style="display: flex;">
-                      <i class="icon-layout menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Upload Seminar Proposal</span>
-                    </div>
-                  </div>
-                  </a>
-                </div>
-                
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-tale">
-                  <a href="uploadUjian.php" class="link"> 
-                  <div class="card-background1"></div>
-                    <div class="card-body" style="display: flex;">
-                      <i class="icon-layout menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Upload Ujian</span>
-                    </div>
-                  </div>
-                  </a>
-                </div>
 
-                <!-- Second row -->
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-light-danger">
-                  <a href="pengajuanTA.php" class="link">
-                  <div class="card-background2"></div>
-                    <div class="card-body" style="display: flex;">
-                      <i class="icon-columns menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4" style="margin-left:70px; margin-top: 0;">Pengajuan Tugas Akhir</span>
-                    </div>
-                  </div>
-                  </a>
-                </div>
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-light-blue">
-                  <a href="pengajuanSeminar.php" class="link">
-                  <div class="card-background2"></div>
-                    <div class="card-body" style="display: flex;">
-                      <i class="icon-columns menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4" style="margin-left:70px; margin-top: 0;">Pengajuan Seminar Proposal</span>
-                    </div>
-                  </div>
-                  </a>
-                </div>
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-light-danger">
-                  <a href="pengajuanUjian.php" class="link"> 
-                  <div class="card-background2"></div>
-                    <div class="card-body" style="display: flex;">
-                      <i class="icon-columns menu-icon" style="margin-right: 10px;"></i>
-                      <span class="mb-4" style="margin-left:70px; margin-top: 0;">Pengajuan Ujian   </span>
-                    </div>
-                  </div>
-                  </a>
-                </div>
+
+  <!-- Main Dashboard Content -->
+  <div class="row">
+    <!-- Guidelines Box (Left Side) -->
+    <div class="col-lg-3 mb-4">
+      <a href="panduan.php" class="text-decoration-none">
+        <div class="card card-tale h-100">
+          <div class="card-background"></div>
+          <div class="card-body d-flex align-items-center">
+            <i class="icon-paper menu-icon me-3"></i>
+            <span class="text-white">Alur & Panduan</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Right Side Content -->
+    <div class="col-lg-9">
+      <!-- Results Section -->
+      <div class="row mb-4">
+        <!-- Hasil Nilai Box -->
+        <div class="col-md-6 mb-3">
+          <a href="hasilNilai.php" class="text-decoration-none">
+            <div class="card card-dark-blue">
+              <div class="card-background1"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-layout menu-icon me-3"></i>
+                <span class="text-white">Hasil Nilai</span>
               </div>
             </div>
-          </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer" style="display: flex;">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block" style="text-align: center; justify-content: center;">Copyright © 2023. <a href="https://www.bootstrapdash.com/" target="_blank">Politeknik NEST</a> Teknologi Informasi</span>
-          </div>
-        </footer> 
-        <!-- partial -->
+          </a>
+        </div>
+        <!-- Lampiran Box -->
+        <div class="col-md-6 mb-3">
+          <a href="lampiran.php" class="text-decoration-none">
+            <div class="card card-light-blue">
+              <div class="card-background1"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-layout menu-icon me-3"></i>
+                <span class="text-white">Lampiran</span>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
-      <!-- main-panel ends -->
-    </div>   
-    <!-- page-body-wrapper ends -->
+
+      <!-- Upload Section -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="section-title">Upload</h5>
+        </div>
+        <!-- Upload TA Box -->
+        <div class="col upload-box">
+          <a href="uploadTA.php" class="text-decoration-none">
+            <div class="card card-dark-blue">
+              <div class="card-background1"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-layout menu-icon me-3"></i>
+                <span class="text-white">Upload TA</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- Upload Seminar Box -->
+        <div class="col upload-box">
+          <a href="uploadSeminar.php" class="text-decoration-none">
+            <div class="card card-dark-blue">
+              <div class="card-background1"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-layout menu-icon me-3"></i>
+                <span class="text-white">Upload Seminar</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- Upload Berita Acara Box -->
+        <div class="col upload-box">
+          <a href="uploadBeritaAcara.php" class="text-decoration-none">
+            <div class="card card-dark-blue">
+              <div class="card-background1"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-layout menu-icon me-3"></i>
+                <span class="text-white">Upload Berita Acara</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- Upload Ujian Box -->
+        <div class="col upload-box">
+          <a href="uploadUjian.php" class="text-decoration-none">
+            <div class="card card-dark-blue">
+              <div class="card-background1"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-layout menu-icon me-3"></i>
+                <span class="text-white">Upload Ujian</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- Upload Nilai Box -->
+        <div class="col upload-box">
+          <a href="uploadNilai.php" class="text-decoration-none">
+            <div class="card card-dark-blue">
+              <div class="card-background1"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-layout menu-icon me-3"></i>
+                <span class="text-white">Upload Nilai</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Pengajuan Section -->
+      <div class="row">
+        <div class="col-12">
+          <h5 class="section-title">Pengajuan</h5>
+        </div>
+        <!-- Pengajuan TA Box -->
+        <div class="col-md-3 mb-3">
+          <a href="pengajuanTA.php" class="text-decoration-none">
+            <div class="card card-light-danger">
+              <div class="card-background2"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-columns menu-icon me-3"></i>
+                <span class="text-white">Pengajuan TA</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- Pengajuan Seminar Box -->
+        <div class="col-md-3 mb-3">
+          <a href="pengajuanSeminar.php" class="text-decoration-none">
+            <div class="card card-light-danger">
+              <div class="card-background2"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-columns menu-icon me-3"></i>
+                <span class="text-white">Pengajuan Seminar</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- Pengajuan Ujian Box -->
+        <div class="col-md-3 mb-3">
+          <a href="pengajuanUjian.php" class="text-decoration-none">
+            <div class="card card-light-danger">
+              <div class="card-background2"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-columns menu-icon me-3"></i>
+                <span class="text-white">Pengajuan Ujian</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <!-- Pengajuan Nilai Box -->
+        <div class="col-md-3 mb-3">
+          <a href="pengajuanNilai.php" class="text-decoration-none">
+            <div class="card card-light-danger">
+              <div class="card-background2"></div>
+              <div class="card-body d-flex align-items-center">
+                <i class="icon-columns menu-icon me-3"></i>
+                <span class="text-white">Pengajuan Nilai</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- container-scroller -->
+</div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer" style="display: flex;">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block" style="text-align: center; justify-content: center;">Copyright © 2023. <a href="https://www.bootstrapdash.com/" target="_blank">Politeknik NEST</a> Teknologi Informasi</span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
 
-  <!-- plugins:js -->
-  <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-  <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-  <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
+    <!-- plugins:js -->
+    <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
+    <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="../../Template/skydash/js/off-canvas.js"></script>
-  <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="../../Template/skydash/js/../../Template.js"></script>
-  <script src="../../Template/skydash/js/settings.js"></script>
-  <script src="../../Template/skydash/js/todolist.js"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
-  <script src="../../Template/skydash/js/dashboard.js"></script>
-  <script src="../../Template/skydash/js/Chart.roundedBarCharts.js"></script>
-  <!-- End custom js for this page-->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="../../Template/skydash/js/off-canvas.js"></script>
+    <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
+    <script src="../../Template/skydash/js/../../Template.js"></script>
+    <script src="../../Template/skydash/js/settings.js"></script>
+    <script src="../../Template/skydash/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="../../Template/skydash/js/dashboard.js"></script>
+    <script src="../../Template/skydash/js/Chart.roundedBarCharts.js"></script>
+    <!-- End custom js for this page-->
 </body>
 
 </html>
-
- 

@@ -1,92 +1,193 @@
+/* Base card styles */
+.card {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  min-height: 110px;
+  margin-bottom: 1rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Card variants */
 .card-tale {
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
-    width: 100%;    
-}
-
-
-
-@media screen and (max-width: 480px) {
-    .card-tale {
-        height: 150px !important;  /* Fixed height for mobile */
-    }
-    
-    .card-background {
-        background-size: 100% auto;  /* Full width, auto height */
-    }
-
-}
-
-.card-body {
-    position: relative;
-    z-index: 3; 
-    padding: 1.5rem;
-    padding-top: 2rem;
-}
-
-.card-body span {
-    display: block;
-    margin-top: 10px;
-    font-weight: 900;
-}
-
-.card-body h4 {
-    display: block;
-    font-weight: 900;
-}
-
-.card-background1 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('../../img/file-upload.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: left;
-    z-index: 1;
-}
-
-.card-background1:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(115, 38, 38, 0); /* Warna dark blue dengan opacity */
-    z-index: 2;
+  background: #4747A1;
 }
 
 .card-dark-blue {
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
+  background: #2196F3;
+}
+
+.card-light-blue {
+  background: #4B49AC;
+}
+
+.card-light-danger {
+  background: #F3797E;
+}
+
+/* Card body */
+.card-body {
+  position: relative;
+  z-index: 3;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-body span {
+  font-weight: 500;
+  color: #fff;
+}
+
+.card-body i {
+  color: #fff;
+}
+
+/* Background image styles */
+.card-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://www.seekpng.com/png/detail/310-3105135_literacy-arrow-up-icon-png.png');
+  background-repeat: no-repeat;
+  background-size: 120% 100%;
+  background-position: center;
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.card-background:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(36, 53, 69, 0.57);
+  z-index: 2;
+}
+
+.card-background1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../img/alur.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: left;
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.card-background1:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(115, 38, 38, 0);
+  z-index: 2;
 }
 
 .card-background2 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('../../img/student.png');
-    background-repeat: no-repeat;
-    background-size: 40%;
-    background-position: left;
-    z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../img/student.png');
+  background-repeat: no-repeat;
+  background-size: 40%;
+  background-position: left;
+  opacity: 0.1;
+  z-index: 1;
 }
 
 .card-background2:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(115, 38, 38, 0); 
-    z-index: 2;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(115, 38, 38, 0);
+  z-index: 2;
 }
 
+/* Section styles */
+.section-title {
+  color: #333;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* Link styles */
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+.link:hover,
+.link:focus,
+.link:active {
+  text-decoration: none;
+  color: aquamarine;
+}
+
+/* Layout */
+.main-card {
+  height: calc(100% - 1rem);
+}
+
+.result-box {
+  height: 120px;
+}
+
+/* Grid adjustments */
+.upload-section .col-md-3 {
+  width: 20%;
+  padding: 0 0.5rem;
+}
+
+.submission-section .col-md-3 {
+  width: 25%;
+  padding: 0 0.5rem;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .card {
+    min-height: 100px;
+  }
+  
+  .upload-section .col-md-3,
+  .submission-section .col-md-3 {
+    width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .result-box {
+    height: auto;
+  }
+  
+  .card-tale {
+    height: 150px;
+  }
+  
+  .card-background {
+    background-size: 100% auto;
+  }
+}
