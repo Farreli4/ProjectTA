@@ -49,6 +49,31 @@
 
   
   </style>
+  <script>
+  // Function to change the background color of the <select> element
+  function changeSelectColor(selectElement) {
+    var selectedValue = selectElement.value;
+
+    // Set the background color of the <select> based on the selected value
+    if (selectedValue == 'dijadwalkan') {
+      selectElement.style.backgroundColor = 'rgb(255, 251, 0)'; // Yellow
+    } else if (selectedValue == 'ditunda') {
+      selectElement.style.backgroundColor = 'rgb(255, 99, 71)'; // Red
+    } else if (selectedValue == 'selesai') {
+      selectElement.style.backgroundColor = 'rgb(34, 139, 34)'; // Green
+    }
+  }
+
+  // Initialize the background color when the page loads (in case there's a pre-selected value)
+  window.onload = function() {
+    var selects = document.querySelectorAll('select');
+    selects.forEach(function(select) {
+      changeSelectColor(select); // Apply color based on the selected option
+    });
+  }
+</script>
+
+
 </head>
 <body>
   <div class="container-scroller">
@@ -478,7 +503,7 @@
                                   echo "<form action='update_seminar.php' method='POST'>";
                                   echo "<input type='date' name='tanggal_seminar' value='" . $row["tanggal_seminar"] . "' required>";
                                   echo "<td>";
-                                  echo "<select class='js-example-basic-single w-30' name='status_seminar' required>";
+                                  echo "<select class='js-example-basic-single w-30' name='status_seminar' onchange='changeColor(this)' required>";
                                   echo "<option value='dijadwalkan'" . ($row['status_seminar'] == 'dijadwalkan' ? ' selected' : '') . ">Dijadwalkan</option>";
                                   echo "<option value='ditunda'" . ($row['status_seminar'] == 'ditunda' ? ' selected' : '') . ">Ditunda</option>";
                                   echo "<option value='selesai'" . ($row['status_seminar'] == 'selesai' ? ' selected' : '') . ">Selesai</option>";

@@ -429,7 +429,6 @@
                               <th>NIM</th>
                               <th>Doc</th>
                               <th>Status</th>
-                              <th>Revisi</th>
                               <th>Verifikasi</th>
                               <th></th>
                             </tr>
@@ -465,8 +464,6 @@
                                   echo "</div>";
                                   echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
                                   echo "</form>";
-                                  echo "<td>";
-                                  echo "<button class='btn btn-info btn-rounded btn-fw'>Revisi</button>";
                                   echo "<td>";
                                   echo "<button class='btn btn-inverse-success btn-fw'>Verifikasi</button>";
                               }
