@@ -352,21 +352,32 @@
         </ul>
       </nav>
 
-      <!-- partial -->
+      <?php
+          // Koneksi ke database
+          $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
+          if ($conn->connect_error) {
+              die("Koneksi gagal: " . $conn->connect_error);
+          }
+
+          // Ambil total pendaftar tugas akhir
+          $sqlTA = "SELECT COUNT(*) AS total FROM tugas_akhir";
+          $resultTA = $conn->query($sqlTA);
+          $totalTA = ($resultTA->num_rows > 0) ? $resultTA->fetch_assoc()['total'] : 0;
+      ?>
+      
       <div class="main-panel">
         <div class="content-wrapper">
-            <div class="col-md-10 grid-margin transparent">
+            <div class="col-md-5 grid-margin transparent">
               <div class="row">
                 <div class="col-md-6 stretch-card transparent">
                   <div class="card card-light-danger">
-                    <div class="card-body">
-                      <p class="mb-4">Number of Clients</p>
-                      <p class="fs-30 mb-2">47033</p>
-                      <p>0.22% (30 days)</p>
+                    <div class="card-body text-center">
+                      <p class="mb-4">Total Pendaftar Tugas Akhir</p>
+                      <p class="fs-30 mb-2"><?php echo number_format($totalTA); ?></p>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 mt-3">
+                <div class="col-md-6 d-flex align-items-center justify-content-center">
                 <?php
                   $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
@@ -417,76 +428,131 @@
             </div>
             </div>
           </div>
-          <!--Advanced-->
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Advanced Table</p>
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="table-responsive">
-                        <table id="example" class="display expandable-table" style="width:100%">
-                          <thead>
-                            <tr>
-                              <th>ID</th>
-                              <th>Nama</th>
-                              <th>NIM</th>
-                              <th>Doc</th>
-                              <th>Status</th>
-                              <th>Revisi</th>
-                              <th>Verifikasi</th>
-                              <th></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                                <?php
-                                $conn->connect("127.0.0.1", "root", "", "sistem_ta");
-                                $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, tugas_akhir.status_pengajuan
-                                FROM mahasiswa 
-                                LEFT JOIN tugas_akhir ON mahasiswa.id_mahasiswa = tugas_akhir.id_mahasiswa 
-                                WHERE 1";
-                                $result = $conn->query($sql1);
 
-                                while ($row = mysqli_fetch_array($result)) {
-                                  echo "<tr>";
-                                  echo "<td>" . $row['id_mahasiswa'] . "</td>";
-                                  echo "<td>" . $row['nama_mahasiswa'] . "</td>";
-                                  echo "<td>" . $row['nim'] . "</td>";
-                                  echo "<td>";
-                                  echo "<a href='#popup'>";
-                                  echo "<<span class='material-symbols-outlined'>folder_open</span>>";
-                                  echo "</a>";
-                                  echo "<td>";
-                                  echo "<form action='update_pengajuan.php' method='POST'>";
-                                  echo '<div class="dropdown">';
-                                  echo '    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">';
-                                  echo $row['status_pengajuan'];
-                                  echo '    </button>';
-                                  echo '    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">';
-                                  echo "        <button class='dropdown-item' type='submit' name='status_pengajuan' value='Revisi'>Revisi</button>";
-                                  echo "        <button class='dropdown-item' type='submit' name='status_pengajuan' value='Ditolak'>Ditolak</button>";
-                                  echo "        <button class='dropdown-item' type='submit' name='status_pengajuan' value='Disetujui'>Disetujui</button>";
-                                  echo '    </div>';
-                                  echo "</div>";
-                                  echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
-                                  echo "</form>";
-                                  echo "<td>";
-                                  echo "<button class='btn btn-info btn-rounded btn-fw'>Revisi</button>";
-                                  echo "<td>";
-                                  echo "<button class='btn btn-inverse-success btn-fw'>Verifikasi</button>";
-                              }
-                              $conn->close()
-                                ?>
-                            </tbody>
-                      </table>
+          <?php
+          $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
+          if ($conn->connect_error) {
+              die("Koneksi gagal: " . $conn->connect_error);
+          }
+          $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, mahasiswa.prodi, tugas_akhir.tema, tugas_akhir.judul, tugas_akhir.status_pengajuan
+                  FROM mahasiswa 
+                  LEFT JOIN tugas_akhir ON mahasiswa.id_mahasiswa = tugas_akhir.id_mahasiswa";
+          $result = $conn->query($sql1);
+          ?>
+
+          <div class="row">
+              <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                      <div class="card-body">
+                          <p class="card-title">Advanced Table</p>
+                          <div class="row">
+                              <div class="col-12">
+                                  <div class="table-responsive">
+                                      <table id="example" class="display expandable-table" style="width:100%">
+                                          <thead>
+                                              <tr>
+                                                  <th>ID</th>
+                                                  <th>Nama</th>
+                                                  <th>NIM</th>
+                                                  <th>Prodi</th>
+                                                  <th>Tema</th>
+                                                  <th>Judul</th>
+                                                  <th>Doc</th>
+                                                  <th>Status</th>
+                                                  <th>Updated</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              <?php
+                                              while ($row = $result->fetch_assoc()) {
+                                                  $status = $row['status_pengajuan'];
+                                                  $btnClass = "btn-light"; // Default
+
+                                                  if ($status == "Revisi") {
+                                                      $btnClass = "btn-warning";
+                                                  } elseif ($status == "Ditolak") {
+                                                      $btnClass = "btn-danger";
+                                                  } elseif ($status == "Disetujui") {
+                                                      $btnClass = "btn-success";
+                                                  }
+
+                                                  echo "<tr>";
+                                                  echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                                                  echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                                                  echo "<td>" . $row['nim'] . "</td>";
+                                                  echo "<td>" . $row['prodi'] . "</td>";
+                                                  echo "<td>" . $row['tema'] . "</td>";
+                                                  echo "<td>" . $row['judul'] . "</td>";
+                                                  echo "<td><a href='#popup'><span class='material-symbols-outlined'>folder_open</span></a></td>";
+                                                  echo "<td>";
+                                                  echo "<div class='dropdown'>";
+                                                  echo "    <button class='btn $btnClass dropdown-toggle status-btn' type='button' id='statusBtn-" . $row['id_mahasiswa'] . "' data-toggle='dropdown' aria-haspopup='false' aria-expanded='false' data-status='$status' data-id='" . $row['id_mahasiswa'] . "'>";
+                                                  echo        $status;
+                                                  echo "    </button>";
+                                                  echo "    <div class='dropdown-menu'>";
+                                                  echo "        <button class='dropdown-item status-option' data-id='" . $row['id_mahasiswa'] . "' data-status='Revisi'>Revisi</button>";
+                                                  echo "        <button class='dropdown-item status-option' data-id='" . $row['id_mahasiswa'] . "' data-status='Ditolak'>Ditolak</button>";
+                                                  echo "        <button class='dropdown-item status-option' data-id='" . $row['id_mahasiswa'] . "' data-status='Disetujui'>Disetujui</button>";
+                                                  echo "    </div>";
+                                                  echo "</div>";
+                                                  echo "</td>";
+                                                  echo "<td><button class='btn btn-inverse-success btn-fw'>Update</button></td>";
+                                                  echo "</tr>";
+                                              }
+                                              $conn->close();
+                                              ?>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
-                    </div>
                   </div>
-                </div>
               </div>
-            </div>
           </div>
+
+          <script>
+          document.addEventListener("DOMContentLoaded", function () {
+              document.querySelectorAll(".status-option").forEach(item => {
+                  item.addEventListener("click", function () {
+                      let status = this.getAttribute("data-status");
+                      let id = this.getAttribute("data-id");
+                      let button = document.getElementById("statusBtn-" + id);
+
+                      if (button) {
+                          button.innerText = status;
+                          button.setAttribute("data-status", status);
+
+                          // Update warna tombol sesuai status
+                          button.classList.remove("btn-light", "btn-warning", "btn-danger", "btn-success");
+
+                          if (status === "Revisi") {
+                              button.classList.add("btn-warning");
+                          } else if (status === "Ditolak") {
+                              button.classList.add("btn-danger");
+                          } else if (status === "Disetujui") {
+                              button.classList.add("btn-success");
+                          } else {
+                              button.classList.add("btn-light");
+                          }
+
+                          // Kirim update ke server dengan AJAX
+                          fetch("update_pengajuan.php", {
+                              method: "POST",
+                              headers: {
+                                  "Content-Type": "application/x-www-form-urlencoded"
+                              },
+                              body: `id_mahasiswa=${id}&status_pengajuan=${status}`
+                          }).then(response => response.text())
+                          .then(data => console.log(data))
+                          .catch(error => console.error("Error:", error));
+                      }
+                  });
+              });
+          });
+          </script>
+
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->

@@ -365,42 +365,71 @@
             </div>
           </div>
           
+          
+
+          <?php
+          // Koneksi ke database
+          $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
+          if ($conn->connect_error) {
+              die("Koneksi gagal: " . $conn->connect_error);
+          }
+
+          // Ambil total pendaftar tugas akhir
+          $sqlTA = "SELECT COUNT(*) AS total FROM tugas_akhir";
+          $resultTA = $conn->query($sqlTA);
+          $totalTA = ($resultTA->num_rows > 0) ? $resultTA->fetch_assoc()['total'] : 0;
+
+          // Ambil total pendaftar seminar
+          $sqlSeminar = "SELECT COUNT(*) AS total FROM seminar_proposal";
+          $resultSeminar = $conn->query($sqlSeminar);
+          $totalSeminar = ($resultSeminar->num_rows > 0) ? $resultSeminar->fetch_assoc()['total'] : 0;
+
+          // Ambil total pendaftar ujian
+          $sqlUjian = "SELECT COUNT(*) AS total FROM ujian";
+          $resultUjian = $conn->query($sqlUjian);
+          $totalUjian = ($resultUjian->num_rows > 0) ? $resultUjian->fetch_assoc()['total'] : 0;
+
+          $conn->close();
+          ?>
+
           <div class="row">
-            <!-- Card 1 -->
-            <div class="col-md-4 mb-4">
-              <a href="pendaftaranTA.php">
-                <div class="card card-dark-blue">
-                  <div class="card-body text-center">
-                    <p class="mb-4">Total Pendaftar Tugas Akhir</p>
-                    <p class="fs-30 mb-2">4006</p>
-                  </div>
-                </div>
-              </a>
-            </div>
+              <!-- Card 1 -->
+              <div class="col-md-4 mb-4">
+                  <a href="pendaftaranTA.php">
+                      <div class="card card-dark-blue">
+                          <div class="card-body text-center">
+                              <p class="mb-4">Total Pendaftar Tugas Akhir</p>
+                              <p class="fs-30 mb-2"><?php echo number_format($totalTA); ?></p>
+                          </div>
+                      </div>
+                  </a>
+              </div>
 
-            <!-- Card 2 -->
-            <div class="col-md-4 mb-4">
-              <a href="pendaftaranSeminar.php">
-                <div class="card card-dark-blue">
-                  <div class="card-body text-center">
-                    <p class="mb-4">Total Pendaftar Seminar</p>
-                    <p class="fs-30 mb-2">61344</p>
-                  </div>
-                </div>
-              </a>
-            </div>
+              <!-- Card 2 -->
+              <div class="col-md-4 mb-4">
+                  <a href="pendaftaranSeminar.php">
+                      <div class="card card-dark-blue">
+                          <div class="card-body text-center">
+                              <p class="mb-4">Total Pendaftar Seminar</p>
+                              <p class="fs-30 mb-2"><?php echo number_format($totalSeminar); ?></p>
+                          </div>
+                      </div>
+                  </a>
+              </div>
 
-            <!-- Card 3 -->
-            <div class="col-md-4 mb-4">
-              <a href="pendaftaranUjian.php">
-                <div class="card card-light-blue">
-                  <div class="card-body text-center">
-                    <p class="mb-4">Total Pendaftar Ujian</p>
-                    <p class="fs-30 mb-2">34040</p>
-                  </div>
-                </div>
-              </a>
-            </div>
+              <!-- Card 3 -->
+              <div class="col-md-4 mb-4">
+                  <a href="pendaftaranUjian.php">
+                      <div class="card card-light-blue">
+                          <div class="card-body text-center">
+                              <p class="mb-4">Total Pendaftar Ujian</p>
+                              <p class="fs-30 mb-2"><?php echo number_format($totalUjian); ?></p>
+                          </div>
+                      </div>
+                  </a>
+              </div>
+          </div>
+
 
             <div class="row">
               <!-- Chart 1 -->
