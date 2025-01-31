@@ -144,51 +144,135 @@
     }
 
     .card-dark-blue {
-  position: relative;
-  overflow: hidden;
-}
+      position: relative;
+      overflow: hidden;
+    }
 
-.card-background1 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 50, 0.5);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1;
-}
+    .card-background1 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 50, 0.5);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+    }
 
-.card-dark-blue:hover .card-background1 {
-  opacity: 1;
-}
+    .card-dark-blue:hover .card-background1 {
+      opacity: 1;
+    }
 
-.card-body {
-  position: relative;
-  justify-content: space-evenly;
-  padding: 0%;
-}
+    .card-body {
+      position: relative;
+      justify-content: space-evenly;
+      padding: 0%;
+    }
 
-.upload-icon {
-  width: 100px;
-  height: auto;
-  padding: 0;
-  z-index: 2; /* memastikan ikon di atas overlay */
-}
+    .upload-icon {
+      width: 100px;
+      height: auto;
+      padding: 0;
+      z-index: 2;
+      /* memastikan ikon di atas overlay */
+    }
 
-.upload-text {
-  font-size: 16px;
-  color: white; /* memastikan teks tetap terlihat di atas background gelap */
-  transition: color 0.3s ease;
-  margin-left: 0;
-  margin-right: 200px;
-  z-index: 2; /* memastikan teks di atas overlay */
-}
+    .upload-text {
+      font-size: 16px;
+      color: white;
+      /* memastikan teks tetap terlihat di atas background gelap */
+      transition: color 0.3s ease;
+      margin-left: 0;
+      margin-right: 180px;
+      z-index: 2;
+      /* memastikan teks di atas overlay */
+    }
 
-.card-dark-blue:hover .upload-text {
-  color: #aaa;
-}
+    .card-dark-blue:hover .upload-text {
+      color: #aaa;
+    }
+
+    .submission-link {
+      text-decoration: none;
+      display: block;
+      height: 100%;
+    }
+
+    .submission-link:hover,
+    .submission-link:focus,
+    .submission-link:active {
+      text-decoration: none;
+    }
+
+    .submission-card {
+      background: #F3797E;
+      border-radius: 15px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      min-height: 110px;
+    }
+
+    .submission-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .submission-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('../../img/graduate.png');
+      background-size: 40% auto;
+      background-position: right center;
+      background-repeat: no-repeat;
+      opacity: 0.15;
+      z-index: 1;
+    }
+
+    .submission-content {
+      position: relative;
+      z-index: 2;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .submission-icon {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .submission-text {
+      color: white;
+      font-weight: 500;
+      font-size: 1rem;
+      text-align: left;
+      flex: 1;
+
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .submission-card {
+        min-height: 100px;
+      }
+
+      .submission-icon {
+        width: 50px;
+        height: 50px;
+      }
+
+      .submission-text {
+        font-size: 0.9rem;
+      }
+    }
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .card {
@@ -216,8 +300,7 @@
     <!--NAVBAR KIRI-->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="images/logo.svg" class="mr-2" alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
+        <a class="navbar-brand brand-logo mr-5" href="dashboard.php"><img src="../../assets/img/logo2.png" class="mr-2" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -366,12 +449,12 @@
             <!-- Guidelines Box (Left Side) -->
             <div class="col-lg-3 mb-4">
               <a href="panduan.php" class="text-decoration-none">
-                <div class="card card-tale h-100">
+                <div class="card card-dark-blue h-100">
                   <div class="card-background"></div>
-                  <div class="card-body d-flex align-items-center">
-                    <img src="../../assets/img/dokumentasi.png" alt="Alur" style="position: absolute; right: 10px; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0.75; width: 250px; height: 250px;">
-                    <i class="icon-paper menu-icon me-3"></i>
-                    <span class="text-white">Alur & Panduan</span>
+                  <div class="card-body d-flex flex-column align-items-center" style="margin-top: 10px;">
+                    <span class="text-white mb-3" style="font-size: 20px;">Alur & Panduan</span>
+                    <img src="../../assets/img/dokumentasi.png" alt="Alur"
+                      style="width: 250px; height: 250px; opacity: 0.75; margin: auto;">
                   </div>
                 </div>
               </a>
@@ -384,10 +467,10 @@
                 <!-- Hasil Nilai Box -->
                 <div class="col-md-6 mb-3">
                   <a href="hasilNilai.php" class="text-decoration-none">
-                    <div class="card card-dark-blue">
+                    <div class="card card-light-blue">
                       <div class="card-background1"></div>
                       <div class="card-body d-flex align-items-center">
-                      <img src="../../assets/img/score.png" alt="Student" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 1; width: 90px; height: 90px;">
+                        <img src="../../assets/img/score.png" alt="Student" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 1; width: 90px; height: 90px;">
                         <i class="icon-layout menu-icon me-3"></i>
                         <span class="text-white">Hasil Nilai</span>
                       </div>
@@ -417,10 +500,10 @@
                 <!-- Upload TA Box -->
                 <div class="col upload-box">
                   <a href="uploadTA.php" class="text-decoration-none">
-                    <div class="card card-dark-blue">
+                    <div class="card card-tale">
                       <div class="card-background1"></div>
                       <div class="card-body d-flex align-items-center">
-                      <img src="../../assets/img/file-upload.png" alt="Upload" class="upload-icon">
+                        <img src="../../assets/img/file-upload.png" alt="Upload" class="upload-icon">
                         <span class="text-white">Upload Tugas Akhir</span>
                       </div>
                     </div>
@@ -429,10 +512,10 @@
                 <!-- Upload Seminar Box -->
                 <div class="col upload-box">
                   <a href="uploadSeminar.php" class="text-decoration-none">
-                    <div class="card card-dark-blue">
+                    <div class="card card-tale">
                       <div class="card-background1"></div>
                       <div class="card-body d-flex align-items-center">
-                      <img src="../../assets/img/file-upload.png" alt="Upload" class="upload-icon">
+                        <img src="../../assets/img/file-upload.png" alt="Upload" class="upload-icon">
                         <span class="text-white">Upload Seminar</span>
                       </div>
                     </div>
@@ -441,7 +524,7 @@
                 <!-- Upload Berita Acara Box -->
                 <div class="col upload-box">
                   <a href="uploadBeritaAcara.php" class="text-decoration-none">
-                    <div class="card card-dark-blue">
+                    <div class="card card-tale">
                       <div class="card-background1"></div>
                       <div class="card-body d-flex align-items-center">
                         <img src="../../assets/img/file-upload.png" alt="Student" class="upload-icon">
@@ -453,7 +536,7 @@
                 <!-- Upload Ujian Box -->
                 <div class="col upload-box">
                   <a href="uploadUjian.php" class="text-decoration-none">
-                    <div class="card card-dark-blue">
+                    <div class="card card-tale">
                       <div class="card-background1"></div>
                       <div class="card-body d-flex align-items-center">
                         <img src="../../assets/img/file-upload.png" alt="Upload" class="upload-icon">
@@ -465,10 +548,10 @@
                 <!-- Upload Nilai Box -->
                 <div class="col upload-box">
                   <a href="uploadNilai.php" class="text-decoration-none">
-                    <div class="card card-dark-blue">
+                    <div class="card card-tale">
                       <div class="card-background1"></div>
                       <div class="card-body d-flex align-items-center">
-                      <img src="../../assets/img/file-upload.png" alt="Upload" class="upload-icon">
+                        <img src="../../assets/img/file-upload.png" alt="Upload" class="upload-icon">
                         <span class="text-white upload-text">Upload Nilai</span>
                       </div>
                     </div>
@@ -483,92 +566,90 @@
                 </div>
                 <!-- Pengajuan TA Box -->
                 <div class="col-md-3 mb-3">
-                  <a href="pengajuanTA.php" class="text-decoration-none">
-                    <div class="card card-light-danger">
-                      <div class="card-background2"></div>
-                      <div class="card-body d-flex align-items-center">
-                      <img src="../../assets/img/student.png" alt="Upload" class="upload-icon">
-                        <span class="text-white">Pengajuan TA</span>
+                  <a href="pengajuanTA.php" class="submission-link">
+                    <div class="submission-card">
+                      <div class="submission-overlay"></div>
+                      <div class="submission-content">
+                        <img src="../../assets/img/student.png" alt="Submission" class="submission-icon">
+                        <span class="submission-text">Pengajuan TA</span>
                       </div>
                     </div>
                   </a>
                 </div>
                 <!-- Pengajuan Seminar Box -->
                 <div class="col-md-3 mb-3">
-                  <a href="pengajuanSeminar.php" class="text-decoration-none">
-                    <div class="card card-light-danger">
-                      <div class="card-background2"></div>
-                      <div class="card-body d-flex align-items-center">
-                      <img src="../../assets/img/student.png" alt="Upload" class="upload-icon">
-                        <span class="text-white">Pengajuan Seminar</span>
+                  <a href="pengajuanSeminar.php" class="submission-link">
+                    <div class="submission-card">
+                      <div class="submission-overlay"></div>
+                      <div class="submission-content">
+                        <img src="../../assets/img/student.png" alt="Submission" class="submission-icon">
+                        <span class="submission-text">Pengajuan Seminar</span>
                       </div>
                     </div>
                   </a>
                 </div>
                 <!-- Pengajuan Ujian Box -->
                 <div class="col-md-3 mb-3">
-                  <a href="pengajuanUjian.php" class="text-decoration-none">
-                    <div class="card card-light-danger">
-                      <div class="card-background2"></div>
-                      <div class="card-body d-flex align-items-center">
-                      <img src="../../assets/img/student.png" alt="Upload" class="upload-icon">
-                        <span class="text-white">Pengajuan Ujian</span>
+                  <a href="pengajuanUjian.php" class="submission-link">
+                    <div class="submission-card">
+                      <div class="submission-overlay"></div>
+                      <div class="submission-content">
+                        <img src="../../assets/img/student.png" alt="Submission" class="submission-icon">
+                        <span class="submission-text">Pengajuan Ujian</span>
                       </div>
                     </div>
                   </a>
                 </div>
                 <!-- Pengajuan Nilai Box -->
                 <div class="col-md-3 mb-3">
-                  <a href="pengajuanNilai.php" class="text-decoration-none">
-                    <div class="card card-light-danger">
-                      <div class="card-background2"></div>
-                      <div class="card-body d-flex align-items-center">
-                      <img src="../../assets/img/student.png" alt="Upload" class="upload-icon">
-                        <span class="text-white">Pengajuan Nilai</span>
+                  <a href="pengajuanNilai.php" class="submission-link">
+                    <div class="submission-card">
+                      <div class="submission-overlay"></div>
+                      <div class="submission-content">
+                        <img src="../../assets/img/student.png" alt="Submission" class="submission-icon">
+                        <span class="submission-text">Pengajuan Nilai</span>
                       </div>
                     </div>
                   </a>
                 </div>
               </div>
+              <!-- content-wrapper ends -->
+              <!-- partial:partials/_footer.html -->
+
+              <!-- partial -->
             </div>
+            <footer class="footer" style="display: flex;">
+              <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                <span class="text-muted text-center text-sm-left d-block d-sm-inline-block" style="text-align: center; justify-content: center;">Copyright © 2023. <a href="https://www.bootstrapdash.com/" target="_blank">Politeknik NEST</a> Teknologi Informasi</span>
+              </div>
+            </footer>
+            <!-- main-panel ends -->
           </div>
+          <!-- page-body-wrapper ends -->
         </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer" style="display: flex;">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block" style="text-align: center; justify-content: center;">Copyright © 2023. <a href="https://www.bootstrapdash.com/" target="_blank">Politeknik NEST</a> Teknologi Informasi</span>
-          </div>
-        </footer>
-        <!-- partial -->
-      </div>
-      <!-- main-panel ends -->
-    </div>
-    <!-- page-body-wrapper ends -->
-  </div>
-  <!-- container-scroller -->
+        <!-- container-scroller -->
 
-  <!-- plugins:js -->
-  <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-  <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-  <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
+        <!-- plugins:js -->
+        <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
+        <!-- endinject -->
+        <!-- Plugin js for this page -->
+        <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
+        <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
+        <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+        <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="../../Template/skydash/js/off-canvas.js"></script>
-  <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="../../Template/skydash/js/../../Template.js"></script>
-  <script src="../../Template/skydash/js/settings.js"></script>
-  <script src="../../Template/skydash/js/todolist.js"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
-  <script src="../../Template/skydash/js/dashboard.js"></script>
-  <script src="../../Template/skydash/js/Chart.roundedBarCharts.js"></script>
-  <!-- End custom js for this page-->
+        <!-- End plugin js for this page -->
+        <!-- inject:js -->
+        <script src="../../Template/skydash/js/off-canvas.js"></script>
+        <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
+        <script src="../../Template/skydash/js/../../Template.js"></script>
+        <script src="../../Template/skydash/js/settings.js"></script>
+        <script src="../../Template/skydash/js/todolist.js"></script>
+        <!-- endinject -->
+        <!-- Custom js for this page-->
+        <script src="../../Template/skydash/js/dashboard.js"></script>
+        <script src="../../Template/skydash/js/Chart.roundedBarCharts.js"></script>
+        <!-- End custom js for this page-->
 </body>
 
 </html>
