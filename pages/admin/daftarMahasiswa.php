@@ -24,6 +24,10 @@
 
   <link rel="stylesheet" type="text/css" href="../../assets/css/css/admin/mahasiswa.css">
   <link rel="stylesheet" href="../../assets/css/css/admin/mahasiswa.css">
+  <!-- Add these before closing </body> tag -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
   <div class="container-scroller">
@@ -332,12 +336,12 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Dokumen</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-basic">
+            <div class="collapse" id="ui-basic2">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
                 <li class="nav-item"> <a class="nav-link" href="dokumenSeminar.php">Seminar</a></li>
@@ -387,21 +391,136 @@
                                   echo "<td>" . $row['prodi'] . "</td>";
                                   echo "<td>" . $row['kelas'] . "</td>";
                                   echo "<td>" . $row['nomor_telepon'] . "</td>";
+                                  echo "</tr>";
                               }
                               $conn->close();
                                 ?>
                             </tbody>
-                      </table>
+                          </table>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  </div>
                 </div>
-
-                
               </div>
+              <!-- Button to trigger modal -->
+              <button id="openModalBtn" class="btn btn-primary">Add Data</button>
+
+              <!-- Modal (Popup with Form) -->
+              <div id="myModal" class="modal">
+                <div class="modal-content">
+                  <span class="close">&times;</span>
+                  <h2>Add Student Data</h2>
+                  <!-- Form inside the modal -->
+                  <form id="studentForm">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required><br><br>
+                    
+                    <label for="nim">NIM:</label>
+                    <input type="text" id="nim" name="nim" required><br><br>
+                    
+                    <label for="program">Program Studi:</label>
+                    <input type="text" id="program" name="program" required><br><br>
+                    
+                    <label for="class">Class:</label>
+                    <input type="text" id="class" name="class" required><br><br>
+                    
+                    <label for="phone">Phone Number:</label>
+                    <input type="text" id="phone" name="phone" required><br><br>
+
+                    <button type="submit" id="submitBtn">Submit</button>
+                  </form>
+                </div>
+              </div>
+
+              <!-- CSS for Modal -->
+              <style>
+              .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.4);
+                padding-top: 60px;
+              }
+
+              .modal-content {
+                background-color: #fefefe;
+                margin: 5% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+              }
+
+              .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+              }
+
+              .close:hover,
+              .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+              }
+              </style>
+              <script>
+                // Get the modal, buttons, and close span
+                var modal = document.getElementById("myModal");
+                var btn = document.getElementById("openModalBtn");
+                var span = document.getElementsByClassName("close")[0];
+                var form = document.getElementById("studentForm");
+
+                // Open the modal when the button is clicked
+                btn.onclick = function() {
+                  modal.style.display = "block";
+                }
+
+                // Close the modal when the user clicks on <span> (x)
+                span.onclick = function() {
+                  modal.style.display = "none";
+                }
+
+                // Close the modal if the user clicks outside of the modal content
+                window.onclick = function(event) {
+                  if (event.target == modal) {
+                    modal.style.display = "none";
+                  }
+                }
+
+                // Submit the form using AJAX
+                form.onsubmit = function(event) {
+                  event.preventDefault();  // Prevent form from submitting the normal way
+
+                  // Collect the form data
+                  var formData = new FormData(form);
+
+                  // Create an AJAX request
+                  var xhr = new XMLHttpRequest();
+                  xhr.open("POST", "add_student.php", true);
+                  xhr.onload = function() {
+                    if (xhr.status === 200) {
+                      alert("Student data added successfully!");
+                      modal.style.display = "none";  // Close the modal
+                      form.reset();  // Reset the form
+                    } else {
+                      alert("Error occurred: " + xhr.statusText);
+                    }
+                  };
+
+                  // Send the form data to PHP
+                  xhr.send(formData);
+                };
+                </script>
+
             </div>
-        </div>
+          </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
