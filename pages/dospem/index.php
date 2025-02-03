@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,35 +33,29 @@
   <link rel="stylesheet" href="../../assets/css/css/dospem/dospem.css">
   <style>
     .card-backgroun {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('../../assets/img/guide.png');
-    background-repeat: no-repeat;
-    background-size: 50%;
-    background-position: left;
-    z-index: 1;
-}
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('../../assets/img/guide.png');
+      background-repeat: no-repeat;
+      background-size: 50%;
+      background-position: left;
+      z-index: 1;
+    }
 
-.card-backgroun:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(115, 38, 38, 0); /* Warna dark blue dengan opacity */
-    z-index: 2;
-}
-
-.card-dark-blue {
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
+    .card-backgroun:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(115, 38, 38, 0);
+      /* Warna dark blue dengan opacity */
+      z-index: 2;
+    }
     .link {
       text-decoration: none;
       color: inherit;
@@ -144,28 +146,17 @@
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="../../Template/skydash/images/faces/face28.jpg" alt="profile" />
+              <img alt="" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="ti-settings text-primary"></i>
-                Settings
-              </a>
               <a class="dropdown-item">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
             </div>
           </li>
-          <li class="nav-item nav-settings d-none d-lg-flex">
-            <a class="nav-link" href="#">
-              <i class="icon-ellipsis"></i>
-            </a>
-          </li>
+
         </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-          <span class="icon-menu"></span>
-        </button>
       </div>
     </nav>
     <!-- partial -->
@@ -333,38 +324,37 @@
           <li class="nav-item">
             <a class="nav-link" href="alurpanduan.php">
               <i class="icon-paper menu-icon"></i>
-              <span class="menu-title">Alur Panduan </span>
+              <span class="menu-title">Alur Panduan</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="javascript:void(0);" data-target="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link"
+              data-toggle="collapse" href="javascript:void(0);" data-target="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="icon-layout menu-icon"></i>
               <span class="menu-title">Dokumen Persyaratan</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="dokumenSempro.php">Seminar Proposal</a></li>
-                <li class="nav-item"> <a class="nav-link" href="dokumenUjian.php">Ujian Akhir</a></li>
+                <li class="nav-item">
+                  <a class="nav-link" href="dokumenSempro.php">Seminar Proposal</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="dokumenUjian.php">Ujian Akhir</a>
+                </li>
               </ul>
             </div>
           </li>
-
           <li class="nav-item">
             <a class="nav-link" href="daftarmahasiswa.php">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Daftar Mahasiswa</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="documentation.php">
-              <i class="icon-paper menu-icon"></i>
-              <span class="menu-title">Documentation</span>
-            </a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="../../Template/skydash/pages/samples/login.html">
-              <i class="ti-power-off  menu-icon"></i>
+              <i class="ti-power-off menu-icon"></i>
               <span class="menu-title">Logout</span>
             </a>
           </li>
@@ -385,136 +375,122 @@
             </div>
           </div>
           <!--BOX-->
-          
+          <div class="col-md-8 grid-margin transparent">
+            <div class="row">
+              <!-- First row -->
+              <div class="col-md-4 mb-4 stretch-card transparent">
+                <div class="card card-light-blue">
+                  <a href="alurpanduan.php" class="link">
+                    <div class="card-backgroun"></div>
+                    <div class="card-body" style="display: flex;">
+                      <i class=" menu-icon" style="margin-right: 10px;"></i>
+                      <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Alur dan Panduan</span>
+                    </div>
+                </div>
+                </a>
+              </div>
+              <div class="col-md-4 mb-4 stretch-card transparent">
+                <div class="card card-light-blue">
+                  <a href="dokumenSempro.php" class="link">
+                    <div class="card-background1"></div>
+                    <div class="card-body" style="display: flex;">
+                      <i class=" menu-icon" style="margin-right: 10px;"></i>
+                      <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Dokumen Seminar Proposal</span>
+                    </div>
+                </div>
+                </a>
+              </div>
 
+              <div class="col-md-4 mb-4 stretch-card transparent">
+                <div class="card card-tale">
+                  <a href="dokumenUjian.php" class="link">
+                    <div class="card-background1"></div>
+                    <div class="card-body" style="display: flex;">
+                      <i class=" menu-icon" style="margin-right: 10px;"></i>
+                      <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Dokumen Ujian</span>
+                    </div>
+                </div>
+                </a>
+              </div>
 
-            <!-- Right side boxes -->
-            <div class="col-md-8 grid-margin transparent">
-              <div class="row">
-                <!-- First row -->
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-light-blue">
-                    <a href="alurpanduan.php" class="link">
-                      <div class="card-backgroun"></div>
-                      <div class="card-body" style="display: flex;">
-                        <i class=" menu-icon" style="margin-right: 10px;"></i>
-                        <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Alur dan Panduan</span>
-                      </div>
-                  </div>
-                  </a>
+              <!-- Second row -->
+              <div class="col-md-4 mb-4 stretch-card transparent">
+                <div class="card card-light-danger">
+                  <a href="daftarmahasiswa.php" class="link">
+                    <div class="card-background2"></div>
+                    <div class="card-body" style="display: flex;">
+                      <i class=" menu-icon" style="margin-right: 10px;"></i>
+                      <span class="mb-4" style="margin-left:50px; margin-top: 0;">Daftar Mahasiswa</span>
+                    </div>
                 </div>
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-light-blue">
-                    <a href="dokumenSempro.php" class="link">
-                      <div class="card-background1"></div>
-                      <div class="card-body" style="display: flex;">
-                        <i class=" menu-icon" style="margin-right: 10px;"></i>
-                        <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Dokumen Seminar Proposal</span>
-                      </div>
-                  </div>
-                  </a>
-                </div>
+                </a>
+              </div>
 
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-tale">
-                    <a href="dokumenUjian.php" class="link">
-                      <div class="card-background1"></div>
-                      <div class="card-body" style="display: flex;">
-                        <i class=" menu-icon" style="margin-right: 10px;"></i>
-                        <span class="mb-4" style="margin-left:70px; margin-top: 0; ">Dokumen Ujian</span>
-                      </div>
-                  </div>
-                  </a>
+              <div class="col-md-4 mb-4 stretch-card transparent">
+                <div class="card card-light-danger">
+                  <a href="../../Template/skydash/pages/samples/login.html" class="link">
+                    <div class="card-background3"></div>
+                    <div class="card-body" style="display: flex;">
+                      <i class=" menu-icon" style="margin-right: 10px;"></i>
+                      <span class="mb-4" style="margin-left:70px; margin-top: 0;">Logout</span> </span>
+                    </div>
                 </div>
-
-                <!-- Second row -->
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-light-danger">
-                    <a href="daftarmahasiswa.php" class="link">
-                      <div class="card-background2"></div>
-                      <div class="card-body" style="display: flex;">
-                        <i class=" menu-icon" style="margin-right: 10px;"></i>
-                        <span class="mb-4" style="margin-left:50px; margin-top: 0;">Daftar Mahasiswa</span>
-                      </div>
-                  </div>
-                  </a>
-                </div>
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-light-blue">
-                    <a href="documentation.php" class="link">
-                      <div class="card-background4"></div>
-                      <div class="card-body" style="display: flex;">
-                        <i class="menu icon " style="margin-right: 10px;"></i>
-                        <span class="mb-4" style="margin-left:30px; margin-top: 0;">Documentation</span>
-                      </div>
-                  </div>
-                  </a>
-                </div>
-                <div class="col-md-4 mb-4 stretch-card transparent">
-                  <div class="card card-light-danger">
-                    <a href="../../Template/skydash/pages/samples/login.html" class="link">
-                      <div class="card-background3"></div>
-                      <div class="card-body" style="display: flex;">
-                        <i class=" menu-icon" style="margin-right: 10px;"></i>
-                        <span class="mb-4" style="margin-left:70px; margin-top: 0;">Logout</span> </span>
-                      </div>
-                  </div>
-                  </a>
-                </div>
+                </a>
               </div>
             </div>
           </div>
-          <!-- content ends -->
-
-          <!-- partial:partials/_footer.html -->
-          <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                Copyright © 2025.
-                <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-                All rights reserved.
-              </span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                <a href="https://wa.me/628112951003" target="_blank">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-                  +6281 1295 1003
-                </a>
-              </span>
-            </div>
-
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
-            </div>
-          </footer>
-          <!-- partial -->
         </div>
-        <!-- main-panel ends -->
+        <!-- content ends -->
+
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+              Copyright © 2025.
+              <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+              All rights reserved.
+            </span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+              <a href="https://wa.me/628112951003" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                +6281 1295 1003
+              </a>
+            </span>
+          </div>
+
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
+          </div>
+        </footer>
+        <!-- partial -->
       </div>
-      <!-- page-body-wrapper ends -->
+      <!-- main-panel ends -->
     </div>
-    <!-- container-scroller -->
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
 
-    <!-- plugins:js -->
-    <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-    <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
-    <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-    <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
+  <!-- plugins:js -->
+  <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
+  <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
+  <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+  <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="../../Template/skydash/js/off-canvas.js"></script>
-    <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-    <script src="../../Template/skydash/js/../../Template.js"></script>
-    <script src="../../Template/skydash/js/settings.js"></script>
-    <script src="../../Template/skydash/js/todolist.js"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page-->
-    <script src="../../Template/skydash/js/dashboard.js"></script>
-    <script src="../../Template/skydash/s/Chart.roundedBarCharts.js"></script>
-    <!-- End custom js for this page-->
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="../../Template/skydash/js/off-canvas.js"></script>
+  <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
+  <script src="../../Template/skydash/js/../../Template.js"></script>
+  <script src="../../Template/skydash/js/settings.js"></script>
+  <script src="../../Template/skydash/js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="../../Template/skydash/js/dashboard.js"></script>
+  <script src="../../Template/skydash/s/Chart.roundedBarCharts.js"></script>
+  <!-- End custom js for this page-->
 </body>
 
 </html>

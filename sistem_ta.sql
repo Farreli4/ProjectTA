@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 24, 2025 at 09:37 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Feb 03, 2025 at 03:25 AM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 8.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,7 +34,7 @@ CREATE TABLE `admin` (
   `password` varchar(25) NOT NULL,
   `nomor_telepon` varchar(25) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -51,7 +51,14 @@ CREATE TABLE `dosen_pembimbing` (
   `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `nip` varchar(255) NOT NULL,
   `prodi` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `dosen_pembimbing`
+--
+
+INSERT INTO `dosen_pembimbing` (`id_dosen`, `nama_dosen`, `username`, `pass`, `nomor_telepon`, `create_at`, `nip`, `prodi`) VALUES
+(1, 'dosen\r\n', 'dosen1', 'dosen', '085', '2025-02-03 02:03:14', '2676478762574', 'PTIK');
 
 -- --------------------------------------------------------
 
@@ -73,17 +80,20 @@ CREATE TABLE `mahasiswa` (
   `bukti_transkip` blob NOT NULL,
   `sistem_magang` blob NOT NULL,
   `nomor_telepon` varchar(25) NOT NULL,
-  `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `tema` varchar(255) NOT NULL,
+  `judul` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mahasiswa`
 --
 
-INSERT INTO `mahasiswa` (`id_mahasiswa`, `nama_mahasiswa`, `username`, `pass`, `nim`, `prodi`, `kelas`, `form_pendaftaran`, `form_persetujuan`, `bukti_pembayaran`, `bukti_transkip`, `sistem_magang`, `nomor_telepon`, `create_at`) VALUES
-(1, 'Rai', '', '', 'K3522064', '', '', '', NULL, 0x30, 0x30, 0x30, '', '2025-01-22 02:00:40'),
-(2, 'Izza', '', '', 'K3533029', '', '', '', NULL, 0x30, 0x30, 0x30, '', '2025-01-22 07:35:32'),
-(3, 'Nur', '', '', 'K3522078', '', '', '', NULL, 0x30, 0x30, 0x30, '', '2025-01-22 09:09:32');
+INSERT INTO `mahasiswa` (`id_mahasiswa`, `nama_mahasiswa`, `username`, `pass`, `nim`, `prodi`, `kelas`, `form_pendaftaran`, `form_persetujuan`, `bukti_pembayaran`, `bukti_transkip`, `sistem_magang`, `nomor_telepon`, `create_at`, `tema`, `judul`) VALUES
+(1, 'Rai', '', '', 'K3522064', '', '', '', NULL, 0x30, 0x30, 0x30, '', '2025-01-22 02:00:40', '', ''),
+(2, 'farel', '', '', 'K3533029', 'PTIK', 'A', '', NULL, 0x30, 0x30, 0x30, '', '2025-01-31 02:46:52', 'Game3d', 'Pembuatan game3d berbasis blender\r\n'),
+(3, 'Nur', '', '', 'K3522078', '', '', '', NULL, 0x30, 0x30, 0x30, '', '2025-01-22 09:09:32', '', ''),
+(4, 'Zidan', '', '', 'K3522085', 'PTIK', 'A', '', NULL, '', '', '', '085729360001', '2025-01-31 02:36:41', 'Pemrograman', 'Pemrograman web menggunakan php');
 
 -- --------------------------------------------------------
 
@@ -102,16 +112,17 @@ CREATE TABLE `seminar_proposal` (
   `status_seminar` enum('dijadwalkan','ditunda','selesai') NOT NULL,
   `tanggal_seminar` date NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `seminar_proposal`
 --
 
 INSERT INTO `seminar_proposal` (`id_mahasiswa`, `dosen_pembimbing`, `penyaji_seminar`, `kehadiran`, `sppsp`, `lbta`, `tanggal_disetujui`, `status_seminar`, `tanggal_seminar`, `create_at`) VALUES
-(1, '', 'Rai', 0, '', '', '2004-06-16', 'ditunda', '2004-06-18', '2025-01-24 07:06:01'),
+(1, '', 'Rai', 0, '', '', '2004-06-16', 'ditunda', '2004-06-18', '2025-01-27 04:14:39'),
 (2, 'nama_dosen1', 'Izza', 0, '', '', '0000-00-00', 'dijadwalkan', '2020-10-23', '2025-01-24 03:43:16'),
-(3, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'dijadwalkan', '2025-01-24', '2025-01-24 04:13:03');
+(3, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'dijadwalkan', '2025-01-24', '2025-01-24 04:13:03'),
+(4, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'selesai', '2025-02-03', '2025-02-03 01:55:58');
 
 -- --------------------------------------------------------
 
@@ -132,14 +143,15 @@ CREATE TABLE `tugas_akhir` (
   `tanggal_pengajuan` date NOT NULL,
   `tanggal_disetujui` date NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tugas_akhir`
 --
 
 INSERT INTO `tugas_akhir` (`id_mahasiswa`, `id_ta`, `tema`, `judul`, `alasan`, `tujuan`, `file_ta`, `status_pengajuan`, `status_tanggapan`, `tanggal_pengajuan`, `tanggal_disetujui`, `create_at`) VALUES
-(1, 1, '', '', '', '', '', 'Disetujui', 0, '0000-00-00', '0000-00-00', '2025-01-22 08:59:26'),
+(3, 0, '', '', '', '', '', 'Ditolak', 0, '0000-00-00', '0000-00-00', '2025-01-27 04:14:20'),
+(1, 1, '', '', '', '', '', 'Disetujui', 0, '0000-00-00', '0000-00-00', '2025-01-24 08:49:12'),
 (2, 2, '', '', '', '', '', 'Revisi', 1, '0000-00-00', '2003-12-13', '2025-01-22 09:06:57');
 
 -- --------------------------------------------------------
@@ -159,14 +171,14 @@ CREATE TABLE `ujian` (
   `penguji` enum('nama_dosen1','nama_dosen2','nama_dosen3') DEFAULT NULL,
   `nilai` int(100) DEFAULT NULL,
   `status_ujian` enum('dijadwalkan','selesai') DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `ujian`
 --
 
 INSERT INTO `ujian` (`id_mahasiswa`, `id_ujian`, `pernyataan_persetujuan`, `tanggal_disetujui`, `tanggal_ujian`, `pembimbing`, `lbta`, `penguji`, `nilai`, `status_ujian`) VALUES
-(1, 0, NULL, NULL, '2025-01-24', NULL, NULL, NULL, NULL, 'selesai');
+(1, 0, NULL, NULL, '2025-01-24', NULL, NULL, NULL, NULL, 'dijadwalkan');
 
 --
 -- Indexes for dumped tables
@@ -224,13 +236,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `dosen_pembimbing`
 --
 ALTER TABLE `dosen_pembimbing`
-  MODIFY `id_dosen` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_dosen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id_mahasiswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_mahasiswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

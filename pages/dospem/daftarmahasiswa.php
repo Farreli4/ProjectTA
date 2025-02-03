@@ -292,12 +292,11 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="javascript:void(0);" data-target="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                             <i class="icon-layout menu-icon"></i>
-                            <span class="menu-title">Dokumen</span>
+                            <span class="menu-title">Dokumen Persyaratan</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="dokumenSempro.php">Seminar Proposal</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="dokumenUjian.php">Ujian Akhir</a></li>
                             </ul>
@@ -308,12 +307,6 @@
                         <a class="nav-link" href="daftarmahasiswa.php">
                             <i class="icon-head menu-icon"></i>
                             <span class="menu-title">Daftar Mahasiswa</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="documentation.php">
-                            <i class="icon-paper menu-icon"></i>
-                            <span class="menu-title">Documentation</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -352,7 +345,7 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Name</th>
+                                                <th>Nama</th>
                                                 <th>Nim</th>
                                                 <th>Prodi</th>
                                                 <th>Kelas</th>
@@ -362,33 +355,24 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="py-1">
-                                                    <img src="../../assets/css/img/orang.png" alt="img" />
-                                                </td>
-                                                <td>
-                                                    Herman Beck
-                                                </td>
-                                                <td>
-                                                    ...
-                                                </td>
-                                                <td>
-                                                    ...
-                                                </td>
-                                                <td>
-                                                    A
-                                                </td>
-                                                <td>
-                                                    +62857729423678
-                                                </td>
-                                                <td>
-                                                    ...
-                                                </td>
-                                                <td>
-                                                    ...
-                                                </td>
-                                            </tr>
+                                            <?php
+                                            $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
+                                            $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, kelas, nomor_telepon, tema, judul FROM mahasiswa WHERE 1";
+                                            $result = $conn->query($sql1);
 
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                echo "<tr>";
+                                                echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                                                echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                                                echo "<td>" . $row['nim'] . "</td>";
+                                                echo "<td>" . $row['prodi'] . "</td>";
+                                                echo "<td>" . $row['kelas'] . "</td>";
+                                                echo "<td>" . $row['nomor_telepon'] . "</td>";
+                                                echo "<td>" . $row['tema'] . "</td>";
+                                                echo "<td>" . $row['judul'] . "</td>";
+                                            }
+                                            $conn->close();
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>

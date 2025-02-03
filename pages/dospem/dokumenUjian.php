@@ -308,12 +308,7 @@
               <span class="menu-title">Daftar Mahasiswa</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="documentation.php">
-              <i class="icon-paper menu-icon"></i>
-              <span class="menu-title">Documentation</span>
-            </a>
-          </li>
+          
           <li class="nav-item">
             <a class="nav-link" href="../../Template/skydash/pages/samples/login.html">
               <i class="ti-power-off  menu-icon"></i>
@@ -348,7 +343,7 @@
                   <table id="example" class="display expandable-table" style="width:100%">
                     <thead>
                       <tr>
-                        <th>ID</th>
+                        <th>No</th>
                         <th>Nama</th>
                         <th>Nim</th>
                         <th>Doc</th>
