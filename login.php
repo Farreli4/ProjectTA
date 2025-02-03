@@ -1,168 +1,171 @@
+<?php
+session_start();
+include 'config/connection.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $password = mysqli_real_escape_string($conn, $_POST['pass']);
+
+    // Aktifkan debugging error
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+
+    // Query untuk mencocokkan username dan password
+    // Pastikan Anda melakukan hash password jika diperlukan
+    $query = "SELECT * FROM dosen_pembimbing WHERE username='$username' AND pass='$password'";
+    $result = mysqli_query($conn, $query);
+
+    if (!$result) {
+        $error = "Query error: " . mysqli_error($conn);
+    } else if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION['username'] = $row['username'];
+        $_SESSION['role'] = $row['role']; // simpan role ke session jika diperlukan
+
+        // Redirect berdasarkan role
+        if ($row['role'] === 'admin') {
+            $redirectUrl = "../../pages/admin/index.php";
+        } elseif ($row['role'] === 'dospem') {
+            $redirectUrl = "../../pages/dospem/index.php";
+        } elseif ($row['role'] === 'user') {
+            $redirectUrl = "../../pages/user/index.php";
+        } else {
+            // Jika role tidak dikenali, arahkan ke halaman default atau tampilkan error
+            $redirectUrl = "index.php";
+        }
+
+        if (!headers_sent()) {
+            header("Location: " . $redirectUrl);
+            exit();
+        } else {
+            echo "Headers already sent. Using JavaScript redirect...";
+            echo "<script>window.location.href = '$redirectUrl';</script>";
+            exit();
+        }
+    } else {
+        $error = "Username atau Password salah!";
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
-  <!-- plugins:css -->
-  <link rel="stylesheet" href="Template/skydash/vendors/feather/feather.css">
-  <link rel="stylesheet" href="Template/skydash/vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="Template/skydash/vendors/css/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- Plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <link rel="stylesheet" href="Template/skydash/css/vertical-layout-light/style.css">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="Template/skydash/images/favicon.png" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Dosen Pembimbing</title>
+    <link rel="stylesheet" href="Template/skydash/vendors/feather/feather.css">
+    <link rel="stylesheet" href="Template/skydash/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="Template/skydash/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="Template/skydash/css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="assets/css/css/dospem/dospem.css">
+    <link rel="shortcut icon" href="Template/skydash/images/favicon.png" />
+    <style>
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .password-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .password-toggle label {
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .form-control {
+            border-radius: 25px !important;
+        }
+
+        .btn-login {
+            background-color: #4c6ef5 !important;
+            border-radius: 25px !important;
+            padding: 12px !important;
+            font-size: 16px !important;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            max-width: 300px;
+            height: auto;
+        }
+    </style>
 </head>
 
-<body>
-  <div class="container-scroller">
-    <div class="container-fluid page-body-wrapper full-page-wrapper">
-      <div class="content-wrapper d-flex align-items-center auth px-0">
-        <div class="row w-100 mx-0">
-          <div class="col-lg-4 mx-auto">
-            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-              <div class="brand-logo">
-                <img src="../../Template/skydash/Template/skydash/images/logo.svg" alt="logo">
-              </div>
-              <h4>Hello! let's get started</h4>
-              <h6 class="font-weight-light">Sign in to continue.</h6>
-              <form class="pt-3">
-                <div class="form-group">
-                  <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username">
-                </div>
-                <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
-                </div>
-                <div class="mt-3">
-                  <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../Template/skydash/Template/skydash/index.html">SIGN IN</a>
-                </div>
-                <div class="my-2 d-flex justify-content-between align-items-center">
-                  <div class="form-check">
-                    <label class="form-check-label text-muted">
-                      <input type="checkbox" class="form-check-input">
-                      Keep me signed in
-                    </label>
-                  </div>
-                  <a href="#" class="auth-link text-black">Forgot password?</a>
-                </div>
-                <div class="mb-2">
-                  <button type="button" class="btn btn-block btn-facebook auth-form-btn">
-                    <i class="ti-facebook mr-2"></i>Connect using facebook
-                  </button>
-                </div>
-                <div class="text-center mt-4 font-weight-light">
-                  Don't have an account? <a href="register.html" class="text-primary">Create</a>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- content-wrapper ends -->
-    </div>
-    <!-- page-body-wrapper ends -->
-  </div>
-  <!-- container-scroller -->
-  <!-- plugins:js -->
-  <script src="Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="Template/skydash/js/off-canvas.js"></script>
-  <script src="Template/skydash/js/hoverable-collapse.js"></script>
-  <script src="Template/skydash/js/template.js"></script>
-  <script src="Template/skydash/js/settings.js"></script>
-  <script src="Template/skydash/js/todolist.js"></script>
-  <!-- endinject -->
-</body>
-
-</html>
-=======
-  <title>Dosen Pembimbing </title>
-  <!-- plugins:css -->
-  <link rel="stylesheet" href="../../Template/skydash/Template/skydash/Template/skydash/vendors/feather/feather.css">
-  <link rel="stylesheet" href="../../Template/skydash/Template/skydash/Template/skydash/vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="../../Template/skydash/Template/skydash/Template/skydash/vendors/css/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- Plugin css for this page -->
-  <link rel="stylesheet" href="../../Template/skydash/Template/skydash/Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
-  <link rel="stylesheet" href="../../Template/skydash/Template/skydash/Template/skydash/vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" type="text/css" href="../../Template/skydash/Template/skydash/Template/skydash/js/select.dataTables.min.css">
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <link rel="stylesheet" href="../../Template/skydash/Template/skydash/Template/skydash/css/vertical-layout-light/style.css">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="../../Template/skydash/Template/skydash/Template/skydash/images/favicon.png" />
-</head>
-
-<body>
+<body style="background-color: white;">
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
             <div class="content-wrapper d-flex align-items-center auth px-0">
                 <div class="row w-100 mx-0">
                     <div class="col-lg-4 mx-auto">
-                        <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-                            <div class="brand-logo">
-                                <img src="../../Template/skydash/Template/skydash/images/logo.svg" alt="logo">
+                        <div class="auth-form-light text-left py-5 px-4 px-sm-5 login-container logo-container">
+                            <div class="logo-container">
+                                <img src="assets/img/logo2.png" alt="Logo">
                             </div>
-                            <h4>Hello! let's get started</h4>
-                            <h6 class="font-weight-light">Sign in to continue.</h6>
-                            <form class="pt-3">
+                            <h4 class="logo-container">Sistem Informasi Tugas Akhir !</h4>
+
+                            <?php if (isset($error)) : ?>
+                                <div class="alert alert-danger"><?php echo $error; ?></div>
+                            <?php endif; ?>
+
+                            <form class="pt-3" method="POST">
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username">
+                                    <input type="text" class="form-control form-control-lg" name="username" placeholder="Masukan Akun" required>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
+                                    <input type="password" class="form-control form-control-lg" name="pass" id="password" placeholder="Password" required>
                                 </div>
-                                <div class="mt-3">
-                                    <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../Template/skydash/Template/skydash/index.html">SIGN IN</a>
+                                <div class="password-toggle">
+                                    <input type="checkbox" id="showPassword" onclick="togglePassword()">
+                                    <label for="showPassword">Show Password</label>
                                 </div>
-                                <div class="my-2 d-flex justify-content-between align-items-center">
-                                    <div class="form-check">
-                                        <label class="form-check-label text-muted">
-                                            <input type="checkbox" class="form-check-input">
-                                            Keep me signed in
-                                        </label>
-                                    </div>
-                                    <a href="#" class="auth-link text-black">Forgot password?</a>
+                                <div class="form-group">
+                                    <div class="g-recaptcha" data-sitekey="6Ldxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"></div>
                                 </div>
-                                <div class="mb-2">
-                                    <button type="button" class="btn btn-block btn-facebook auth-form-btn">
-                                        <i class="ti-facebook mr-2"></i>Connect using facebook
-                                    </button>
-                                </div>
-                                <div class="text-center mt-4 font-weight-light">
-                                    Don't have an account? <a href="register.html" class="text-primary">Create</a>
-                                </div>
+                                <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn w-100 btn-login">Login</button>
                             </form>
+
+                            <!-- Add Google reCAPTCHA -->
+                            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+                            <script>
+                                function togglePassword() {
+                                    const passwordInput = document.getElementById('password');
+                                    const showPassword = document.getElementById('showPassword');
+
+                                    if (showPassword.checked) {
+                                        passwordInput.type = 'text';
+                                    } else {
+                                        passwordInput.type = 'password';
+                                    }
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- content-wrapper ends -->
         </div>
-        <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="../../Template/skydash/Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="../../Template/skydash/Template/skydash/js/off-canvas.js"></script>
-    <script src="../../Template/skydash/Template/skydash/js/hoverable-collapse.js"></script>
-    <script src="../../Template/skydash/Template/skydash/js/../../Template/skydash/Template/skydash/Template.js"></script>
-    <script src="../../Template/skydash/Template/skydash/js/settings.js"></script>
-    <script src="../../Template/skydash/Template/skydash/js/todolist.js"></script>
-    <!-- endinject -->
+
+    <script src="Template/skydash/vendors/js/vendor.bundle.base.js"></script>
 </body>
 
 </html>
->>>>>>> 92252735daa2f858beb52e538afcef9ad660a9dc

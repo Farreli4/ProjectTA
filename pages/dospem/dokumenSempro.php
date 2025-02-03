@@ -311,7 +311,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../../Template/skydash/pages/samples/login.html">
+            <a class="nav-link" href="../../index.php">
               <i class="ti-power-off  menu-icon"></i>
               <span class="menu-title">Logout</span>
             </a>
