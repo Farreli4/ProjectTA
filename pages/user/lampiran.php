@@ -45,6 +45,7 @@ $fileMetadata = [
   <link rel="stylesheet" href="../../assets/css/css/user.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="../../assets/css/user/lampiran.css"/>
 
 </head>
 
@@ -154,7 +155,7 @@ $fileMetadata = [
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
+              <i class="icon-layout menu-icon"></i>
               <span class="menu-title">Pengajuan</span>
               <i class="menu-arrow"></i>
             </a>
@@ -175,7 +176,7 @@ $fileMetadata = [
           </li>
           <li class="nav-item">
             <a class="nav-link" href="lampiran.php">
-              <i class="icon-columns menu-icon"></i>
+              <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Lampiran</span>
             </a>
           </li>

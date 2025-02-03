@@ -1,0 +1,147 @@
+/* Base table styles */
+.file-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+.file-table th,
+.file-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.file-table th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+}
+
+/* Upload button styles */
+.upload-btn {
+    background-color: #6c63ff;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.upload-btn:hover {
+    background-color: #5a52d5;
+}
+
+/* Status styles */
+.status {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.status-revisi {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-lulus {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-tolak {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Download button styles */
+.download-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.download-btn:hover {
+    background-color: #0056b3;
+    text-decoration: none;
+    color: white;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .file-table {
+        font-size: 14px;
+    }
+
+    .file-table th,
+    .file-table td {
+        padding: 8px;
+    }
+
+    .upload-btn,
+    .download-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .status {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .file-table {
+        font-size: 12px;
+    }
+
+    .file-table th,
+    .file-table td {
+        padding: 6px;
+    }
+
+    .upload-btn,
+    .download-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    .status {
+        padding: 3px 6px;
+        font-size: 11px;
+    }
+}
+
+/* Container responsiveness */
+.upload-container {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
+/* Requirements list responsiveness */
+.requirements-list {
+    padding-left: 20px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+@media screen and (max-width: 768px) {
+    .requirements-list {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .requirements-list {
+        font-size: 12px;
+    }
+}
