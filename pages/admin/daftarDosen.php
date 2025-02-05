@@ -390,6 +390,188 @@
                   </div>
                   </div>
                 </div>
+                
+                </div>
+              <button id="openModalBtn" class="btn btn-primary">Add Data</button>
+
+              <div id="myModal" class="modal">
+                <div class="modal-content">
+                  <span class="close">&times;</span>
+                  <h2>Add Data Dosen</h2>
+                  <form id="studentForm">
+                    <div class="form-group">
+                      <label for="name">Name:</label>
+                      <input type="text" id="name" name="nama_dosen" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="nim">NIP:</label>
+                      <input type="text" id="nim" name="nip" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="program">Program Studi:</label>
+                      <input type="text" id="program" name="prodi" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="phone">Phone Number:</label>
+                      <input type="text" id="phone" name="nomor_telepon" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="username">Username:</label>
+                      <input type="text" id="username" name="username" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="pass">Password:</label>
+                      <input type="password" id="pass" name="pass" required>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn-submit">Submit</button>
+                  </form>
+                </div>
+              </div>
+
+              <style>
+                /* Styling untuk modal */
+                .modal {
+                  display: none;
+                  position: fixed;
+                  z-index: 1;
+                  left: 0;
+                  top: 0;
+                  width: 100%;
+                  height: 100%;
+                  overflow: auto;
+                  background-color: rgba(0, 0, 0, 0.5);
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                }
+
+                .modal-content {
+                  background-color: #fff;
+                  padding: 20px;
+                  border-radius: 8px;
+                  width: 50%;
+                  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+                }
+
+                .close {
+                  color: #555;
+                  float: right;
+                  font-size: 24px;
+                  font-weight: bold;
+                  cursor: pointer;
+                }
+
+                .close:hover {
+                  color: red;
+                }
+
+                /* Styling untuk form */
+                .form-group {
+                  display: flex;
+                  flex-direction: column;
+                  margin-bottom: 10px;
+                }
+
+                label {
+                  font-weight: bold;
+                  margin-bottom: 5px;
+                }
+
+                input {
+                  padding: 8px;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                  width: 100%;
+                  outline: none; /* Menghilangkan border bawaan browser */
+                  transition: border 0.3s ease-in-out;
+                }
+
+                /* Saat input dalam keadaan aktif (focus) */
+                input:focus {
+                  border: 2px solid #007bff; /* Border tetap muncul dengan warna biru */
+                  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5); /* Efek glow */
+                }
+
+                .btn-submit {
+                  background-color: #007bff;
+                  color: white;
+                  padding: 10px;
+                  border: none;
+                  border-radius: 5px;
+                  cursor: pointer;
+                  width: 100%;
+                  font-size: 16px;
+                }
+
+                .btn-submit:hover {
+                  background-color: #0056b3;
+                }
+              </style>
+
+              <script>
+                document.getElementById("openModalBtn").onclick = function() {
+                  document.getElementById("myModal").style.display = "flex";
+                }
+
+                document.querySelector(".close").onclick = function() {
+                  document.getElementById("myModal").style.display = "none";
+                }
+
+                window.onclick = function(event) {
+                  if (event.target == document.getElementById("myModal")) {
+                    document.getElementById("myModal").style.display = "none";
+                  }
+                }
+
+                document.getElementById("studentForm").onsubmit = function(event) {
+                  event.preventDefault();
+
+                  var name = document.getElementById("name").value;
+                  var nim = document.getElementById("nim").value;
+                  var phone = document.getElementById("phone").value;
+
+                  console.log('Form data:', {name, nim, phone});
+
+                  if (name === "" || nim === "" || phone === "") {
+                    alert("Please fill in all fields.");
+                    return;
+                  }
+
+                  var phoneRegex = /^[0-9]{10,15}$/;
+                  if (!phoneRegex.test(phone)) {
+                    alert("Please enter a valid phone number.");
+                    return;
+                  }
+
+                  var formData = new FormData(document.getElementById("studentForm"));
+
+                  var xhr = new XMLHttpRequest();
+                  xhr.open("POST", "addDosen.php", true);
+                  xhr.onload = function() {
+                    console.log('Response from PHP:', xhr.responseText);
+                    if (xhr.status === 200) {
+                      alert("Data added successfully!");
+                      document.getElementById("myModal").style.display = "none";
+                      document.getElementById("studentForm").reset();
+                    } else {
+                      alert("Error: " + xhr.statusText);
+                    }
+                  };
+
+                  xhr.onerror = function() {
+                    alert("An error occurred during the request. Please try again.");
+                  };
+
+                  // Send form data to PHP script
+                  xhr.send(formData);
+                };
+              </script>
 
                 
               </div>
