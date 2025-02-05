@@ -1,16 +1,22 @@
 <?php
 include '../../config/connection.php';
 
-
 $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
 if (isset($_POST['id_mahasiswa']) && isset($_POST['status_ujian'])) {
     $id_mahasiswa = $_POST['id_mahasiswa'];
     $status_ujian = $_POST['status_ujian'];
 
+    var_dump($_POST);
+
     $valid_statuses = ['dijadwalkan', 'selesai'];
     if (!in_array($status_ujian, $valid_statuses)) {
         echo "Invalid status value.";
+        exit;
+    }
+
+    if (empty($id_mahasiswa) || $id_mahasiswa == 0) {
+        echo "Error: id_mahasiswa is invalid.";
         exit;
     }
 
@@ -32,7 +38,7 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_ujian'])) {
 
     $check_sql = "SELECT id_mahasiswa FROM ujian WHERE id_mahasiswa = ?";
     $check_stmt = $conn->prepare($check_sql);
-    
+
     if ($check_stmt === false) {
         die("Error preparing check statement: " . $conn->error);
     }
@@ -59,14 +65,14 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_ujian'])) {
 
         $stmt->close();
     } else {
-        $sql = "INSERT INTO ujian (id_mahasiswa, status_ujian) VALUES (?, ?)";
+        $sql = "INSERT INTO ujian (status_ujian) VALUES (?)";
         $stmt = $conn->prepare($sql);
 
         if ($stmt === false) {
             die("Error preparing statement: " . $conn->error);
         }
 
-        $stmt->bind_param("is", $id_mahasiswa, $status_ujian);
+        $stmt->bind_param("s", $status_ujian);
 
         if ($stmt->execute()) {
             echo "Status added successfully.";
