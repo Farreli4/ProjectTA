@@ -25,8 +25,11 @@
   <link rel="stylesheet" type="text/css" href="../../assets/css/css/admin/mahasiswa.css">
   <link rel="stylesheet" href="../../assets/css/css/admin/mahasiswa.css">
   <!-- Add these before closing </body> tag -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- jQuery and Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -38,7 +41,7 @@
         <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../Template/skydash/images/Logo.webp" alt="logo"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="collapse" data-target="#sidebar">
           <span class="icon-menu"></span>
         </button>
         <ul class="navbar-nav mr-lg-2">
@@ -403,121 +406,126 @@
                   </div>
                 </div>
               </div>
-              <!-- Button to trigger modal -->
               <button id="openModalBtn" class="btn btn-primary">Add Data</button>
 
-              <!-- Modal (Popup with Form) -->
               <div id="myModal" class="modal">
                 <div class="modal-content">
                   <span class="close">&times;</span>
                   <h2>Add Student Data</h2>
-                  <!-- Form inside the modal -->
                   <form id="studentForm">
                     <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required><br><br>
+                    <input type="text" id="name" name="nama_mahasiswa" required><br><br>
                     
                     <label for="nim">NIM:</label>
                     <input type="text" id="nim" name="nim" required><br><br>
                     
                     <label for="program">Program Studi:</label>
-                    <input type="text" id="program" name="program" required><br><br>
+                    <input type="text" id="program" name="prodi" required><br><br>
                     
                     <label for="class">Class:</label>
-                    <input type="text" id="class" name="class" required><br><br>
+                    <input type="text" id="class" name="kelas" required><br><br>
                     
                     <label for="phone">Phone Number:</label>
-                    <input type="text" id="phone" name="phone" required><br><br>
+                    <input type="text" id="phone" name="nomor_telepon" required><br><br>
+
+                    <label for="pass">Password:</label>
+                    <input type="password" id="pass" name="pass" required><br><br>
 
                     <button type="submit" id="submitBtn">Submit</button>
                   </form>
                 </div>
               </div>
 
-              <!-- CSS for Modal -->
               <style>
-              .modal {
-                display: none;
-                position: fixed;
-                z-index: 1;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.4);
-                padding-top: 60px;
-              }
+                .modal {
+                  display: none;
+                  position: relative;
+                  z-index: 1;
+                  left: 0;
+                  top: 0;
+                  width: 100%;
+                  height: 100%;
+                  overflow: auto;
+                  background-color: rgba(0, 0, 0, 0.4);
+                  padding-top: 60px;
+                }
 
-              .modal-content {
-                background-color: #fefefe;
-                margin: 5% auto;
-                padding: 20px;
-                border: 1px solid #888;
-                width: 80%;
-              }
+                .modal-content {
+                  background-color: #fefefe;
+                  margin: 5% auto;
+                  padding: 20px;
+                  border: 1px solid #888;
+                  width: 80%;
+                }
 
-              .close {
-                color: #aaa;
-                float: right;
-                font-size: 28px;
-                font-weight: bold;
-              }
+                .close {
+                  color: #aaa;
+                  float: right;
+                  font-size: 28px;
+                  font-weight: bold;
+                }
 
-              .close:hover,
-              .close:focus {
-                color: black;
-                text-decoration: none;
-                cursor: pointer;
-              }
+                .close:hover,
+                .close:focus {
+                  color: black;
+                  text-decoration: none;
+                  cursor: pointer;
+                }
               </style>
+
               <script>
-                // Get the modal, buttons, and close span
-                var modal = document.getElementById("myModal");
-                var btn = document.getElementById("openModalBtn");
-                var span = document.getElementsByClassName("close")[0];
-                var form = document.getElementById("studentForm");
-
-                // Open the modal when the button is clicked
-                btn.onclick = function() {
-                  modal.style.display = "block";
+                document.getElementById("openModalBtn").onclick = function() {
+                  document.getElementById("myModal").style.display = "block";
                 }
 
-                // Close the modal when the user clicks on <span> (x)
-                span.onclick = function() {
-                  modal.style.display = "none";
+                document.getElementsByClassName("close")[0].onclick = function() {
+                  document.getElementById("myModal").style.display = "none";
                 }
 
-                // Close the modal if the user clicks outside of the modal content
-                window.onclick = function(event) {
-                  if (event.target == modal) {
-                    modal.style.display = "none";
+                document.getElementById("studentForm").onsubmit = function(event) {
+                  event.preventDefault();
+
+                  var name = document.getElementById("name").value;
+                  var nim = document.getElementById("nim").value;
+                  var phone = document.getElementById("phone").value;
+
+                  console.log('Form data:', {name, nim, phone});
+
+                  if (name === "" || nim === "" || phone === "") {
+                    alert("Please fill in all fields.");
+                    return;
                   }
-                }
 
-                // Submit the form using AJAX
-                form.onsubmit = function(event) {
-                  event.preventDefault();  // Prevent form from submitting the normal way
+                  var phoneRegex = /^[0-9]{10,15}$/;
+                  if (!phoneRegex.test(phone)) {
+                    alert("Please enter a valid phone number.");
+                    return;
+                  }
 
-                  // Collect the form data
-                  var formData = new FormData(form);
+                  var formData = new FormData(document.getElementById("studentForm"));
 
-                  // Create an AJAX request
                   var xhr = new XMLHttpRequest();
-                  xhr.open("POST", "add_student.php", true);
+                  xhr.open("POST", "addSiswa.php", true);
                   xhr.onload = function() {
+                    console.log('Response from PHP:', xhr.responseText);
                     if (xhr.status === 200) {
-                      alert("Student data added successfully!");
-                      modal.style.display = "none";  // Close the modal
-                      form.reset();  // Reset the form
+                      alert("Data added successfully!");
+                      document.getElementById("myModal").style.display = "none";
+                      document.getElementById("studentForm").reset();
                     } else {
-                      alert("Error occurred: " + xhr.statusText);
+                      alert("Error: " + xhr.statusText);
                     }
                   };
 
-                  // Send the form data to PHP
+                  xhr.onerror = function() {
+                    alert("An error occurred during the request. Please try again.");
+                  };
+
+                  // Send form data to PHP script
                   xhr.send(formData);
                 };
-                </script>
+              </script>
+
 
             </div>
           </div>

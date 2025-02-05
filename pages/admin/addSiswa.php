@@ -11,20 +11,34 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nama = $_POST['nama_mahasiswa'];
-    $username = $_POST['username'];
-    $pass = $_POST['pass'];
-    $nim = $_POST['nim'];
-    $prodi = $_POST['prodi'];
-    $kelas = $_POST['kelas'];
-    $nomor_telepon = $_POST['nomor_telepon'];
+    if (isset($_POST['nama_mahasiswa'], $_POST['nim'], $_POST['prodi'], $_POST['kelas'], $_POST['nomor_telepon'], $_POST['pass'])) {
+        $nama = $_POST['nama_mahasiswa'];
+        $nim = $_POST['nim'];
+        $prodi = $_POST['prodi'];
+        $kelas = $_POST['kelas'];
+        $nomor_telepon = $_POST['nomor_telepon'];
+        $pass = $_POST['pass'];
 
-    $sql = "INSERT INTO users (nama, email) VALUES ('$nama', '$username','$pass','$nim', '$prodi', '$kelas', '$nomor_telepon')";
+        if (empty($nama) || empty($pass) || empty($nim) || empty($prodi) || empty($kelas) || empty($nomor_telepon)) {
+            echo "All fields are required!";
+            exit();
+        }
 
-    if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully!";
+        $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
+
+        $stmt = $conn->prepare("INSERT INTO `mahasiswa`(`nama_mahasiswa`, `pass`, `nim`, `prodi`, `kelas`, `nomor_telepon`) VALUES (?, ?, ?, ?, ?, ?)");
+
+        $stmt->bind_param("ssssss", $nama, $hashed_pass, $nim, $prodi, $kelas, $nomor_telepon);
+
+        if ($stmt->execute()) {
+            echo "New record created successfully!";
+        } else {
+            echo "Error executing statement: " . $stmt->error;
+        }
+
+        $stmt->close();
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Missing required fields!";
     }
 }
 
