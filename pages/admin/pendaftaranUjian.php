@@ -427,9 +427,10 @@
                               <th>ID</th>
                               <th>Nama</th>
                               <th>NIM</th>
-                              <th>Doc</th>
                               <th>Status</th>
                               <th>Nilai</th>
+                              <th>Doc</th>
+                              <th>Jadwal</th>
                               <th>Verifikasi</th>
                               <th></th>
                             </tr>
@@ -438,7 +439,7 @@
                             <?php
                             
                             $conn->connect("127.0.0.1", "root", "", "sistem_ta");
-                            $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, ujian.status_ujian, ujian.nilai
+                            $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, ujian.status_ujian, ujian.nilai, ujian.tanggal_ujian
                             FROM mahasiswa 
                             LEFT JOIN ujian ON mahasiswa.id_mahasiswa = ujian.id_mahasiswa";
                             $result = $conn->query($sql1);
@@ -449,11 +450,6 @@
                               echo "<td>" . $row['id_mahasiswa'] . "</td>";
                               echo "<td>" . $row['nama_mahasiswa'] . "</td>";
                               echo "<td>" . $row['nim'] . "</td>";
-                              echo "<td>";
-                              echo "<a href='#popup'>";
-                              echo "<span class='material-symbols-outlined'>folder_open</span>";
-                              echo "</a>";
-                              echo "</td>";
                             
                               echo "<form action='update_ujian.php' method='POST'>";
                               echo "<td>";
@@ -469,12 +465,20 @@
                               $nilai = isset($row['nilai']) ? $row['nilai'] : '0';
                               echo "<input type='text' id='nilai' name='nilai' value='" . $nilai . "' >";
                               echo "</td>";
-                            
+                              echo "<td>";
+                              echo "<a href='#popup'>";
+                              echo "<span class='material-symbols-outlined'>folder_open</span>";
+                              echo "</a>";
+                              echo "</td>";
+                              echo "<td>";
+                              echo "<input type='date' name='tanggal_ujian' value='" . $row["tanggal_ujian"] . "' required>";
+                              echo "</td>";
                               echo "<td>";
                               echo "<button class='btn btn-inverse-success btn-fw' type='submit'>Verifikasi</button>";
                               echo "</td>";
                           
                               echo "</form>";
+                              
                               echo "</tr>";
                           }
                             

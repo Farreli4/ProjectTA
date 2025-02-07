@@ -27,6 +27,7 @@
     #nonclick{
       pointer-events: none;
     }
+    
   </style>
 </head>
 <body>
@@ -434,7 +435,7 @@
           if ($conn->connect_error) {
               die("Koneksi gagal: " . $conn->connect_error);
           }
-          $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, mahasiswa.prodi, tugas_akhir.tema, tugas_akhir.judul, tugas_akhir.status_pengajuan
+          $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, mahasiswa.prodi, tugas_akhir.tema, tugas_akhir.judul, tugas_akhir.status_pengajuan, tugas_akhir.alasan_revisi
                   FROM mahasiswa 
                   LEFT JOIN tugas_akhir ON mahasiswa.id_mahasiswa = tugas_akhir.id_mahasiswa";
           $result = $conn->query($sql1);
@@ -457,50 +458,51 @@
                                                   <th>Prodi</th>
                                                   <th>Tema</th>
                                                   <th>Judul</th>
-                                                  <th>Doc</th>
                                                   <th>Status</th>
                                                   <th>Updated</th>
                                               </tr>
                                           </thead>
-                                          <tbody>
-                                              <?php
-                                              while ($row = $result->fetch_assoc()) {
-                                                  $status = $row['status_pengajuan'];
-                                                  $btnClass = "btn-light"; // Default
+                                          <?php
+                                            while ($row = $result->fetch_assoc()){
+                                                $status_pengajuan = isset($row['status_pengajuan']) ? $row['status_pengajuan'] : '';
+                                                echo "<tr>";
+                                                echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                                                echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                                                echo "<td>" . $row['nim'] . "</td>";
+                                                echo "<td>" . $row['prodi'] . "</td>";
+                                                echo "<td>" . $row['tema'] . "</td>";
+                                                echo "<td>" . $row['judul'] . "</td>";
+                                                echo "<td>";
+                                                echo "<form action='update_pengajuan.php' method='POST'>";
+                                                echo "<select class='js-example-basic-single w-30' name='status_pengajuan' onchange='changeColor(this); toggleRevisiTextbox(this)' required>";
+                                                
+                                                if (!$row['status_pengajuan']) {
+                                                    echo "<option value='' selected>No data available</option>";
+                                                    echo "<option value='Ditolak'" . ($status_pengajuan == 'Ditolak' ? ' selected' : '') . ">Ditolak</option>";
+                                                    echo "<option value='Revisi'" . ($status_pengajuan == 'Revisi' ? ' selected' : '') . ">Revisi</option>";
+                                                    echo "<option value='Disetujui'" . ($status_pengajuan == 'Disetujui' ? ' selected' : '') . ">Disetujui</option>";
+                                                } else {
+                                                    // If there is data, show the status options
+                                                    echo "<option value='Ditolak'" . ($status_pengajuan == 'Ditolak' ? ' selected' : '') . ">Ditolak</option>";
+                                                    echo "<option value='Revisi'" . ($status_pengajuan == 'Revisi' ? ' selected' : '') . ">Revisi</option>";
+                                                    echo "<option value='Disetujui'" . ($status_pengajuan == 'Disetujui' ? ' selected' : '') . ">Disetujui</option>";
+                                                }
 
-                                                  if ($status == "Revisi") {
-                                                      $btnClass = "btn-warning";
-                                                  } elseif ($status == "Ditolak") {
-                                                      $btnClass = "btn-danger";
-                                                  } elseif ($status == "Disetujui") {
-                                                      $btnClass = "btn-success";
-                                                  }
+                                                echo "</select>";
 
-                                                  echo "<tr>";
-                                                  echo "<td>" . $row['id_mahasiswa'] . "</td>";
-                                                  echo "<td>" . $row['nama_mahasiswa'] . "</td>";
-                                                  echo "<td>" . $row['nim'] . "</td>";
-                                                  echo "<td>" . $row['prodi'] . "</td>";
-                                                  echo "<td>" . $row['tema'] . "</td>";
-                                                  echo "<td>" . $row['judul'] . "</td>";
-                                                  echo "<td><a href='#popup'><span class='material-symbols-outlined'>folder_open</span></a></td>";
-                                                  echo "<td>";
-                                                  echo "<div class='dropdown'>";
-                                                  echo "    <button class='btn $btnClass dropdown-toggle status-btn' type='button' id='statusBtn-" . $row['id_mahasiswa'] . "' data-toggle='dropdown' aria-haspopup='false' aria-expanded='false' data-status='$status' data-id='" . $row['id_mahasiswa'] . "'>";
-                                                  echo        $status;
-                                                  echo "    </button>";
-                                                  echo "    <div class='dropdown-menu'>";
-                                                  echo "        <button class='dropdown-item status-option' data-id='" . $row['id_mahasiswa'] . "' data-status='Revisi'>Revisi</button>";
-                                                  echo "        <button class='dropdown-item status-option' data-id='" . $row['id_mahasiswa'] . "' data-status='Ditolak'>Ditolak</button>";
-                                                  echo "        <button class='dropdown-item status-option' data-id='" . $row['id_mahasiswa'] . "' data-status='Disetujui'>Disetujui</button>";
-                                                  echo "    </div>";
-                                                  echo "</div>";
-                                                  echo "</td>";
-                                                  echo "<td><button class='btn btn-inverse-success btn-fw'>Update</button></td>";
-                                                  echo "</tr>";
-                                              }
-                                              $conn->close();
-                                              ?>
+                                                // Add a textbox that will be shown only if the status is 'Revisi'
+                                                echo "<div id='revisi-textbox' style='display:none;'>";
+                                                echo "<textarea name='alasan_revisi' id='revisi_reason' rows='3'>" . $row['alasan_revisi'] . "</textarea>";
+                                                echo "</div>";
+
+                                                echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
+                                                echo "</td>";
+                                                echo "<td><button class='btn btn-inverse-success btn-fw' type = 'submit'>Update</button></td>";
+                                                echo "</form>";
+                                                echo "</tr>";
+                                            }
+                                            ?>
+
                                           </tbody>
                                       </table>
                                   </div>
@@ -512,44 +514,43 @@
           </div>
 
           <script>
-          document.addEventListener("DOMContentLoaded", function () {
-              document.querySelectorAll(".status-option").forEach(item => {
-                  item.addEventListener("click", function () {
-                      let status = this.getAttribute("data-status");
-                      let id = this.getAttribute("data-id");
-                      let button = document.getElementById("statusBtn-" + id);
+          // This function changes the background color of the select based on the selected value.
+          function changeColor(selectElement) {
+              var selectedValue = selectElement.value;
 
-                      if (button) {
-                          button.innerText = status;
-                          button.setAttribute("data-status", status);
+              if (selectedValue == 'Revisi') {
+                  selectElement.style.backgroundColor = 'rgb(255, 251, 0)'; // Yellow
+              } else if (selectedValue == 'Ditolak') {
+                  selectElement.style.backgroundColor = 'rgb(255, 99, 71)'; // Red
+              } else if (selectedValue == 'Disetujui') {
+                  selectElement.style.backgroundColor = 'rgb(34, 139, 34)'; // Green
+              } else {
+                  selectElement.style.backgroundColor = 'rgb(100,100,100)'; // Gray
+              }
+          }
 
-                          // Update warna tombol sesuai status
-                          button.classList.remove("btn-light", "btn-warning", "btn-danger", "btn-success");
+          // This function shows or hides the textbox when 'Revisi' is selected in the dropdown.
+          function toggleRevisiTextbox(selectElement) {
+              var revisiTextbox = document.getElementById('revisi-textbox');
+              var selectedValue = selectElement.value;
 
-                          if (status === "Revisi") {
-                              button.classList.add("btn-warning");
-                          } else if (status === "Ditolak") {
-                              button.classList.add("btn-danger");
-                          } else if (status === "Disetujui") {
-                              button.classList.add("btn-success");
-                          } else {
-                              button.classList.add("btn-light");
-                          }
+              if (selectedValue == 'Revisi') {
+                  revisiTextbox.style.display = 'block'; // Show the textbox
+              } else {
+                  revisiTextbox.style.display = 'none'; // Hide the textbox
+              }
+          }
 
-                          // Kirim update ke server dengan AJAX
-                          fetch("update_pengajuan.php", {
-                              method: "POST",
-                              headers: {
-                                  "Content-Type": "application/x-www-form-urlencoded"
-                              },
-                              body: `id_mahasiswa=${id}&status_pengajuan=${status}`
-                          }).then(response => response.text())
-                          .then(data => console.log(data))
-                          .catch(error => console.error("Error:", error));
-                      }
-                  });
+          // Combined window.onload function to ensure both functions run when the page loads.
+          window.onload = function() {
+              var selects = document.querySelectorAll('select');
+              selects.forEach(function(select) {
+                  // Set the initial background color based on the selected value.
+                  changeColor(select); 
+                  // Also, check if the 'Revisi' option is selected and show/hide the textbox accordingly.
+                  toggleRevisiTextbox(select);
               });
-          });
+          }
           </script>
 
 
@@ -584,7 +585,7 @@
   <script src="../../Template/skydash/js/off-canvas.js"></script>
   <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
   <script src="../../Template/skydash/js/../../Template.js"></script>
-  <script src="../../Template/skydash/js/settings.js"></script>
+  <script src="../../Template/skydash/js/settings.js"></script>s
   <script src="../../Template/skydash/js/todolist.js"></script>
   <!-- endinject -->
   <!-- Custom js for this page-->

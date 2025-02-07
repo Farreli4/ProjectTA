@@ -384,9 +384,26 @@
                                   echo "<td>" . $row['nama_mahasiswa'] . "</td>";
                                   echo "<td>" . $row['nim'] . "</td>";
                                   echo "<td>" . $row['prodi'] . "</td>";
-                                  echo "<td>" . $row['form_pendaftaran'] . "</td>";
-                                  echo "<td>" . $row['bukti_transkip'] . "</td>";
-                                  echo "<td>" . $row['sistem_magang'] . "</td>";
+                                  if (strlen($row['form_pendaftaran']) > 0) {
+                                    echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Pendaftaran</a></td>";
+                                } else {
+                                    echo "<td>No file</td>";
+                                }
+                            
+                                if (strlen($row['bukti_transkip']) > 0) {
+                                    echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Bukti Transkip</a></td>";
+                                } else {
+                                    echo "<td>No file</td>";
+                                }
+                            
+                                if (strlen($row['sistem_magang']) > 0) {
+                                    echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Sistem Magang</a></td>";
+                                } else {
+                                    echo "<td>No file</td>";
+                                }
+                            
+                                echo "</tr>";
+                            
                               }
                               $conn->close();
                                 ?>

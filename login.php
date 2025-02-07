@@ -6,47 +6,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['pass']);
 
-    // Aktifkan debugging error
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 
-    // Query untuk mencocokkan username dan password
-    // Pastikan Anda melakukan hash password jika diperlukan
-    $query = "SELECT * FROM dosen_pembimbing WHERE username='$username' AND pass='$password'";
-    $result = mysqli_query($conn, $query);
+    $admin_username = "admin";
+    $admin_password = "admin";
 
-    if (!$result) {
-        $error = "Query error: " . mysqli_error($conn);
-    } else if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $_SESSION['username'] = $row['username'];
-        $_SESSION['role'] = $row['role']; // simpan role ke session jika diperlukan
-
-        // Redirect berdasarkan role
-        if ($row['role'] === 'admin') {
-            $redirectUrl = "../../pages/admin/index.php";
-        } elseif ($row['role'] === 'dospem') {
-            $redirectUrl = "../../pages/dospem/index.php";
-        } elseif ($row['role'] === 'user') {
-            $redirectUrl = "../../pages/user/index.php";
-        } else {
-            // Jika role tidak dikenali, arahkan ke halaman default atau tampilkan error
-            $redirectUrl = "index.php";
-        }
-
-        if (!headers_sent()) {
-            header("Location: " . $redirectUrl);
-            exit();
-        } else {
-            echo "Headers already sent. Using JavaScript redirect...";
-            echo "<script>window.location.href = '$redirectUrl';</script>";
-            exit();
-        }
+    if ($username === $admin_username && $password === $admin_password) {
+        $_SESSION['username'] = $username;
+        
+        header("Location: ../../pages/admin/index.php");
+        exit();
     } else {
-        $error = "Username atau Password salah!";
+        $query = "SELECT 'dosen_pembimbing' AS source_table, id_dosen, username, pass FROM dosen_pembimbing WHERE username = '$username' AND pass = '$password'
+          UNION 
+          SELECT 'mahasiswa' AS source_table, id_mahasiswa, username, pass FROM mahasiswa WHERE username = '$username' AND pass = '$password'";
+        $result = mysqli_query($conn, $query);
+
+        if (!$result) {
+            $error = "Query error: " . mysqli_error($conn);
+        } else if (mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['user_id'] = $row['id'];
+
+            if ($row['source_table'] === 'dosen_pembimbing') {
+                $redirectUrl = "pages/dospem/index.php";
+            } elseif ($row['source_table'] === 'mahasiswa') {
+                $redirectUrl = "pages/user/dashboard.php";
+            } else {
+                $error = "Invalid source table!";
+                $redirectUrl = "login.php";
+            }
+
+            if (!isset($error)) {
+                if (!headers_sent()) {
+                    header("Location: " . $redirectUrl);
+                    exit();
+                } else {
+                    echo "Headers already sent. Using JavaScript redirect...";
+                    echo "<script>window.location.href = '$redirectUrl';</script>";
+                    exit();
+                }
+            } else {
+                echo "<div class='alert alert-danger'>$error</div>";
+            }
+        } else {
+            $error = "Username or Password is incorrect!";
+        }
     }
 }
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -136,9 +148,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="password-toggle">
                                     <input type="checkbox" id="showPassword" onclick="togglePassword()">
                                     <label for="showPassword">Show Password</label>
-                                </div>
-                                <div class="form-group">
-                                    <div class="g-recaptcha" data-sitekey="6Ldxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"></div>
                                 </div>
                                 <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn w-100 btn-login">Login</button>
                             </form>

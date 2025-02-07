@@ -67,7 +67,7 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_seminar'])) {
             die("Error preparing statement: " . $conn->error);
         }
 
-        $stmt->bind_param("iss", $id_mahasiswa, $status_seminar, $tanggal_seminar);  // Note: Changed to 'is' for string type status_seminar
+        $stmt->bind_param("iss", $id_mahasiswa, $status_seminar, $tanggal_seminar); 
 
         if ($stmt->execute()) {
             echo "Status added successfully.";

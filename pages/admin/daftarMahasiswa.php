@@ -591,7 +591,7 @@
 
               <script>
                 document.getElementById("openModalBtn").onclick = function() {
-                  document.getElementById("myModal").style.display = "block";
+                  document.getElementById("myModal").style.display = "flex";
                 }
 
                 document.getElementsByClassName("close")[0].onclick = function() {
@@ -637,7 +637,6 @@
                     alert("An error occurred during the request. Please try again.");
                   };
 
-                  // Send form data to PHP script
                   xhr.send(formData);
                 };
               </script>
