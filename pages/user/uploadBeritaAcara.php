@@ -2,8 +2,8 @@
 <?php
 // Ambil data mahasiswa dari session (sesuaikan dengan sistem login Anda)
 session_start();
-$nama_mahasiswa = $_SESSION['nama'] ?? 'Mahasiswa'; // Default jika tidak ada session
-$nim = $_SESSION['nim'] ?? '12345678';
+$nama_mahasiswa = $_SESSION['nama'] ?? 'zidan';
+$nim = $_SESSION['nim'] ?? 'K3522085';
 
 // Proses upload file jika ada
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
@@ -17,41 +17,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
     // Validasi file
     if ($fileType != "pdf") {
         echo "<script>alert('Maaf, hanya file PDF yang diperbolehkan.');</script>";
-    } elseif ($file['size'] > 2000000) { // 2MB
+        return;
+    } 
+    
+    if ($file['size'] > 2000000) { // 2MB
         echo "<script>alert('Maaf, ukuran file terlalu besar (max 2MB).');</script>";
-    } else {
-        try {
-            // Koneksi ke database
-            $conn = new PDO("mysql:host=localhost;dbname=sistemta", "root", "");
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            
-            // Baca file sebagai binary
-            $fileContent = file_get_contents($file['tmp_name']);
-            
-            // Tentukan nama tabel berdasarkan tipe file
-            $tableName = '';
-            switch($fileCategory) {
-                case 'Lembar Berita Acara (Foto, Buku Kehadiran, dll)':
-                    $tableName = 'lembar_berita_acara(seminar)';
-                    break;
-            }
-            
-            // Query untuk menyimpan file ke database
-            $sql = "INSERT INTO $tableName (nim, nama_file, file_content, tanggal_upload, status) 
-                    VALUES (:nim, :nama_file, :file_content, NOW(), 'Pending')";
-            
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([
-                ':nim' => $nim,
-                ':nama_file' => $newFileName,
-                ':file_content' => $fileContent
-            ]);
-            
-            echo "<script>alert('File berhasil diupload.');</script>";
-            
-        } catch(PDOException $e) {
-            echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
+        return;
+    }
+    
+    try {
+        // Koneksi ke database
+        $conn = new PDO("mysql:host=localhost;dbname=sistemta", "root", "");
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        // Baca file sebagai binary
+        $fileContent = file_get_contents($file['tmp_name']);
+        if ($fileContent === false) {
+            throw new Exception("Gagal membaca file");
         }
+        
+        // Tentukan nama kolom berdasarkan tipe file
+        $columnName = '';
+        switch($fileCategory) {
+            case 'Lembar Berita Acara (Foto, Buku Kehadiran, dll)':
+                $columnName = 'lembar_berita_acara(seminar)';
+                break;
+        }
+        
+        // Cek apakah data mahasiswa sudah ada
+        $checkSql = "SELECT nim FROM mahasiswa WHERE nim = :nim";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->execute([':nim' => $nim]);
+        
+        if ($checkStmt->rowCount() > 0) {
+            // Update data yang sudah ada
+            $sql = "UPDATE mahasiswa SET `$columnName` = :file_content WHERE nim = :nim";
+        } else {
+            // Insert data baru dengan kolom minimal yang diperlukan
+            $sql = "INSERT INTO mahasiswa (nim, nama_mahasiswa, `$columnName`) 
+                   VALUES (:nim, :nama, :file_content)";
+        }
+        
+        $stmt = $conn->prepare($sql);
+        $params = [
+            ':nim' => $nim,
+            ':file_content' => $fileContent
+        ];
+        
+        // Tambahkan parameter nama jika melakukan INSERT
+        if ($checkStmt->rowCount() == 0) {
+            $params[':nama'] = $nama_mahasiswa;
+        }
+        
+        $result = $stmt->execute($params);
+        
+        if ($result) {
+            echo "<script>alert('File berhasil diupload.');</script>";
+        } else {
+            throw new Exception("Gagal menyimpan ke database");
+        }
+        
+    } catch(Exception $e) {
+        error_log("Upload error for NIM $nim: " . $e->getMessage());
+        echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
     }
 }
 
@@ -61,20 +89,21 @@ function getFileStatus($nim, $tipe_file) {
         $conn = new PDO("mysql:host=localhost;dbname=sistemta", "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        // Tentukan nama tabel
-        $tableName = '';
+        // Tentukan nama kolom berdasarkan tipe file
+        $columnName = '';
         switch($tipe_file) {
             case 'Lembar Berita Acara (Foto, Buku Kehadiran, dll)':
-                $tableName = 'lembar_berita_acara(seminar)';
+                $columnName = 'lembar_berita_acara(seminar)';
                 break;
         }
         
-        $sql = "SELECT status FROM $tableName WHERE nim = :nim ORDER BY tanggal_upload DESC LIMIT 1";
+        // Cek apakah file sudah diupload
+        $sql = "SELECT `$columnName` FROM mahasiswa WHERE nim = :nim";
         $stmt = $conn->prepare($sql);
         $stmt->execute([':nim' => $nim]);
         
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? $result['status'] : 'Belum Upload';
+        return $result && $result[$columnName] !== null ? 'Uploaded' : 'Belum Upload';
         
     } catch(PDOException $e) {
         return 'Error';
@@ -373,7 +402,18 @@ $driveLinks = [
             <!-- page-body-wrapper ends -->
         </div>
         <!-- container-scroller -->
-
+        <script>
+            // Add this JavaScript function
+            function updateFileName(input) {
+                const fileNameSpan = document.getElementById('filename_' + input.id.split('_')[1]);
+                if (input.files && input.files[0]) {
+                    const fileName = input.files[0].name;
+                    fileNameSpan.textContent = fileName;
+                } else {
+                    fileNameSpan.textContent = 'Tidak ada file dipilih';
+                }
+            }
+        </script>
         <!-- plugins:js -->
         <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
         <!-- endinject -->
