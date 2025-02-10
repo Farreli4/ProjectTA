@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $_SESSION['username'] = $row['username'];
-            $_SESSION['user_id'] = $row['id'];
+            $_SESSION['nim'] = $row['nim'];
 
             if ($row['source_table'] === 'dosen_pembimbing') {
                 $redirectUrl = "pages/dospem/index.php";

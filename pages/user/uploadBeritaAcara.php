@@ -2,8 +2,8 @@
 <?php
 // Ambil data mahasiswa dari session (sesuaikan dengan sistem login Anda)
 session_start();
-$nama_mahasiswa = $_SESSION['nama'] ?? 'zidan';
-$nim = $_SESSION['nim'] ?? 'K3522085';
+$nama_mahasiswa = $_SESSION['username'] == 'Nur';
+$nim = $_SESSION['nim'] ?? 'K3522078';
 
 // Proses upload file jika ada
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
