@@ -383,8 +383,17 @@
                                   echo "<td>" . $row['nama_mahasiswa'] . "</td>";
                                   echo "<td>" . $row['nim'] . "</td>";
                                   echo "<td>" . $row['prodi'] . "</td>";
-                                  echo "<td>" . $row['form_pendaftaran'] . "</td>";
-                                  echo "<td>" . $row['form_persetujuan'] . "</td>";
+                                  if (strlen($row['form_pendaftaran']) > 0) {
+                                    echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Pendaftaran</a></td>";
+                                } else {
+                                    echo "<td>No file</td>";
+                                }
+                            
+                                if (strlen($row['form_persetujuan']) > 0) {
+                                    echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Persetujuan</a></td>";
+                                } else {
+                                    echo "<td>No file</td>";
+                                }
                               }
                               $conn->close();
                                 ?>

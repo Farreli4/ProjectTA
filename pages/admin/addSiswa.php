@@ -27,15 +27,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
-        $salt = bin2hex(random_bytes(54));
+        $hashed_pass = hash('sha256', $pass);
 
-        $salted = $salt . $pass;
-
-        $hashed_pass = hash("sha256", $salted);
-
-        $stmt = $conn->prepare("INSERT INTO `mahasiswa`(`nama_mahasiswa`, `username`, `pass`, `nim`, `prodi`, `kelas`, `nomor_telepon`, `salt`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO `mahasiswa`(`nama_mahasiswa`, `username`, `pass`, `nim`, `prodi`, `kelas`, `nomor_telepon`) VALUES (?, ?, ?, ?, ?, ?, ?)");
  
-        $stmt->bind_param("ssssssssi", $nama, $username, $hashed_pass, $nim, $prodi, $kelas, $nomor_telepon, $salt);
+        $stmt->bind_param("sssssss", $nama, $username, $hashed_pass, $nim, $prodi, $kelas, $nomor_telepon);
 
         if ($stmt->execute()) {
             echo "New record created successfully!";

@@ -13,10 +13,9 @@ if ($conn->connect_error) {
 
 // Check if there's an ID parameter
 if (isset($_GET['id'])) {
-    $file_id = $_GET['id']; // Get the file ID from the URL
+    $file_id = $_GET['id'];
 
-    // Prepare the SQL query to get the file data from the database
-    $sql = "SELECT form_pendaftaran, bukti_transkip, sistem_magang FROM mahasiswa WHERE id_mahasiswa = ?";
+    $sql = "SELECT form_pendaftaran, bukti_transkip, sistem_magang, form_persetujuan FROM mahasiswa WHERE id_mahasiswa = ?";
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
@@ -27,19 +26,17 @@ if (isset($_GET['id'])) {
     $stmt->execute();
     $stmt->bind_result($form_pendaftaran, $bukti_transkip, $sistem_magang);
 
-    // Debugging output to check if data is being fetched
     if ($stmt->fetch()) {
         echo "Data fetched successfully.<br>";
 
-        // Show the lengths of the BLOBs (Binary Data)
         echo "Form Pendaftaran (length): " . (empty($form_pendaftaran) ? "No file" : strlen($form_pendaftaran)) . " bytes<br>";
         echo "Bukti Transkip (length): " . (empty($bukti_transkip) ? "No file" : strlen($bukti_transkip)) . " bytes<br>";
         echo "Sistem Magang (length): " . (empty($sistem_magang) ? "No file" : strlen($sistem_magang)) . " bytes<br>";
+        echo "Form Persetujuan (length): " . (empty($form_persetujuan) ? "No file" : strlen($form_persetujuan)) . " bytes<br>";
     } else {
         echo "No data found for the provided ID.<br>";
     }
 
-    // Determine which file to send based on the request
     $file = null;
     $file_name = '';
 
@@ -52,10 +49,12 @@ if (isset($_GET['id'])) {
     } elseif (!empty($sistem_magang)) {
         $file = $sistem_magang;
         $file_name = 'Sistem_Magang.pdf';
+    } elseif (!empty($form_persetujuan)) {
+        $file = $sistem_magang;
+        $file_name = 'Sistem_Magang.pdf';
     }
 
     if ($file) {
-        // Set headers for download
         header("Content-Type: application/pdf");
         header("Content-Disposition: attachment; filename=\"$file_name\"");
         header("Content-Length: " . strlen($file));
