@@ -433,7 +433,7 @@
                   }
                   $conn->close();
                   ?>
-                  <canvas id="myChart2"></canvas>
+                  <canvas id="myChart2"></canvas>z
                   <script>
                     var xValues = <?php echo json_encode($xValues); ?>; 
                     var yValues = <?php echo json_encode($yValues); ?>;

@@ -473,7 +473,7 @@
                     var xValues = <?php echo json_encode($xValues); ?>; 
                     var yValues = <?php echo json_encode($yValues); ?>;
 
-                    var barColors = ["#FF6384", "#36A2EB", "#FFCE56"];
+                    var barColors = ["#00c967", "#FFCE56", "#FF0000",];
 
                     new Chart("myChart2", {
                         type: "doughnut",
@@ -521,7 +521,7 @@
                     var xValues = <?php echo json_encode($xValues); ?>; 
                     var yValues = <?php echo json_encode($yValues); ?>;
 
-                    var barColors = ["#FF6384", "#36A2EB", "#FFCE56"];
+                    var barColors = ["#00c967", "#FFCE56", "#FF0000",];
 
                     new Chart("myChart4", {
                         type: "doughnut",
@@ -569,7 +569,7 @@
                     var xValues = <?php echo json_encode($xValues); ?>; 
                     var yValues = <?php echo json_encode($yValues); ?>;
 
-                    var barColors = ["#FF6384", "#36A2EB", "#FFCE56"];
+                    var barColors = ["#00c967", "#FFCE56", "#FF0000",];
 
                     new Chart("myChart3", {
                         type: "doughnut",
