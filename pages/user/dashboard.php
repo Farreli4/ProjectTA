@@ -1,3 +1,20 @@
+<?php
+session_start();
+$nama_mahasiswa = $_SESSION['username'] ?? 'farel';
+$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$check = "SELECT nim FROM mahasiswa WHERE username = :nama";
+$checkNim = $conn->prepare($check);
+$checkNim->execute([':nama' => $nama_mahasiswa]);
+$row = $checkNim->fetch(PDO::FETCH_ASSOC);
+if ($row) {
+  $nim = $row['nim'];
+  echo $nim;
+} else {
+  $nim = 'K3522068';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,12 +86,23 @@
           </li>
 
           <!--PROFIL-->
+          <!--PROFIL-->
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile" />
+              <img src="../../assets/img/orang.png" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
+              <!-- Tambahkan div untuk profil -->
+              <div class="dropdown-header">
+                <div class="profile-pic mb-3 d-flex justify-content-center">
+                  <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+                </div>
+                <div class="profile-info text-center">
+                  <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama_mahasiswa); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($nim); ?></p>
+                </div>
+              </div>
+              <a class="dropdown-item" href="../../login.php">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
@@ -171,7 +199,8 @@
             <div class="col-md-12 grid-margin">
               <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Welcome Aa</h3>
+                  <h3>Welcome <?php echo htmlspecialchars($nama_mahasiswa); ?></h3>
+                  <h6>Nim: <?php echo htmlspecialchars($nim); ?></h6>
                   <h6 class="font-weight-normal mb-0">Website Pengumpulan Tugas Akhir <span class="text-primary">Politeknik NEST Sukoharjp</span></h6>
                 </div>
               </div>
