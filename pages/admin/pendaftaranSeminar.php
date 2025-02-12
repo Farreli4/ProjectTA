@@ -433,7 +433,7 @@
                   }
                   $conn->close();
                   ?>
-                  <canvas id="myChart2"></canvas>z
+                  <canvas id="myChart2"></canvas>
                   <script>
                     var xValues = <?php echo json_encode($xValues); ?>; 
                     var yValues = <?php echo json_encode($yValues); ?>;
@@ -460,70 +460,129 @@
             </div>
             </div>
           </div>
-          <!--Advanced-->
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Advanced Table</p>
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="table-responsive">
-                        <table id="example" class="display expandable-table" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nama</th>
-                                    <th>NIM</th>
-                                    <th>Jadwal</th>
-                                    <th>Status</th>
-                                    <th>Update Status</th>
-                                    <th>Dokumen</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $conn->connect("127.0.0.1", "root", "", "sistem_ta");
-                                $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, seminar_proposal.tanggal_seminar, seminar_proposal.status_seminar
-                                FROM mahasiswa 
-                                LEFT JOIN seminar_proposal ON mahasiswa.id_mahasiswa = seminar_proposal.id_mahasiswa 
-                                WHERE 1";
-                                $result = $conn->query($sql1);
+          <style>
+            /* Styling Tabel */
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                background: #fff;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+            th, td {
+                padding: 12px;
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background-color: #1b4f72;
+                color: white;
+            }
 
-                                while ($row = mysqli_fetch_array($result)) {
-                                  echo "<tr>";
-                                  echo "<td>" . $row['id_mahasiswa'] . "</td>";
-                                  echo "<td>" . $row['nama_mahasiswa'] . "</td>";
-                                  echo "<td>" . $row['nim'] . "</td>";
-                                  echo "<td>";
-                                  echo "<form action='update_seminar.php' method='POST'>";
-                                  echo "<input type='date' name='tanggal_seminar' value='" . $row["tanggal_seminar"] . "' required>";
-                                  echo "<td>";
-                                  echo "<select class='js-example-basic-single w-30' name='status_seminar' onchange='changeColor(this)' required>";
-                                  echo "<option value='dijadwalkan'" . ($row['status_seminar'] == 'dijadwalkan' ? ' selected' : '') . ">Dijadwalkan</option>";
-                                  echo "<option value='ditunda'" . ($row['status_seminar'] == 'ditunda' ? ' selected' : '') . ">Ditunda</option>";
-                                  echo "<option value='selesai'" . ($row['status_seminar'] == 'selesai' ? ' selected' : '') . ">Selesai</option>";
-                                  echo "</select>";
-                                  echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
-                                  echo "<td>";
-                                  echo "<button type='submit'>Update Status</button>";
-                                  echo "</form>";
-                                  echo "<td>";
-                                  echo "<a href='#popup'>";
-                                  echo "<<span class='material-symbols-outlined'>folder_open</span>>";
-                                  echo "</a>";
-                              }
-                              $conn->close()
-                                ?>
-                            </tbody>
-                        </table>
+            /* Input tanggal */
+            input[type="date"] {
+                border: 1px solid #ccc;
+                padding: 5px;
+                border-radius: 5px;
+                text-align: center;
+                width: 150px;
+            }
 
+            /* Dropdown Status */
+            select {
+                padding: 5px;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+                font-weight: bold;
+            }
+            select option[value="dijadwalkan"] {
+                background: yellow;
+            }
+            select option[value="ditunda"] {
+                background: red;
+                color: white;
+            }
+            select option[value="selesai"] {
+                background: green;
+                color: white;
+            }
+
+            /* Tombol Update */
+            .btn-update {
+                background-color: #007bff;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+            }
+            .btn-update:hover {
+                background-color: #0056b3;
+            }
+          </style>
+
+          <div class="row"> 
+              <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                      <div class="card-body">
+                          <p class="card-title">Jadwal Seminar Proposal</p>
+                          <div class="table-responsive">
+                              <table>
+                                  <thead>
+                                      <tr>
+                                          <th>ID</th>
+                                          <th>Nama</th>
+                                          <th>NIM</th>
+                                          <th>Jadwal</th>
+                                          <th>Status</th>
+                                          <th>Update Status</th>
+                                          <th>Dokumen</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <?php
+                                      $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
+                                      $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, seminar_proposal.tanggal_seminar, seminar_proposal.status_seminar
+                                      FROM mahasiswa 
+                                      LEFT JOIN seminar_proposal ON mahasiswa.id_mahasiswa = seminar_proposal.id_mahasiswa";
+                                      $result = $conn->query($sql1);
+
+                                      while ($row = mysqli_fetch_array($result)) {
+                                          echo "<tr>";
+                                          echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                                          echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                                          echo "<td>" . $row['nim'] . "</td>";
+                                          echo "<td>";
+                                          echo "<form action='update_seminar.php' method='POST'>";
+                                          echo "<input type='date' name='tanggal_seminar' value='" . $row["tanggal_seminar"] . "' required>";
+                                          echo "</td>";
+                                          echo "<td>";
+                                          echo "<select name='status_seminar' class='status-select' required>";
+                                          echo "<option value='dijadwalkan'" . ($row['status_seminar'] == 'dijadwalkan' ? ' selected' : '') . ">Dijadwalkan</option>";
+                                          echo "<option value='ditunda'" . ($row['status_seminar'] == 'ditunda' ? ' selected' : '') . ">Ditunda</option>";
+                                          echo "<option value='selesai'" . ($row['status_seminar'] == 'selesai' ? ' selected' : '') . ">Selesai</option>";
+                                          echo "</select>";
+                                          echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
+                                          echo "</td>";
+                                          echo "<td>";
+                                          echo "<button type='submit' class='btn-update'>Update</button>";
+                                          echo "</form>";
+                                          echo "</td>";
+                                          echo "<td>";
+                                          echo "<a href='#popup'>";
+                                          echo "<<span class='material-symbols-outlined'>folder_open</span>>";
+                                          echo "</a>";
+                                      }
+                                      $conn->close();
+                                      ?>
+                                  </tbody>
+                              </table>
+                          </div>
                       </div>
-                    </div>
                   </div>
-                  </div>
-                </div>
+              </div>
+          </div>
                 <div id="popup" class="popup">
                     <div class="popup-content">
                         <h2>Dokumen Seminar Proposal</h2>
@@ -531,13 +590,11 @@
                         <p>Lembar Persetujuan</p>
                         <p>Buku Konsultasi TA</p>
                         <a href="#" style="display: inline-block; margin-top: 10px; padding:
-                                          5px 10px; background-color: #dc3545; color: #fff; text-decoration:
-                                          none; border-radius: 3px;">Close</a>
+                        5px 10px; background-color: #dc3545; color: #fff; text-decoration:
+                        none; border-radius: 3px;">Close</a>
                     </div>
                 </div>
-              </div>
-            </div>
-        </div>
+              
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
