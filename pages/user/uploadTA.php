@@ -4,51 +4,60 @@
 session_start();
 $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
 $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$check = "SELECT nim FROM mahasiswa WHERE username = :nama";
-    $checkNim = $conn->prepare($check);
-    $checkNim->execute([':nama' => $nama_mahasiswa]);
-    $row = $checkNim->fetch(PDO::FETCH_ASSOC);
-    if($row){
-        $nim = $row['nim'];
-        echo $nim;
-    }else{
-        $nim = 'K3522068';
-    }
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Mengubah query untuk mengambil nim dan nama_mahasiswa
+$check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
+$checkNim = $conn->prepare($check);
+$checkNim->execute([':nama' => $nama_mahasiswa]);
+$row = $checkNim->fetch(PDO::FETCH_ASSOC);
+
+if ($row) {
+    $nim = $row['nim'];
+    $nama = $row['nama_mahasiswa'];
+    $prodi = $row['prodi'];
+} else {
+    $nim = 'K3522068';
+    $nama = 'Nama Default';
+    $prodi = 'PRODI';
+    echo "NIM: " . $nim . "<br>";
+    echo "Nama: " . $nama . "<br>";
+    echo "Prodi: " . $prodi;
+}
 // Proses upload file jika ada
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
     $file = $_FILES['file_upload'];
     $fileType = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     $fileCategory = $_POST['file_type'] ?? '';
-    
+
     // Format nama file
     $newFileName = $nama_mahasiswa . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
-    
+
     // Validasi file
     if ($fileType != "pdf") {
         echo "<script>alert('Maaf, hanya file PDF yang diperbolehkan.');</script>";
         return;
-    } 
-    
+    }
+
     if ($file['size'] > 2000000) { // 2MB
         echo "<script>alert('Maaf, ukuran file terlalu besar (max 2MB).');</script>";
         return;
     }
-    
+
     try {
         // Koneksi ke database
         $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
+
         // Baca file sebagai binary
         $fileContent = file_get_contents($file['tmp_name']);
         if ($fileContent === false) {
             throw new Exception("Gagal membaca file");
         }
-        
+
         // Tentukan nama kolom berdasarkan tipe file
         $columnName = '';
-        switch($fileCategory) {
+        switch ($fileCategory) {
             case 'Form Pendaftaran dan Persetujuan Tema':
                 $columnName = 'form_pendaftaran_persetujuan_tema(TA)';
                 break;
@@ -64,12 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
             default:
                 throw new Exception("Kategori file tidak valid");
         }
-        
+
         // Cek apakah data mahasiswa sudah ada
         $checkSql = "SELECT username FROM mahasiswa WHERE username = :nama";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->execute([':nama' => $nama_mahasiswa]);
-        
+
         if ($checkStmt->rowCount() > 0) {
             // Update data yang sudah ada
             $sql = "UPDATE mahasiswa SET `$columnName` = :file_content WHERE username = :nama";
@@ -78,41 +87,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
             $sql = "INSERT INTO mahasiswa (nama_mahasiswa, `$columnName`) 
                    VALUES (:nama, :file_content)";
         }
-        
+
         $stmt = $conn->prepare($sql);
         $params = [
             ':nama' => $nama_mahasiswa,
             ':file_content' => $fileContent
         ];
-        
+
         // Tambahkan parameter nama jika melakukan INSERT
         if ($checkStmt->rowCount() == 0) {
             $params[':nama'] = $nama_mahasiswa;
         }
-        
+
         $result = $stmt->execute($params);
-        
+
         if ($result) {
             echo "<script>alert('File berhasil diupload.');</script>";
         } else {
             throw new Exception("Gagal menyimpan ke database");
         }
-        
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
     }
-
 }
 
 // Fungsi untuk mendapatkan status file dari database
-function getFileStatus($nama_mahasiswa, $tipe_file) {
+function getFileStatus($nama_mahasiswa, $tipe_file)
+{
     try {
         $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
+
         // Tentukan nama kolom berdasarkan tipe file    
         $columnName = '';
-        switch($tipe_file) {
+        switch ($tipe_file) {
             case 'Form Pendaftaran dan Persetujuan Tema':
                 $columnName = 'form_pendaftaran_persetujuan_tema(TA)';
                 break;
@@ -126,19 +134,18 @@ function getFileStatus($nama_mahasiswa, $tipe_file) {
                 $columnName = 'bukti_kelulusan_magang(TA)';
                 break;
         }
-        
+
         // Cek apakah file sudah diupload
         $sql = "SELECT `$columnName` FROM mahasiswa WHERE username = :nama";
         $stmt = $conn->prepare($sql);
         $stmt->execute([':nama' => $nama_mahasiswa]);
-        
+
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result && $result[$columnName] !== null ? 'Uploaded' : 'Belum Upload';
-        
-    } catch(PDOException $e) {
+    } catch (PDOException $e) {
         return 'Error';
     }
-}   
+}
 
 $driveLinks = [
     'Form Pendaftaran dan Persetujuan Tema' => 'https://drive.google.com/your-link-1',
@@ -221,10 +228,22 @@ $driveLinks = [
                     <!--PROFIL-->
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="images/faces/face28.jpg" alt="profile" />
+                            <img src="../../assets/img/orang.png" alt="profile" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
+                            <div class="dropdown-header">
+                                <div class="profile-pic mb-3 d-flex justify-content-center">
+                                    <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+                                </div>
+                                <div class="profile-info text-center">
+                                    <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama); ?></p>
+                                    <p class="text-muted mb-1"><?php echo htmlspecialchars($nim); ?></p>
+                                    <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
+                                </div>
+                            </div>
+                            <!-- Garis pembatas -->
+                            <div style="border-top: 1px solid #ddd; margin: 10px 0;"></div>
+                            <a class="dropdown-item" href="../../login.php">
                                 <i class="ti-power-off text-primary"></i>
                                 Logout
                             </a>
@@ -319,8 +338,8 @@ $driveLinks = [
                 <div class="content-wrapper">
                     <!--BOX-->
                     <div class="content-wrapper">
-                        <h3>Welcome <?php echo htmlspecialchars($nama_mahasiswa); ?></h3>
-                        <h6>Nim: <?php echo htmlspecialchars($nim); ?></h6>
+                        <h3 style="margin-bottom: 15px;">Welcome <span class="text-primary"><?php echo htmlspecialchars($nama); ?></span></h3>
+                        <h6>NIM: <?php echo htmlspecialchars($nim); ?></h6>
                         <div class="alert-info">
                             Disini kamu dapat melakukan upload Jurnal Magang. Setelah Jurnal terupload,
                             tunggu 1-2 hari kerja sampai notifikasi berubah menjadi terverifikasi

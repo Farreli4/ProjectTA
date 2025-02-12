@@ -11,19 +11,16 @@ $checkNim->execute([':nama' => $nama_mahasiswa]);
 $row = $checkNim->fetch(PDO::FETCH_ASSOC);
 
 if ($row) {
-    $nim = $row['nim'];
-    $nama = $row['nama_mahasiswa'];
-    $prodi = $row['prodi'];
-    echo "NIM: " . $nim . "<br>";
-    echo "Prodi:" . $prodi . "<br>";
-    echo "Nama: " . $nama;
+  $nim = $row['nim'];
+  $nama = $row['nama_mahasiswa'];
+  $prodi = $row['prodi'];
 } else {
-    $nim = 'K3522068';
-    $nama = 'Nama Default';
-    $prodi = 'PRODI';
-    echo "NIM: " . $nim . "<br>";
-    echo "Nama: " . $nama . "<br>";
-    echo "Prodi: ". $prodi;
+  $nim = 'K3522068';
+  $nama = 'Nama Default';
+  $prodi = 'PRODI';
+  echo "NIM: " . $nim . "<br>";
+  echo "Nama: " . $nama . "<br>";
+  echo "Prodi: " . $prodi;
 }
 ?>
 
@@ -98,31 +95,29 @@ if ($row) {
           </li>
 
           <!--PROFIL-->
-          <!--PROFIL-->
           <li class="nav-item nav-profile dropdown">
-  <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-    <img src="../../assets/img/orang.png" alt="profile" />
-  </a>
-  <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-    <div class="dropdown-header">
-      <div class="profile-pic mb-3 d-flex justify-content-center">
-        <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
-      </div>
-      <div class="profile-info text-center">
-        <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama); ?></p>
-        <p class="text-muted mb-1"><?php echo htmlspecialchars($nim); ?></p>
-        <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
-      </div>
-    </div>
-    <!-- Tombol Logout dengan Box Biru Tua -->
-    <div class="dropdown-item" style="margin: 0 10px; padding: 0;">
-      <a href="../../login.php" style="display: block; background-color: #004080; color: white; text-align: center; padding: 10px 15px; border-radius: 5px; text-decoration: none;">
-        <i class="ti-power-off"></i>
-        Logout
-      </a>
-    </div>
-  </div>
-</li>
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+              <img src="../../assets/img/orang.png" alt="profile" />
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <div class="dropdown-header">
+                <div class="profile-pic mb-3 d-flex justify-content-center">
+                  <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+                </div>
+                <div class="profile-info text-center">
+                  <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($nim); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
+                </div>
+              </div>
+              <!-- Garis pembatas -->
+              <div style="border-top: 1px solid #ddd; margin: 10px 0;"></div>
+              <a class="dropdown-item" href="../../login.php">
+                <i class="ti-power-off text-primary"></i>
+                Logout
+              </a>
+            </div>
+          </li>
         </ul>
       </div>
     </nav>
@@ -214,8 +209,7 @@ if ($row) {
             <div class="col-md-12 grid-margin">
               <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3>Welcome <?php echo htmlspecialchars($nama); ?></h3>
-                  <h5><?php echo htmlspecialchars($nim); ?></h5>
+                  <h3 style="margin-bottom: 15px;">Welcome <span class="text-primary"><?php echo htmlspecialchars($nama); ?></span></h3>
                   <h6 class="font-weight-normal mb-0">Website Pengumpulan Tugas Akhir <span class="text-primary">Politeknik NEST Sukoharjp</span></h6>
                 </div>
               </div>
