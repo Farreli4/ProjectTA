@@ -1,7 +1,27 @@
 <?php
 session_start();
-$nama_mahasiswa = $_SESSION['nama'] ?? 'DB';
-$nim = $_SESSION['nim'] ?? '12345678';
+$nama_mahasiswa = $_SESSION['username'] ?? 'farel';
+$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Mengubah query untuk mengambil nim dan nama_mahasiswa
+$check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
+$checkNim = $conn->prepare($check);
+$checkNim->execute([':nama' => $nama_mahasiswa]);
+$row = $checkNim->fetch(PDO::FETCH_ASSOC);
+
+if ($row) {
+  $nim = $row['nim'];
+  $nama = $row['nama_mahasiswa'];
+  $prodi = $row['prodi'];
+} else {
+  $nim = 'K3522068';
+  $nama = 'Nama Default';
+  $prodi = 'PRODI';
+  echo "NIM: " . $nim . "<br>";
+  echo "Nama: " . $nama . "<br>";
+  echo "Prodi: " . $prodi;
+}
 
 $driveLinks = [
   'Form Pendaftaran dan Persetujuan Tema' => 'https://drive.google.com/your-link-1',
@@ -45,7 +65,7 @@ $fileMetadata = [
   <link rel="stylesheet" href="../../assets/css/css/user.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
-  <link rel="stylesheet" type="text/css" href="../../assets/css/user/lampiran.css"/>
+  <link rel="stylesheet" type="text/css" href="../../assets/css/user/lampiran.css" />
 
 </head>
 
@@ -95,10 +115,22 @@ $fileMetadata = [
           <!--PROFIL-->
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile" />
+              <img src="../../assets/img/orang.png" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
+              <div class="dropdown-header">
+                <div class="profile-pic mb-3 d-flex justify-content-center">
+                  <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+                </div>
+                <div class="profile-info text-center">
+                  <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($nim); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
+                </div>
+              </div>
+              <!-- Garis pembatas -->
+              <div style="border-top: 1px solid #ddd; margin: 10px 0;"></div>
+              <a class="dropdown-item" href="../../login.php">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
@@ -193,7 +225,7 @@ $fileMetadata = [
         <div class="content-wrapper">
           <!--BOX-->
           <div class="content-wrapper">
-            <h3>Welcome <?php echo htmlspecialchars($nama_mahasiswa); ?></h3>
+            <h3 style="margin-bottom: 15px;">Welcome <span class="text-primary"><?php echo htmlspecialchars($nama); ?></span></h3>
             <h6>NIM: <?php echo htmlspecialchars($nim); ?></h6>
 
             <div class="alert-info">
