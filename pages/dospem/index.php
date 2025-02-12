@@ -1,3 +1,26 @@
+<?php
+session_start();
+$nama_dosen = $_SESSION['username'];
+
+$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$check = "SELECT nip, nama_dosen, prodi FROM dosen_pembimbing WHERE username = :nama";
+$checkNip = $conn->prepare($check);
+$checkNip->execute([':nama' => $nama_dosen]);
+$row = $checkNip->fetch(PDO::FETCH_ASSOC);
+
+if ($row) {
+  $nip = $row['nip'];
+  $nama_dosen = $row['nama_dosen'];
+  $prodi = $row['prodi'];
+} else {
+  $nip = '2676478762574';
+  $nama_dosen = 'Nama Default';
+  $prodi = 'PRODI';
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +72,7 @@
       /* Warna dark blue dengan opacity */
       z-index: 2;
     }
+
     .link {
       text-decoration: none;
       color: inherit;
@@ -137,15 +161,27 @@
               </a>
             </div>
           </li>
+
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img alt="" />
+              <img src="../../assets/img/orang.png" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item" href="../../index.php">
-                <i class="ti-power-off text-primary"></i>
-                Logout
-              </a>
+              <div class="dropdown-header">
+                <div class="profile-pic mb-3 d-flex justify-content-center">
+                  <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+                </div>
+                <div class="profile-info text-center">
+                  <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama_dosen); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($nip); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="../../index.php">
+                  <i class="ti-power-off text-primary"></i>
+                  Logout
+                </a>
+              </div>
             </div>
           </li>
 
@@ -197,72 +233,9 @@
                 </div>
               </form>
             </div>
-            <div class="list-wrapper px-3">
-              <ul class="d-flex flex-column-reverse todo-list">
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Team review meeting at 3.00 PM
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Prepare for presentation
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Resolve all the low priority tickets due today
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Schedule meeting for next week
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Project review
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-              </ul>
-            </div>
-            <h4 class="px-3 text-muted mt-5 font-weight-light mb-0">Events</h4>
-            <div class="events pt-4 px-3">
-              <div class="wrapper d-flex mb-2">
-                <i class="ti-control-record text-primary mr-2"></i>
-                <span>Feb 11 2018</span>
-              </div>
-              <p class="mb-0 font-weight-thin text-gray">Creating component page build a js</p>
-              <p class="text-gray mb-0">The total number of sessions</p>
-            </div>
-            <div class="events pt-4 px-3">
-              <div class="wrapper d-flex mb-2">
-                <i class="ti-control-record text-primary mr-2"></i>
-                <span>Feb 7 2018</span>
-              </div>
-              <p class="mb-0 font-weight-thin text-gray">Meeting with Alisa</p>
-              <p class="text-gray mb-0 ">Call Sarah Graves</p>
-            </div>
+
+
+
           </div>
           <!-- To do section tab ends -->
           <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
@@ -361,8 +334,9 @@
             <div class="col-md-12 grid-margin">
               <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Welcome .......</h3>
-                  <h6 class="font-weight-normal mb-0">Website Sistem Informasi <br> <br> <span class="text-primary">Politeknik Nest Sukoharjo</span></h6>
+                  <h3 class="font-weight-bold">Welcome <span class="text-primary"><?php echo htmlspecialchars($nama_dosen); ?></span> </h3>
+                  <h6>NIP : <span class="text-primary"><?php echo htmlspecialchars($nip); ?></span> </h6><br>
+                  <h4 class="font-weight-normal mb-0">Website Sistem Informasi  <span class="text-primary">Politeknik Nest Sukoharjo</span></h4>
                 </div>
               </div>
             </div>

@@ -1,6 +1,33 @@
 <?php
-include '../../config/connection.php'; // Sesuaikan path dengan lokasi file koneksi
+// Sesuaikan path dengan lokasi file koneksi
+include '../../config/connection.php';
+
+session_start();
+$nama_dosen = $_SESSION['username'];
+
+try {
+  $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  $check = "SELECT nip, nama_dosen, prodi FROM dosen_pembimbing WHERE username = :nama";
+  $checkNip = $conn->prepare($check);
+  $checkNip->execute([':nama' => $nama_dosen]);
+  $row = $checkNip->fetch(PDO::FETCH_ASSOC);
+
+  if ($row) {
+    $nip = $row['nip'];
+    $nama_dosen = $row['nama_dosen'];
+    $prodi = $row['prodi'];
+  } else {
+    $nip = '2676478762574';
+    $nama_dosen = 'Nama Default';
+    $prodi = 'PRODI';
+  }
+} catch (PDOException $e) {
+  die("Koneksi database gagal: " . $e->getMessage());
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -99,30 +126,30 @@ include '../../config/connection.php'; // Sesuaikan path dengan lokasi file kone
               </a>
             </div>
           </li>
+
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="../../Template/skydash/images/faces/face28.jpg" alt="profile" />
+              <img src="../../assets/img/orang.png" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="ti-settings text-primary"></i>
-                Settings
-              </a>
-              <a class="dropdown-item">
-                <i class="ti-power-off text-primary"></i>
-                Logout
-              </a>
-            </div>
+              <div class="dropdown-header">
+                <div class="profile-pic mb-3 d-flex justify-content-center">
+                  <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+                </div>
+                <div class="profile-info text-center">
+                  <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama_dosen); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($nip); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="../../index.php">
+                  <i class="ti-power-off text-primary"></i>
+                  Logout
+                </a>
+              </div>
           </li>
-          <li class="nav-item nav-settings d-none d-lg-flex">
-            <a class="nav-link" href="#">
-              <i class="icon-ellipsis"></i>
-            </a>
-          </li>
+
         </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-          <span class="icon-menu"></span>
-        </button>
       </div>
     </nav>
     <!-- partial -->
@@ -328,91 +355,88 @@ include '../../config/connection.php'; // Sesuaikan path dengan lokasi file kone
         <div class="content-wrapper">
           <div class="row">
             <div class="col-md-12 grid-margin">
-              <div class="row">
-                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Welcome .......</h3>
-                  <h6 class="font-weight-normal mb-0">Website Sistem Informasi <br> <br> <span class="text-primary">Politeknik Nest Sukoharjo</span></h6>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-12 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">Dokumen Seminar Proposal</h4>
-                <p class="card-description">
-                  Pemeriksaan kelengkapan dan kesesuaian<code>Dokumen Seminar Proposal</code>
-                </p>
-                <div class="table-responsive">
-                  <table id="example" class="display expandable-table" style="width:100%">
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Nim</th>
-                        <th>Doc</th>
-                        <th>File Persetujuan</th>
-                        <th>Updated</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <?php
-                        $conn->connect("127.0.0.1", "root", "", "sistem_ta");
-                        $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, seminar_proposal.tanggal_seminar, seminar_proposal.status_seminar, seminar_proposal.sppsp
-                                FROM mahasiswa 
-                                LEFT JOIN seminar_proposal ON mahasiswa.id_mahasiswa = seminar_proposal.id_mahasiswa 
-                                WHERE 1";
-                        $result = $conn->query($sql1);
+              <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Dokumen Seminar Proposal</h4>
+                    <p class="card-description">
+                      Pemeriksaan kelengkapan dan kesesuaian<code>Dokumen Seminar Proposal</code>
+                    </p>
+                    <div class="table-responsive">
+                      <table id="example" class="display expandable-table" style="width:100%">
+                        <thead>
+                          <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Nim</th>
+                            <th>Doc</th>
+                            <th>File Persetujuan</th>
+                            <th>Updated</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <?php
+                            try {
+                              // Use the existing PDO connection from above
+                              $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, 
+                                  seminar_proposal.tanggal_seminar, seminar_proposal.status_seminar, 
+                                  seminar_proposal.sppsp
+                                  FROM mahasiswa 
+                                  LEFT JOIN seminar_proposal ON mahasiswa.id_mahasiswa = seminar_proposal.id_mahasiswa 
+                                  WHERE 1";
 
-                        while ($row = mysqli_fetch_array($result)) {
-                          echo "<tr>";
-                          echo "<td>" . $row['id_mahasiswa'] . "</td>";
-                          echo "<td>" . $row['nama_mahasiswa'] . "</td>";
-                          echo "<td>" . $row['nim'] . "</td>";
+                              $stmt = $conn->prepare($sql1);
+                              $stmt->execute();
 
-                          if (strlen($row['sppsp']) > 0) {
-                            echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>
-                                          <button type='button' class='btn btn-outline-primary btn-fw'>Download</button></a></td>";
-                        } else {
-                            echo "<td>No file</td>";
-                        }
-                          
-                          echo '<td>
-                                <form id="uploadForm" method="POST" enctype="multipart/form-data">
-                                  <input type="file" name="jurnal" id="jurnal" accept=".pdf" style="display: none;">
-                                  <button type="button" id="uploadButton" class="btn btn-outline-primary btn-fw">Upload</button>
-                                  <button type="submit" id="submitButton" class="btn btn-outline-success btn-fw" style="display: none;">Submit</button>
-                                </form>
-                              </td>';
-                          echo '<script>
-                                document.getElementById("uploadButton").addEventListener("click", function() {
-                                  // Klik otomatis pada input file
-                                  document.getElementById("jurnal").click();
-                                });
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo "<tr>";
+                                echo "<td>" . htmlspecialchars($row['id_mahasiswa']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['nama_mahasiswa']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
 
-                                document.getElementById("jurnal").addEventListener("change", function() {
-                                  // Periksa apakah file dipilih
-                                  if (this.files.length > 0) {
-                                    // Perlihatkan tombol submit jika file ada
-                                    document.getElementById("submitButton").style.display = "inline-block";
-                                    alert("File terpilih: " + this.files[0].name);
-                                  }
-                                });
-                              </script>';
+                                if (!empty($row['sppsp'])) {
+                                  echo "<td><a href='downloadsempro.php?id=" . htmlspecialchars($row['id_mahasiswa']) . "' target='_blank'>
+                              <button type='button' class='btn btn-outline-primary btn-fw'>Download</button></a></td>";
+                                } else {
+                                  echo "<td>No file</td>";
+                                }
 
-                          echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
-                          echo "<td>";
-                          echo "<button type='submit'>Update Status</button>";
-                          echo "</form>";
-                          
-                        }
-                        $conn->close()
-                        ?>
+                                echo '<td>
+                                        <form id="uploadForm_' . htmlspecialchars($row['id_mahasiswa']) . '" method="POST" action="../../pages/dospem/uploadsempro.php" enctype="multipart/form-data">
+                                            <input type="file" name="sppsp" id="jurnal_' . htmlspecialchars($row['id_mahasiswa']) . '" accept=".pdf" style="display: none;">
+                                            <input type="hidden" name="id_mahasiswa" value="' . htmlspecialchars($row['id_mahasiswa']) . '">
+                                            <button type="button" onclick="triggerFileInput(' . htmlspecialchars($row['id_mahasiswa']) . ')" class="btn btn-outline-primary btn-fw">Upload</button>
+                                            <button type="submit" id="submitButton_' . htmlspecialchars($row['id_mahasiswa']) . '" class="btn btn-outline-success btn-fw" style="display: none;">Submit</button>
+                                        </form>
+                                    </td>';
 
-                      </tr>
-                    </tbody>
-                  </table>
+
+                                echo "<td><button type='button' class='btn btn-outline-warning btn-fw'>Update Status</button></td>";
+                                echo "</tr>";
+                              }
+                            } catch (PDOException $e) {
+                              echo "Error: " . $e->getMessage();
+                            }
+                            ?>
+
+                          </tr>
+                        </tbody>
+                        <script>
+                          function triggerFileInput(id) {
+                            document.getElementById('jurnal_' + id).click();
+
+                            document.getElementById('jurnal_' + id).addEventListener('change', function() {
+                              if (this.files.length > 0) {
+                                document.getElementById('submitButton_' + id).style.display = 'inline-block';
+                                alert('File terpilih: ' + this.files[0].name);
+                              }
+                            });
+                          }
+                        </script>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,3 +1,33 @@
+<?php
+// Sesuaikan path dengan lokasi file koneksi
+include '../../config/connection.php';
+
+session_start();
+$nama_dosen = $_SESSION['username'];
+
+try {
+    $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $check = "SELECT nip, nama_dosen, prodi FROM dosen_pembimbing WHERE username = :nama";
+    $checkNip = $conn->prepare($check);
+    $checkNip->execute([':nama' => $nama_dosen]);
+    $row = $checkNip->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $nip = $row['nip'];
+        $nama_dosen = $row['nama_dosen'];
+        $prodi = $row['prodi'];
+    } else {
+        $nip = '2676478762574';
+        $nama_dosen = 'Nama Default';
+        $prodi = 'PRODI';
+    }
+} catch (PDOException $e) {
+    die("Koneksi database gagal: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,30 +125,30 @@
                             </a>
                         </div>
                     </li>
+
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="../../Template/skydash/images/faces/face28.jpg" alt="profile" />
+                            <img src="../../assets/img/orang.png" alt="profile" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
-                                <i class="ti-settings text-primary"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item">
-                                <i class="ti-power-off text-primary"></i>
-                                Logout
-                            </a>
-                        </div>
+                            <div class="dropdown-header">
+                                <div class="profile-pic mb-3 d-flex justify-content-center">
+                                    <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+                                </div>
+                                <div class="profile-info text-center">
+                                    <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama_dosen); ?></p>
+                                    <p class="text-muted mb-1"><?php echo htmlspecialchars($nip); ?></p>
+                                    <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="../../index.php">
+                                    <i class="ti-power-off text-primary"></i>
+                                    Logout
+                                </a>
+                            </div>
                     </li>
-                    <li class="nav-item nav-settings d-none d-lg-flex">
-                        <a class="nav-link" href="#">
-                            <i class="icon-ellipsis"></i>
-                        </a>
-                    </li>
+
                 </ul>
-                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                    <span class="icon-menu"></span>
-                </button>
             </div>
         </nav>
         <!-- partial -->
@@ -323,115 +353,109 @@
                 <div class="content-wrapper">
                     <div class="row">
                         <div class="col-md-12 grid-margin">
-                            <div class="row">
-                                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                                    <h3 class="font-weight-bold">Welcome .......</h3>
-                                    <h6 class="font-weight-normal mb-0">Website Sistem Informasi <br> <br> <span class="text-primary">Politeknik Nest Sukoharjo</span></h6>
+                            <!-- Tabel -->
+                            <div class="col-lg-12 grid-margin stretch-card">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Daftar Mahasiswa </h4>
+                                        <p class="card-description">
+                                            Tabel <code> Data Mahasiswa Bimbingan </code>
+                                        </p>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Nama</th>
+                                                        <th>Nim</th>
+                                                        <th>Prodi</th>
+                                                        <th>Kelas</th>
+                                                        <th>No Telepon</th>
+                                                        <th>Tema</th>
+                                                        <th>Judul</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
+                                                    $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, kelas, nomor_telepon, tema, judul FROM mahasiswa WHERE 1";
+                                                    $result = $conn->query($sql1);
+
+                                                    while ($row = mysqli_fetch_array($result)) {
+                                                        echo "<tr>";
+                                                        echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                                                        echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                                                        echo "<td>" . $row['nim'] . "</td>";
+                                                        echo "<td>" . $row['prodi'] . "</td>";
+                                                        echo "<td>" . $row['kelas'] . "</td>";
+                                                        echo "<td>" . $row['nomor_telepon'] . "</td>";
+                                                        echo "<td>" . $row['tema'] . "</td>";
+                                                        echo "<td>" . $row['judul'] . "</td>";
+                                                    }
+                                                    $conn->close();
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Tabel -->
-                    <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Daftar Mahasiswa </h4>
-                                <p class="card-description">
-                                    Tabel <code> Data Mahasiswa Bimbingan </code>
-                                </p>
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Nama</th>
-                                                <th>Nim</th>
-                                                <th>Prodi</th>
-                                                <th>Kelas</th>
-                                                <th>No Telepon</th>
-                                                <th>Tema</th>
-                                                <th>Judul</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
-                                            $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, kelas, nomor_telepon, tema, judul FROM mahasiswa WHERE 1";
-                                            $result = $conn->query($sql1);
-
-                                            while ($row = mysqli_fetch_array($result)) {
-                                                echo "<tr>";
-                                                echo "<td>" . $row['id_mahasiswa'] . "</td>";
-                                                echo "<td>" . $row['nama_mahasiswa'] . "</td>";
-                                                echo "<td>" . $row['nim'] . "</td>";
-                                                echo "<td>" . $row['prodi'] . "</td>";
-                                                echo "<td>" . $row['kelas'] . "</td>";
-                                                echo "<td>" . $row['nomor_telepon'] . "</td>";
-                                                echo "<td>" . $row['tema'] . "</td>";
-                                                echo "<td>" . $row['judul'] . "</td>";
-                                            }
-                                            $conn->close();
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- content ends -->
-
-                    <!-- partial:partials/_footer.html -->
-                    <footer class="footer">
-                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                                Copyright © 2025.
-                                <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-                                All rights reserved.
-                            </span>
-                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                                <a href="https://wa.me/628112951003" target="_blank">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-                                    +6281 1295 1003
-                                </a>
-                            </span>
-                        </div>
-
-                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
-                        </div>
-                    </footer>
-                    <!-- partial -->
                 </div>
-                <!-- main-panel ends -->
+
+
+                <!-- content ends -->
+
+                <!-- partial:partials/_footer.html -->
+                <footer class="footer">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                            Copyright © 2025.
+                            <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+                            All rights reserved.
+                        </span>
+                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                            <a href="https://wa.me/628112951003" target="_blank">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                                +6281 1295 1003
+                            </a>
+                        </span>
+                    </div>
+
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a></span>
+                    </div>
+                </footer>
+                <!-- partial -->
             </div>
-            <!-- page-body-wrapper ends -->
+            <!-- main-panel ends -->
         </div>
-        <!-- container-scroller -->
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
 
-        <!-- plugins:js -->
-        <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-        <!-- endinject -->
-        <!-- Plugin js for this page -->
-        <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-        <script src="../..../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
-        <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-        <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
+    <!-- plugins:js -->
+    <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
+    <script src="../..../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
 
-        <!-- End plugin js for this page -->
-        <!-- inject:js -->
-        <script src="../../Template/skydash/js/off-canvas.js"></script>
-        <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
-        <script src="../../Template/skydash/js/../../Template.js"></script>
-        <script src="../../Template/skydash/js/settings.js"></script>
-        <script src="../../Template/skydash/js/todolist.js"></script>
-        <!-- endinject -->
-        <!-- Custom js for this page-->
-        <script src="../../Template/skydash/js/dashboard.js"></script>
-        <script src="../../Template/skydash/s/Chart.roundedBarCharts.js"></script>
-        <!-- End custom js for this page-->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="../../Template/skydash/js/off-canvas.js"></script>
+    <script src="../../Template/skydash/js/hoverable-collapse.js"></script>
+    <script src="../../Template/skydash/js/../../Template.js"></script>
+    <script src="../../Template/skydash/js/settings.js"></script>
+    <script src="../../Template/skydash/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="../../Template/skydash/js/dashboard.js"></script>
+    <script src="../../Template/skydash/s/Chart.roundedBarCharts.js"></script>
+    <!-- End custom js for this page-->
 </body>
 
 </html>

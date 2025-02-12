@@ -1,3 +1,27 @@
+<?php
+session_start();
+$nama_dosen = $_SESSION['username'];
+
+$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$check = "SELECT nip, nama_dosen, prodi FROM dosen_pembimbing WHERE username = :nama";
+$checkNip = $conn->prepare($check);
+$checkNip->execute([':nama' => $nama_dosen]);
+$row = $checkNip->fetch(PDO::FETCH_ASSOC);
+
+if ($row) {
+  $nip = $row['nip'];
+  $nama_dosen = $row['nama_dosen'];
+  $prodi = $row['prodi'];
+} else {
+  $nip = '2676478762574';
+  $nama_dosen = 'Nama Default';
+  $prodi = 'PRODI';
+}
+
+?> 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,30 +119,30 @@
                             </a>
                         </div>
                     </li>
+
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="../../Template/skydash/images/faces/face28.jpg" alt="profile" />
+                            <img src="../../assets/img/orang.png" alt="profile" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
-                                <i class="ti-settings text-primary"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item">
-                                <i class="ti-power-off text-primary"></i>
-                                Logout
-                            </a>
-                        </div>
+                            <div class="dropdown-header">
+                                <div class="profile-pic mb-3 d-flex justify-content-center">
+                                    <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+                                </div>
+                                <div class="profile-info text-center">
+                                    <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama_dosen); ?></p>
+                                    <p class="text-muted mb-1"><?php echo htmlspecialchars($nip); ?></p>
+                                    <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="../../index.php">
+                                    <i class="ti-power-off text-primary"></i>
+                                    Logout
+                                </a>
+                            </div>
                     </li>
-                    <li class="nav-item nav-settings d-none d-lg-flex">
-                        <a class="nav-link" href="#">
-                            <i class="icon-ellipsis"></i>
-                        </a>
-                    </li>
+
                 </ul>
-                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                    <span class="icon-menu"></span>
-                </button>
             </div>
         </nav>
         <!-- partial -->
@@ -309,7 +333,7 @@
                             <span class="menu-title">Daftar Mahasiswa</span>
                         </a>
                     </li>
-                    
+
                     <li class="nav-item">
                         <a class="nav-link" href="../../index.php">
                             <i class="ti-power-off  menu-icon"></i>

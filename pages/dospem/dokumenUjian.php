@@ -1,3 +1,33 @@
+<?php
+// Sesuaikan path dengan lokasi file koneksi
+include '../../config/connection.php';
+
+session_start();
+$nama_dosen = $_SESSION['username'];
+
+try {
+  $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  $check = "SELECT nip, nama_dosen, prodi FROM dosen_pembimbing WHERE username = :nama";
+  $checkNip = $conn->prepare($check);
+  $checkNip->execute([':nama' => $nama_dosen]);
+  $row = $checkNip->fetch(PDO::FETCH_ASSOC);
+
+  if ($row) {
+    $nip = $row['nip'];
+    $nama_dosen = $row['nama_dosen'];
+    $prodi = $row['prodi'];
+  } else {
+    $nip = '2676478762574';
+    $nama_dosen = 'Nama Default';
+    $prodi = 'PRODI';
+  }
+} catch (PDOException $e) {
+  die("Koneksi database gagal: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,30 +125,30 @@
               </a>
             </div>
           </li>
+
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="../../Template/skydash/images/faces/face28.jpg" alt="profile" />
+              <img src="../../assets/img/orang.png" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="ti-settings text-primary"></i>
-                Settings
-              </a>
-              <a class="dropdown-item">
-                <i class="ti-power-off text-primary"></i>
-                Logout
-              </a>
-            </div>
+              <div class="dropdown-header">
+                <div class="profile-pic mb-3 d-flex justify-content-center">
+                  <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+                </div>
+                <div class="profile-info text-center">
+                  <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama_dosen); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($nip); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="../../index.php">
+                  <i class="ti-power-off text-primary"></i>
+                  Logout
+                </a>
+              </div>
           </li>
-          <li class="nav-item nav-settings d-none d-lg-flex">
-            <a class="nav-link" href="#">
-              <i class="icon-ellipsis"></i>
-            </a>
-          </li>
+
         </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-          <span class="icon-menu"></span>
-        </button>
       </div>
     </nav>
     <!-- partial -->
@@ -308,7 +338,7 @@
               <span class="menu-title">Daftar Mahasiswa</span>
             </a>
           </li>
-          
+
           <li class="nav-item">
             <a class="nav-link" href=".../../index.php">
               <i class="ti-power-off  menu-icon"></i>
@@ -323,102 +353,94 @@
         <div class="content-wrapper">
           <div class="row">
             <div class="col-md-12 grid-margin">
-              <div class="row">
-                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Welcome .......</h3>
-                  <h6 class="font-weight-normal mb-0">Website Sistem Informasi <br> <br> <span class="text-primary">Politeknik Nest Sukoharjo</span></h6>
-                </div>
-              </div>
-            </div>
-          </div>
+              <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Dokumen Ujian Akhir</h4>
+                    <p class="card-description">
+                      Pemeriksanaan kelengkapan dan kesesuaian dokumen<code>Ujian Akhir</code>
+                    </p>
+                    <div class="table-responsive">
+                      <table id="example" class="display expandable-table" style="width:100%">
+                        <thead>
+                          <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Nim</th>
+                            <th>Doc</th>
+                            <th>Status</th>
+                            <th>Updated </th>
+                            <th>File</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="py-1">1</td>
+                            <td>Herman Beck</td>
+                            <td>354635</td>
+                            <td> <a class="nav-link" href="">
+                                <i class="icon-paper menu-icon"></i>
+                              </a>
+                            </td>
+                            <td>
+                              <div class="btn-group">
+                                <button type="button" id="statusButton" class="btn btn-primary">Status Dokumen</button>
+                                <button type="button" id="toggleButton" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                  <a class="dropdown-item" href="#" onclick="changeStatus('Verified', 'btn-success')">Verified</a>
+                                  <a class="dropdown-item" href="#" onclick="changeStatus('Revisi', 'btn-danger')">Revisi</a>
+                                  <a class="dropdown-item" href="#" onclick="changeStatus('Sedang diproses', 'btn-warning')">Sedang diproses</a>
+                                </div>
+                              </div>
+                            </td>
+                            <script>
+                              function changeStatus(status, colorClass) {
+                                var mainButton = document.getElementById('statusButton');
+                                var toggleButton = document.getElementById('toggleButton');
+                                mainButton.classList.remove('btn-primary', 'btn-success', 'btn-danger', 'btn-warning');
+                                toggleButton.classList.remove('btn-primary', 'btn-success', 'btn-danger', 'btn-warning');
+                                mainButton.innerText = status;
+                                mainButton.classList.add(colorClass);
+                                toggleButton.classList.add(colorClass);
+                              }
+                            </script>
+                            <td>
+                              <button type="button" class="btn btn-outline-primary btn-fw">Update</button>
+                            </td>
+                            <td>
+                              <form id="uploadForm" method="POST" enctype="multipart/form-data">
+                                <input type="file" name="jurnal" id="jurnal" accept=".pdf" style="display: none;">
+                                <button type="button" id="uploadButton" class="btn btn-outline-primary btn-fw">Upload</button>
+                                <button type="submit" id="submitButton" class="btn btn-outline-success btn-fw" style="display: none;">Submit</button>
+                              </form>
+                            </td>
+                            <script>
+                              document.getElementById('uploadButton').addEventListener('click', function() {
+                                // Klik otomatis pada input file
+                                document.getElementById('jurnal').click();
+                              });
 
-          <div class="col-lg-12 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">Dokumen Ujian Akhir</h4>
-                <p class="card-description">
-                  Pemeriksanaan kelengkapan dan kesesuaian dokumen<code>Ujian Akhir</code>
-                </p>
-                <div class="table-responsive">
-                  <table id="example" class="display expandable-table" style="width:100%">
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Nim</th>
-                        <th>Doc</th>
-                        <th>Status</th>
-                        <th>Updated </th>
-                        <th>File</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="py-1">1</td>
-                        <td>Herman Beck</td>
-                        <td>354635</td>
-                        <td> <a class="nav-link" href="">
-                            <i class="icon-paper menu-icon"></i>
-                          </a>
-                        </td>
-                        <td>
-                          <div class="btn-group">
-                            <button type="button" id="statusButton" class="btn btn-primary">Status Dokumen</button>
-                            <button type="button" id="toggleButton" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="#" onclick="changeStatus('Verified', 'btn-success')">Verified</a>
-                              <a class="dropdown-item" href="#" onclick="changeStatus('Revisi', 'btn-danger')">Revisi</a>
-                              <a class="dropdown-item" href="#" onclick="changeStatus('Sedang diproses', 'btn-warning')">Sedang diproses</a>
-                            </div>
-                          </div>
-                        </td>
-                        <script>
-                          function changeStatus(status, colorClass) {
-                            var mainButton = document.getElementById('statusButton');
-                            var toggleButton = document.getElementById('toggleButton');
-                            mainButton.classList.remove('btn-primary', 'btn-success', 'btn-danger', 'btn-warning');
-                            toggleButton.classList.remove('btn-primary', 'btn-success', 'btn-danger', 'btn-warning');
-                            mainButton.innerText = status;
-                            mainButton.classList.add(colorClass);
-                            toggleButton.classList.add(colorClass);
-                          }
-                        </script>
-                        <td>
-                          <button type="button" class="btn btn-outline-primary btn-fw">Update</button>
-                        </td>
-                        <td>
-                          <form id="uploadForm" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="jurnal" id="jurnal" accept=".pdf" style="display: none;">
-                            <button type="button" id="uploadButton" class="btn btn-outline-primary btn-fw">Upload</button>
-                            <button type="submit" id="submitButton" class="btn btn-outline-success btn-fw" style="display: none;">Submit</button>
-                          </form>
-                        </td>
-                        <script>
-                          document.getElementById('uploadButton').addEventListener('click', function() {
-                            // Klik otomatis pada input file
-                            document.getElementById('jurnal').click();
-                          });
-
-                          document.getElementById('jurnal').addEventListener('change', function() {
-                            // Periksa apakah file dipilih
-                            if (this.files.length > 0) {
-                              // Perlihatkan tombol submit jika file ada
-                              document.getElementById('submitButton').style.display = 'inline-block';
-                              alert('File terpilih: ' + this.files[0].name);
-                            }
-                          });
-                        </script>
-                      </tr>
-                    </tbody>
-                  </table>
+                              document.getElementById('jurnal').addEventListener('change', function() {
+                                // Periksa apakah file dipilih
+                                if (this.files.length > 0) {
+                                  // Perlihatkan tombol submit jika file ada
+                                  document.getElementById('submitButton').style.display = 'inline-block';
+                                  alert('File terpilih: ' + this.files[0].name);
+                                }
+                              });
+                            </script>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
         <!-- content ends -->
 
         <!-- partial:partials/_footer.html -->
