@@ -351,8 +351,8 @@ include '../../config/connection.php'; // Sesuaikan path dengan lokasi file kone
                         <th>Nama</th>
                         <th>Nim</th>
                         <th>Doc</th>
-                        <th>File</th>
-                        <th>Updated </th>
+                        <th>File Persetujuan</th>
+                        <th>Updated</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -372,7 +372,8 @@ include '../../config/connection.php'; // Sesuaikan path dengan lokasi file kone
                           echo "<td>" . $row['nim'] . "</td>";
 
                           if (strlen($row['sppsp']) > 0) {
-                            echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>download</a></td>";
+                            echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>
+                                          <button type='button' class='btn btn-outline-primary btn-fw'>Download</button></a></td>";
                         } else {
                             echo "<td>No file</td>";
                         }

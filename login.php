@@ -18,9 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: pages/admin/index.php");
         exit();
     } else {
-        $query = "SELECT 'dosen_pembimbing' AS source_table, id_dosen, username, pass FROM dosen_pembimbing WHERE username = '$username' AND pass = '$password'
+        $query = "SELECT 'dosen_pembimbing' AS source_table, id_dosen, username, pass, nip FROM dosen_pembimbing WHERE username = '$username' AND pass = '$password'
           UNION 
-          SELECT 'mahasiswa' AS source_table, id_mahasiswa, username, pass FROM mahasiswa WHERE username = '$username' AND pass = '$password'";
+          SELECT 'mahasiswa' AS source_table, id_mahasiswa, username, pass, nim FROM mahasiswa WHERE username = '$username' AND pass = '$password'";
         $result = mysqli_query($conn, $query);
 
         if (!$result) {
@@ -28,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $_SESSION['username'] = $row['username'];
-            $_SESSION['nim'] = $row['nim'];
 
             if ($row['source_table'] === 'dosen_pembimbing') {
                 $redirectUrl = "pages/dospem/index.php";

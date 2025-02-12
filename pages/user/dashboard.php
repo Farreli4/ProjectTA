@@ -1,3 +1,32 @@
+<?php
+session_start();
+$nama_mahasiswa = $_SESSION['username'] ?? 'farel';
+$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Mengubah query untuk mengambil nim dan nama_mahasiswa
+$check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
+$checkNim = $conn->prepare($check);
+$checkNim->execute([':nama' => $nama_mahasiswa]);
+$row = $checkNim->fetch(PDO::FETCH_ASSOC);
+
+if ($row) {
+    $nim = $row['nim'];
+    $nama = $row['nama_mahasiswa'];
+    $prodi = $row['prodi'];
+    echo "NIM: " . $nim . "<br>";
+    echo "Prodi:" . $prodi . "<br>";
+    echo "Nama: " . $nama;
+} else {
+    $nim = 'K3522068';
+    $nama = 'Nama Default';
+    $prodi = 'PRODI';
+    echo "NIM: " . $nim . "<br>";
+    echo "Nama: " . $nama . "<br>";
+    echo "Prodi: ". $prodi;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,17 +98,31 @@
           </li>
 
           <!--PROFIL-->
+          <!--PROFIL-->
           <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile" />
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="ti-power-off text-primary"></i>
-                Logout
-              </a>
-            </div>
-          </li>
+  <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+    <img src="../../assets/img/orang.png" alt="profile" />
+  </a>
+  <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+    <div class="dropdown-header">
+      <div class="profile-pic mb-3 d-flex justify-content-center">
+        <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+      </div>
+      <div class="profile-info text-center">
+        <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama); ?></p>
+        <p class="text-muted mb-1"><?php echo htmlspecialchars($nim); ?></p>
+        <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
+      </div>
+    </div>
+    <!-- Tombol Logout dengan Box Biru Tua -->
+    <div class="dropdown-item" style="margin: 0 10px; padding: 0;">
+      <a href="../../login.php" style="display: block; background-color: #004080; color: white; text-align: center; padding: 10px 15px; border-radius: 5px; text-decoration: none;">
+        <i class="ti-power-off"></i>
+        Logout
+      </a>
+    </div>
+  </div>
+</li>
         </ul>
       </div>
     </nav>
@@ -171,7 +214,8 @@
             <div class="col-md-12 grid-margin">
               <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Welcome Aa</h3>
+                  <h3>Welcome <?php echo htmlspecialchars($nama); ?></h3>
+                  <h5><?php echo htmlspecialchars($nim); ?></h5>
                   <h6 class="font-weight-normal mb-0">Website Pengumpulan Tugas Akhir <span class="text-primary">Politeknik NEST Sukoharjp</span></h6>
                 </div>
               </div>

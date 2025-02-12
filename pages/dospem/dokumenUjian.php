@@ -347,7 +347,7 @@
                         <th>Nama</th>
                         <th>Nim</th>
                         <th>Doc</th>
-                        <th> Status</th>
+                        <th>Status</th>
                         <th>Updated </th>
                         <th>File</th>
                       </tr>

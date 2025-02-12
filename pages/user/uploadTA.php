@@ -2,9 +2,19 @@
 <?php
 // Ambil data mahasiswa dari session (sesuaikan dengan sistem login Anda)
 session_start();
-$nama_mahasiswa = $_SESSION['nama'] ?? 'farel';
-$nim = $_SESSION['nim'] ?? 'K3533029';
-
+$nama_mahasiswa = $_SESSION['username'] ?? 'farel';
+$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$check = "SELECT nim FROM mahasiswa WHERE username = :nama";
+    $checkNim = $conn->prepare($check);
+    $checkNim->execute([':nama' => $nama_mahasiswa]);
+    $row = $checkNim->fetch(PDO::FETCH_ASSOC);
+    if($row){
+        $nim = $row['nim'];
+        echo $nim;
+    }else{
+        $nim = 'K3522068';
+    }
 // Proses upload file jika ada
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
     $file = $_FILES['file_upload'];
@@ -12,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
     $fileCategory = $_POST['file_type'] ?? '';
     
     // Format nama file
-    $newFileName = $nim . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
+    $newFileName = $nama_mahasiswa . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
     
     // Validasi file
     if ($fileType != "pdf") {
@@ -27,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
     
     try {
         // Koneksi ke database
-        $conn = new PDO("mysql:host=localhost;dbname=sistemta", "root", "");
+        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
         // Baca file sebagai binary
@@ -56,22 +66,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         }
         
         // Cek apakah data mahasiswa sudah ada
-        $checkSql = "SELECT nim FROM mahasiswa WHERE nim = :nim";
+        $checkSql = "SELECT username FROM mahasiswa WHERE username = :nama";
         $checkStmt = $conn->prepare($checkSql);
-        $checkStmt->execute([':nim' => $nim]);
+        $checkStmt->execute([':nama' => $nama_mahasiswa]);
         
         if ($checkStmt->rowCount() > 0) {
             // Update data yang sudah ada
-            $sql = "UPDATE mahasiswa SET `$columnName` = :file_content WHERE nim = :nim";
+            $sql = "UPDATE mahasiswa SET `$columnName` = :file_content WHERE username = :nama";
         } else {
             // Insert data baru dengan kolom minimal yang diperlukan
-            $sql = "INSERT INTO mahasiswa (nim, nama_mahasiswa, `$columnName`) 
-                   VALUES (:nim, :nama, :file_content)";
+            $sql = "INSERT INTO mahasiswa (nama_mahasiswa, `$columnName`) 
+                   VALUES (:nama, :file_content)";
         }
         
         $stmt = $conn->prepare($sql);
         $params = [
-            ':nim' => $nim,
+            ':nama' => $nama_mahasiswa,
             ':file_content' => $fileContent
         ];
         
@@ -89,18 +99,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         }
         
     } catch(Exception $e) {
-        error_log("Upload error for NIM $nim: " . $e->getMessage());
         echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
     }
+
 }
 
 // Fungsi untuk mendapatkan status file dari database
-function getFileStatus($nim, $tipe_file) {
+function getFileStatus($nama_mahasiswa, $tipe_file) {
     try {
-        $conn = new PDO("mysql:host=localhost;dbname=sistemta", "root", "");
+        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        // Tentukan nama kolom berdasarkan tipe file
+        // Tentukan nama kolom berdasarkan tipe file    
         $columnName = '';
         switch($tipe_file) {
             case 'Form Pendaftaran dan Persetujuan Tema':
@@ -118,9 +128,9 @@ function getFileStatus($nim, $tipe_file) {
         }
         
         // Cek apakah file sudah diupload
-        $sql = "SELECT `$columnName` FROM mahasiswa WHERE nim = :nim";
+        $sql = "SELECT `$columnName` FROM mahasiswa WHERE username = :nama";
         $stmt = $conn->prepare($sql);
-        $stmt->execute([':nim' => $nim]);
+        $stmt->execute([':nama' => $nama_mahasiswa]);
         
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result && $result[$columnName] !== null ? 'Uploaded' : 'Belum Upload';
@@ -310,8 +320,7 @@ $driveLinks = [
                     <!--BOX-->
                     <div class="content-wrapper">
                         <h3>Welcome <?php echo htmlspecialchars($nama_mahasiswa); ?></h3>
-                        <h6>NIM: <?php echo htmlspecialchars($nim); ?></h6>
-
+                        <h6>Nim: <?php echo htmlspecialchars($nim); ?></h6>
                         <div class="alert-info">
                             Disini kamu dapat melakukan upload Jurnal Magang. Setelah Jurnal terupload,
                             tunggu 1-2 hari kerja sampai notifikasi berubah menjadi terverifikasi
@@ -322,7 +331,7 @@ $driveLinks = [
                             <ul class="requirements-list">
                                 <li>Upload Transkrip Nilai dengan IPK >= 2.50, SKS minimal 100, nilai C tidak lebih dari 5 mata kuliah dan tidak ada nilai D atau E</li>
                                 <li>Upload Surat dengan format <span style="color: red;">PDF</span></li>
-                                <li>Format penamaan dokumen: NIM_NamaFile_Nama (Contoh: K<?php echo htmlspecialchars($nim); ?>_Bukti Transkrip Nilai_Muhammad Anthony)</li>
+                                <li>Format penamaan dokumen: NIM_NamaFile_Nama (Contoh: K3522029_Bukti Transkrip Nilai_Muhammad Anthony)</li>
                                 <li>Maksimal ukuran dokumen 2 Mb</li>
                                 <li>Pastikan dokumen yang akan diupload sudah benar</li>
                             </ul>
@@ -346,7 +355,7 @@ $driveLinks = [
                                     ];
 
                                     foreach ($files as $file) {
-                                        $status = getFileStatus($nim, $file);
+                                        $status = getFileStatus($nama_mahasiswa, $file);
                                         $statusClass = '';
                                         switch ($status) {
                                             case 'Revisi':
