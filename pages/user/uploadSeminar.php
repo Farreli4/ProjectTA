@@ -32,81 +32,111 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
     $fileCategory = $_POST['file_type'] ?? '';
 
     // Format nama file
-    $newFileName = $nim . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
+    $newFileName = $nama_mahasiswa . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
 
     // Validasi file
     if ($fileType != "pdf") {
         echo "<script>alert('Maaf, hanya file PDF yang diperbolehkan.');</script>";
-    } elseif ($file['size'] > 2000000) { // 2MB
+        return;
+    }
+
+    if ($file['size'] > 2000000) { // 2MB
         echo "<script>alert('Maaf, ukuran file terlalu besar (max 2MB).');</script>";
-    } else {
-        try {
-            // Koneksi ke database
-            $conn = new PDO("mysql:host=localhost;dbname=sistemta", "root", "");
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return;
+    }
 
-            // Baca file sebagai binary
-            $fileContent = file_get_contents($file['tmp_name']);
+    try {
+        // Koneksi ke database
+        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Tentukan nama tabel berdasarkan tipe file
-            $tableName = '';
-            switch ($fileCategory) {
-                case 'Form Pendaftaran Seminar Proposal':
-                    $tableName = 'form_pendaftaran_sempro(seminar)';
-                    break;
-                case 'Lembar Persetujuan Proposal Tugas Akhir':
-                    $tableName = 'lembar_persetujuan_proposal_ta(seminar)';
-                    break;
-                case 'Buku Konsultasi TA':
-                    $tableName = 'buku_konsultasi_ta(seminar)';
-                    break;
-            }
-
-            // Query untuk menyimpan file ke database
-            $sql = "INSERT INTO $tableName (nim, nama_file, file_content, tanggal_upload, status) 
-                    VALUES (:nim, :nama_file, :file_content, NOW(), 'Pending')";
-
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([
-                ':nim' => $nim,
-                ':nama_file' => $newFileName,
-                ':file_content' => $fileContent
-            ]);
-
-            echo "<script>alert('File berhasil diupload.');</script>";
-        } catch (PDOException $e) {
-            echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
+        // Baca file sebagai binary
+        $fileContent = file_get_contents($file['tmp_name']);
+        if ($fileContent === false) {
+            throw new Exception("Gagal membaca file");
         }
+
+        // Tentukan nama kolom berdasarkan tipe file
+        $columnName = '';
+        switch ($fileCategory) {
+            case 'Form Pendaftaran Seminar Proposal':
+                $columnName = 'form_pendaftaran_sempro(seminar)';
+                break;
+            case 'Lembar Persetujuan Proposal Tugas Akhir':
+                $columnName = 'lembar_persetujuan_proposal_ta(seminar)';
+                break;
+            case 'Buku Konsultasi TA':
+                $columnName = 'buku_konsultasi_ta(seminar)';
+                break;
+            default:
+                throw new Exception("Kategori file tidak valid");
+        }
+
+        // Cek apakah data mahasiswa sudah ada
+        $checkSql = "SELECT username FROM mahasiswa WHERE username = :nama";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->execute([':nama' => $nama_mahasiswa]);
+
+        if ($checkStmt->rowCount() > 0) {
+            // Update data yang sudah ada
+            $sql = "UPDATE mahasiswa SET `$columnName` = :file_content WHERE username = :nama";
+        } else {
+            // Insert data baru dengan kolom minimal yang diperlukan
+            $sql = "INSERT INTO mahasiswa (nama_mahasiswa, `$columnName`) 
+                   VALUES (:nama, :file_content)";
+        }
+
+        $stmt = $conn->prepare($sql);
+        $params = [
+            ':nama' => $nama_mahasiswa,
+            ':file_content' => $fileContent
+        ];
+
+        // Tambahkan parameter nama jika melakukan INSERT
+        if ($checkStmt->rowCount() == 0) {
+            $params[':nama'] = $nama_mahasiswa;
+        }
+
+        $result = $stmt->execute($params);
+
+        if ($result) {
+            echo "<script>alert('File berhasil diupload.');</script>";
+        } else {
+            throw new Exception("Gagal menyimpan ke database");
+        }
+    } catch (Exception $e) {
+        echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
     }
 }
 
 // Fungsi untuk mendapatkan status file dari database
-function getFileStatus($nim, $tipe_file)
+function getFileStatus($nama_mahasiswa, $fileCategory)
 {
     try {
-        $conn = new PDO("mysql:host=localhost;dbname=sistemta", "root", "");
+        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Tentukan nama tabel
-        $tableName = '';
-        switch ($tipe_file) {
+        // Tentukan nama kolom berdasarkan tipe file    
+        $columnName = '';
+        switch ($fileCategory) {
             case 'Form Pendaftaran Seminar Proposal':
-                $tableName = 'form_pendaftaran_sempro(seminar)';
+                $columnName = 'form_pendaftaran_sempro(seminar)';
                 break;
             case 'Lembar Persetujuan Proposal Tugas Akhir':
-                $tableName = 'lembar_persetujuan_proposal_ta(seminar)';
+                $columnName = 'lembar_persetujuan_proposal_ta(seminar)';
                 break;
             case 'Buku Konsultasi TA':
-                $tableName = 'buku_konsultasi_ta(seminar)';
+                $columnName = 'buku_konsultasi_ta(seminar)';
                 break;
         }
 
-        $sql = "SELECT status FROM $tableName WHERE nim = :nim ORDER BY tanggal_upload DESC LIMIT 1";
+        // Cek apakah file sudah diupload
+        $sql = "SELECT `$columnName` FROM mahasiswa WHERE username = :nama";
         $stmt = $conn->prepare($sql);
-        $stmt->execute([':nim' => $nim]);
+        $stmt->execute([':nama' => $nama_mahasiswa]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? $result['status'] : 'Belum Upload';
+        return $result && $result[$columnName] !== null ? 'Uploaded' : 'Belum Upload';
     } catch (PDOException $e) {
         return 'Error';
     }
@@ -340,7 +370,7 @@ $driveLinks = [
                                     ];
 
                                     foreach ($files as $file) {
-                                        $status = getFileStatus($nim, $file);
+                                        $status = getFileStatus($nama_mahasiswa, $file);
                                         $statusClass = '';
                                         switch ($status) {
                                             case 'Revisi':
@@ -420,7 +450,18 @@ $driveLinks = [
             <!-- page-body-wrapper ends -->
         </div>
         <!-- container-scroller -->
-
+        <script>
+            // Add this JavaScript function
+            function updateFileName(input) {
+                const fileNameSpan = document.getElementById('filename_' + input.id.split('_')[1]);
+                if (input.files && input.files[0]) {
+                    const fileName = input.files[0].name;
+                    fileNameSpan.textContent = fileName;
+                } else {
+                    fileNameSpan.textContent = 'Tidak ada file dipilih';
+                }
+            }
+        </script>
         <!-- plugins:js -->
         <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
         <!-- endinject -->

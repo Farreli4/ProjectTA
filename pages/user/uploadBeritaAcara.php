@@ -353,7 +353,7 @@ $driveLinks = [
                                     ];
 
                                     foreach ($files as $file) {
-                                        $status = getFileStatus($nim, $file);
+                                        $status = getFileStatus($nama_mahasiswa, $file);
                                         $statusClass = '';
                                         switch ($status) {
                                             case 'Revisi':

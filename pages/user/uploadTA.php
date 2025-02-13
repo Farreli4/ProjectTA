@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
 }
 
 // Fungsi untuk mendapatkan status file dari database
-function getFileStatus($nama_mahasiswa, $tipe_file)
+function getFileStatus($nama_mahasiswa, $fileCategory)
 {
     try {
         $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
@@ -120,7 +120,7 @@ function getFileStatus($nama_mahasiswa, $tipe_file)
 
         // Tentukan nama kolom berdasarkan tipe file    
         $columnName = '';
-        switch ($tipe_file) {
+        switch ($fileCategory) {
             case 'Form Pendaftaran dan Persetujuan Tema':
                 $columnName = 'form_pendaftaran_persetujuan_tema(TA)';
                 break;
