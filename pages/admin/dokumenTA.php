@@ -375,7 +375,7 @@
                           <tbody>
                                 <?php
                                 $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
-                                $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, form_pendaftaran, bukti_transkip, sistem_magang FROM mahasiswa WHERE 1";
+                                $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, form_pendaftaran_TA, bukti_transkip_nilai_TA, bukti_kelulusan_magang_TA FROM mahasiswa WHERE 1";
                                 $result = $conn->query($sql1);
 
                                 while ($row = mysqli_fetch_array($result)) {
@@ -384,19 +384,19 @@
                                   echo "<td>" . $row['nama_mahasiswa'] . "</td>";
                                   echo "<td>" . $row['nim'] . "</td>";
                                   echo "<td>" . $row['prodi'] . "</td>";
-                                  if (strlen($row['form_pendaftaran']) > 0) {
+                                  if (strlen($row['form_pendaftaran_TA']) > 0) {
                                     echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Pendaftaran</a></td>";
                                 } else {
                                     echo "<td>No file</td>";
                                 }
                             
-                                if (strlen($row['bukti_transkip']) > 0) {
+                                if (strlen($row['bukti_transkip_nilai_TA']) > 0) {
                                     echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Bukti Transkip</a></td>";
                                 } else {
                                     echo "<td>No file</td>";
                                 }
                             
-                                if (strlen($row['sistem_magang']) > 0) {
+                                if (strlen($row['bukti_kelulusan_magang_TA']) > 0) {
                                     echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Sistem Magang</a></td>";
                                 } else {
                                     echo "<td>No file</td>";
