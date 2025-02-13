@@ -449,103 +449,207 @@ $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim,
 $result = $conn->query($sql1);
 ?>
 
-<div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <p class="card-title">Advanced Table</p>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="table-responsive">
-                            <table id="example" class="display expandable-table" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nama</th>
-                                        <th>NIM</th>
-                                        <th>Prodi</th>
-                                        <th>Tema</th>
-                                        <th>Judul</th>
-                                        <th>Dosen Pembimbing</th>
-                                        <th>Status</th>
-                                        <th>Updated</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    // Loop through mahasiswa records
-                                    while ($row = $result->fetch_assoc()) {
-                                        $status_pengajuan = isset($row['status_pengajuan']) ? $row['status_pengajuan'] : '';
-                                        $selected_dosen = isset($row['id_dosen']) ? $row['id_dosen'] : '';
+<style>
+/* Membuat tabel lebih rapi dan responsif */
+.table-responsive {
+    overflow-x: auto;
+    width: 100%;
+}
 
-                                        echo "<tr>";
-                                        echo "<td>" . $row['id_mahasiswa'] . "</td>";
-                                        echo "<td>" . $row['nama_mahasiswa'] . "</td>";
-                                        echo "<td>" . $row['nim'] . "</td>";
-                                        echo "<td>" . $row['prodi'] . "</td>";
-                                        echo "<td>" . $row['tema'] . "</td>";
-                                        echo "<td>" . $row['judul'] . "</td>";
-                                        echo "<td>";
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-                                        // Start form for updating
-                                        echo "<form action='update_pengajuan.php' method='POST'>";
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
 
-                                        // Dosen Pembimbing dropdown - dynamically generated
-                                        echo "<select name='dosen_pembimbing' class='js-example-basic-single w-30' required>";
-                                        echo "<option value=''>Select Dosen Pembimbing</option>";
+th {
+    background-color: #1b4f72;
+    color: white;
+}
 
-                                        // Reset result_dosen pointer back to the start
-                                        $result_dosen->data_seek(0); // This is crucial to loop through dosen_pembimbing again for each row
+/* Input tanggal */
+input[type="date"] {
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    width: 150px;
+}
 
-                                        // Loop through dosen_pembimbing and create options dynamically
-                                        while ($dosen_row = $result_dosen->fetch_assoc()) {
-                                            echo "<option value='" . $dosen_row['id_dosen'] . "' " . ($dosen_row['id_dosen'] == $selected_dosen ? 'selected' : '') . ">" . $dosen_row['nama_dosen'] . "</option>";
-                                        }
+/* Dropdown Status */
+select {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
 
-                                        echo "</select>";
-                                        echo "</td>";
+/* Warna untuk status */
+.select-status {
+    font-weight: bold;
+    color: white;
+}
 
-                                        // Status Pengajuan dropdown
-                                        echo "<td>";
-                                        echo "<select name='status_pengajuan' onchange='changeColor(this); toggleRevisiTextbox(this)' required>";
-                                        echo "<option value=''>Select Status</option>";
-                                        echo "<option value='Ditolak'" . ($status_pengajuan == 'Ditolak' ? ' selected' : '') . ">Ditolak</option>";
-                                        echo "<option value='Revisi'" . ($status_pengajuan == 'Revisi' ? ' selected' : '') . ">Revisi</option>";
-                                        echo "<option value='Disetujui'" . ($status_pengajuan == 'Disetujui' ? ' selected' : '') . ">Disetujui</option>";
-                                        echo "</select>";
-                                        echo "</td>";
+.select-status option[value="Ditunda"] {
+    background: red;
+    color: white;
+}
 
-                                        // Revisi textbox, shown when "Revisi" is selected
-                                        echo "<div id='revisi-textbox' style='display:none;'>";
-                                        echo "<textarea name='alasan_revisi' id='revisi_reason' rows='3'>" . $row['alasan_revisi'] . "</textarea>";
-                                        echo "</div>";
+.select-status option[value="Dijadwalkan"] {
+    background: yellow;
+    color: black;
+}
 
-                                        // Hidden field for mahasiswa ID
-                                        echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
+.select-status option[value="Selesai"] {
+    background: green;
+    color: white;
+}
 
-                                        // Submit button
-                                        echo "<td>";
-                                        echo "<button class='btn btn-inverse-success btn-fw' type='submit'>Update</button>";
-                                        echo "</td>";
+/* Styling untuk dropdown Dosen Pembimbing */
+select[name="dosen_pembimbing"] {
+    background-color: #007bff !important; /* Biru */
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-                                        echo "</form>";
-                                        echo "</tr>";
-                                    }
-                                    $result_dosen->close();
-                                    $conn->close();
-                                    ?>
+/* Saat opsi dalam dropdown dipilih */
+select[name="dosen_pembimbing"] option {
+    background-color:rgb(162, 199, 241); /* Biru */
+    color: white;
+}
 
 
-                                          </tbody>
-                                      </table>
+/* Tombol Update */
+.btn-update {
+    background-color:rgb(178, 212, 249);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-update:hover {
+    background-color: #0056b3;
+}
+
+/* Ikon dokumen */
+.icon-folder {
+    font-size: 20px;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+}
+</style>
+        
+      <div class="row"> 
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-title">Daftar Tugas Akhir</p>
+                                <div class="table-responsive">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nama</th>
+                                                <th>NIM</th>
+                                                <th>Prodi</th>
+                                                <th>Tema</th>
+                                                <th>Judul</th>
+                                                <th>Dosen Pembimbing</th>
+                                                <th>Status</th>
+                                                <th>Updated</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            // Loop through mahasiswa records
+                                            while ($row = $result->fetch_assoc()) {
+                                                $status_pengajuan = isset($row['status_pengajuan']) ? $row['status_pengajuan'] : '';
+                                                $selected_dosen = isset($row['id_dosen']) ? $row['id_dosen'] : '';
+
+                                                echo "<tr>";
+                                                echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                                                echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                                                echo "<td>" . $row['nim'] . "</td>";
+                                                echo "<td>" . $row['prodi'] . "</td>";
+                                                echo "<td>" . $row['tema'] . "</td>";
+                                                echo "<td>" . $row['judul'] . "</td>";
+                                                echo "<td>";
+
+                                                // Start form for updating
+                                                echo "<form action='update_pengajuan.php' method='POST'>";
+
+                                                // Dosen Pembimbing dropdown - dynamically generated
+                                                echo "<select name='dosen_pembimbing' class='js-example-basic-single w-30' required>";
+                                                echo "<option value=''>Select Dosen Pembimbing</option>";
+
+                                                // Reset result_dosen pointer back to the start
+                                                $result_dosen->data_seek(0); // This is crucial to loop through dosen_pembimbing again for each row
+
+                                                // Loop through dosen_pembimbing and create options dynamically
+                                                while ($dosen_row = $result_dosen->fetch_assoc()) {
+                                                    echo "<option value='" . $dosen_row['id_dosen'] . "' " . ($dosen_row['id_dosen'] == $selected_dosen ? 'selected' : '') . ">" . $dosen_row['nama_dosen'] . "</option>";
+                                                }
+
+                                                echo "</select>";
+                                                echo "</td>";
+
+                                                // Status Pengajuan dropdown
+                                                echo "<td>";
+                                                echo "<select name='status_pengajuan' onchange='changeColor(this); toggleRevisiTextbox(this)' required>";
+                                                echo "<option value=''>Select Status</option>";
+                                                echo "<option value='Ditolak'" . ($status_pengajuan == 'Ditolak' ? ' selected' : '') . ">Ditolak</option>";
+                                                echo "<option value='Revisi'" . ($status_pengajuan == 'Revisi' ? ' selected' : '') . ">Revisi</option>";
+                                                echo "<option value='Disetujui'" . ($status_pengajuan == 'Disetujui' ? ' selected' : '') . ">Disetujui</option>";
+                                                echo "</select>";
+                                                echo "</td>";
+
+                                                // Revisi textbox, shown when "Revisi" is selected
+                                                echo "<div id='revisi-textbox' style='display:none;'>";
+                                                echo "<textarea name='alasan_revisi' id='revisi_reason' rows='3'>" . $row['alasan_revisi'] . "</textarea>";
+                                                echo "</div>";
+
+                                                // Hidden field for mahasiswa ID
+                                                echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
+
+                                                // Submit button
+                                                echo "<td>";
+                                                echo "<button class='btn btn-inverse-success btn-fw' type='submit'>Update</button>";
+                                                echo "</td>";
+
+                                                echo "</form>";
+                                                echo "</tr>";
+                                            }
+                                            $result_dosen->close();
+                                            $conn->close();
+                                            ?>
+
+
+                                                  </tbody>
+                                              </table>
+                                          </div>
+                                      </div>
                                   </div>
                               </div>
                           </div>
                       </div>
                   </div>
-              </div>
-          </div>
-
+          </div>                                  
           <script>
           // This function changes the background color of the select based on the selected value.
           function changeColor(selectElement) {
@@ -558,7 +662,7 @@ $result = $conn->query($sql1);
               } else if (selectedValue == 'Disetujui') {
                   selectElement.style.backgroundColor = 'rgb(34, 139, 34)'; // Green
               } else {
-                  selectElement.style.backgroundColor = 'rgb(100,100,100)'; // Gray
+                  selectElement.style.backgroundColor = 'rgb(174, 215, 242)'; // Gray
               }
           }
 
@@ -586,8 +690,6 @@ $result = $conn->query($sql1);
           }
           </script>
 
-
-        </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">

@@ -413,110 +413,172 @@
             </div>
           </div>
           <!--Advanced-->
-          <div class="row">
+          <style>
+            /* Membuat tabel lebih rapi dan responsif */
+            .table-responsive {
+                overflow-x: auto;
+                width: 100%;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                background: #fff;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            th, td {
+                padding: 12px;
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+            }
+
+            th {
+                background-color: #1b4f72;
+                color: white;
+            }
+
+            /* Input tanggal */
+            input[type="date"] {
+                border: 1px solid #ccc;
+                padding: 5px;
+                border-radius: 5px;
+                text-align: center;
+                width: 150px;
+            }
+
+            /* Dropdown Status */
+            select {
+                padding: 5px;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+            select option[value="dijadwalkan"] {
+                background: yellow;
+            }
+
+            select option[value="ditunda"] {
+                background: red;
+                color: white;
+            }
+
+            select option[value="selesai"] {
+                background: green;
+                color: white;
+            }
+
+            /* Tombol Update */
+            .btn-update {
+                background-color: #007bff;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+            }
+
+            .btn-update:hover {
+                background-color: #0056b3;
+            }
+        </style>
+
+        <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Advanced Table</p>
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="table-responsive">
-                        <table id="example" class="display expandable-table" style="width:100%">
-                          <thead>
-                            <tr>
-                              <th>ID</th>
-                              <th>Nama</th>
-                              <th>NIM</th>
-                              <th>Status</th>
-                              <th>Nilai</th>
-                              <th>Doc</th>
-                              <th>Jadwal</th>
-                              <th>Verifikasi</th>
-                              <th></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <?php
-                            
-                            $conn->connect("127.0.0.1", "root", "", "sistem_ta");
-                            $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, ujian.status_ujian, ujian.nilai, ujian.tanggal_ujian
-                            FROM mahasiswa 
-                            LEFT JOIN ujian ON mahasiswa.id_mahasiswa = ujian.id_mahasiswa";
-                            $result = $conn->query($sql1);
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Jadwal Seminar Proposal</h4>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nama</th>
+                                        <th>NIM</th>
+                                        <th>Status</th>
+                                        <th>Nilai</th>
+                                        <th>Doc</th>
+                                        <th>Jadwal</th>
+                                        <th>Verifikasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
+                                    if ($conn->connect_error) {
+                                        die("Koneksi gagal: " . $conn->connect_error);
+                                    }
 
-                            while ($row = mysqli_fetch_array($result)) {
-                            
-                              echo "<tr>";
-                              echo "<td>" . $row['id_mahasiswa'] . "</td>";
-                              echo "<td>" . $row['nama_mahasiswa'] . "</td>";
-                              echo "<td>" . $row['nim'] . "</td>";
-                            
-                              echo "<form action='update_ujian.php' method='POST'>";
-                              echo "<td>";
-                              echo "<select class='js-example-basic-single w-30' name='status_ujian' onchange='changeColor(this)' required>";
-                              echo "<option value='dijadwalkan'" . ($row['status_ujian'] == 'dijadwalkan' ? ' selected' : '') . ">Dijadwalkan</option>";
-                              echo "<option value='selesai'" . ($row['status_ujian'] == 'selesai' ? ' selected' : '') . ">Selesai</option>";
-                              echo "</select>";
-                              echo "</td>";
-                              
-                              echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
-                          
-                              echo "<td>";
-                              $nilai = isset($row['nilai']) ? $row['nilai'] : '0';
-                              echo "<input type='text' id='nilai' name='nilai' value='" . $nilai . "' >";
-                              echo "</td>";
-                              echo "<td>";
-                              echo "<a href='#popup'>";
-                              echo "<span class='material-symbols-outlined'>folder_open</span>";
-                              echo "</a>";
-                              echo "</td>";
-                              echo "<td>";
-                              echo "<input type='date' name='tanggal_ujian' value='" . $row["tanggal_ujian"] . "' required>";
-                              echo "</td>";
-                              echo "<td>";
-                              echo "<button class='btn btn-inverse-success btn-fw' type='submit'>Verifikasi</button>";
-                              echo "</td>";
-                          
-                              echo "</form>";
-                              
-                              echo "</tr>";
-                          }
-                            
-                             $conn->close()
-                              ?>
-                            </tbody>
-                            <script>
-                              function changeSelectColor(selectElement) {
-                                var selectedValue = selectElement.value;
+                                    $sql = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, ujian.status_ujian, ujian.nilai, ujian.tanggal_ujian 
+                                            FROM mahasiswa 
+                                            LEFT JOIN ujian ON mahasiswa.id_mahasiswa = ujian.id_mahasiswa";
+                                    $result = $conn->query($sql);
 
-                                
-                                if (selectedValue == 'dijadwalkan') {
-                                  selectElement.style.backgroundColor = 'rgb(255, 251, 0)';
-                                } else if (selectedValue == 'ditunda') {
-                                  selectElement.style.backgroundColor = 'rgb(255, 99, 71)';
-                                } else if (selectedValue == 'selesai') {
-                                  selectElement.style.backgroundColor = 'rgb(34, 139, 34)';
-                                }
-                              }
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<tr>";
+                                        echo "<td>{$row['id_mahasiswa']}</td>";
+                                        echo "<td>{$row['nama_mahasiswa']}</td>";
+                                        echo "<td>{$row['nim']}</td>";
 
-                              window.onload = function() {
-                                var selects = document.querySelectorAll('select');
-                                selects.forEach(function(select) {
-                                  changeSelectColor(select);
-                                });
-                              }
-                            </script>
-                      </table>
-                      </div>
+                                        // Dropdown Status
+                                        echo "<td>";
+                                        echo "<select onchange='changeSelectColor(this)'>";
+                                        echo "<option value='dijadwalkan' " . ($row['status_ujian'] == 'dijadwalkan' ? 'selected' : '') . ">Dijadwalkan</option>";
+                                        echo "<option value='ditunda' " . ($row['status_ujian'] == 'ditunda' ? 'selected' : '') . ">Ditunda</option>";
+                                        echo "<option value='selesai' " . ($row['status_ujian'] == 'selesai' ? 'selected' : '') . ">Selesai</option>";
+                                        echo "</select>";
+                                        echo "</td>";
+
+                                        // Nilai
+                                        $nilai = isset($row['nilai']) ? $row['nilai'] : '0';
+                                        echo "<td><input type='text' value='$nilai'></td>";
+
+                                        // Dokumen
+                                        echo "<td><a href='#'><span class='material-symbols-outlined'>folder_open</span></a></td>";
+
+                                        // Jadwal
+                                        echo "<td><input type='date' value='{$row['tanggal_ujian']}'></td>";
+
+                                        // Tombol Verifikasi
+                                        echo "<td><button class='btn-update'>Verifikasi</button></td>";
+
+                                        echo "</tr>";
+                                    }
+
+                                    $conn->close();
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                  </div>
-                  </div>
                 </div>
-
-                
-              </div>
             </div>
         </div>
+
+        <script>
+            function changeSelectColor(selectElement) {
+                var selectedValue = selectElement.value;
+
+                if (selectedValue == 'dijadwalkan') {
+                    selectElement.style.backgroundColor = 'rgb(255, 251, 0)';
+                } else if (selectedValue == 'ditunda') {
+                    selectElement.style.backgroundColor = 'rgb(255, 99, 71)';
+                } else if (selectedValue == 'selesai') {
+                    selectElement.style.backgroundColor = 'rgb(34, 139, 34)';
+                }
+            }
+
+            window.onload = function() {
+                var selects = document.querySelectorAll('select');
+                selects.forEach(function(select) {
+                    changeSelectColor(select);
+                });
+            }
+        </script>
+
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
