@@ -5,11 +5,11 @@ try {
     $conn = new PDO("mysql:host=127.0.0.1;dbname=sistem_ta", "root", "");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["lembar_persetujuan_proposal_ta_seminar"])) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["lembar_persetujuan_laporan_ta_ujian"])) {
         $id_mahasiswa = $_POST['id_mahasiswa'];
 
         // Cek apakah mahasiswa sudah memiliki file sebelumnya
-        $stmt = $conn->prepare("SELECT lembar_persetujuan_proposal_ta_seminar FROM mahasiswa WHERE id_mahasiswa = ?");
+        $stmt = $conn->prepare("SELECT lembar_persetujuan_laporan_ta_ujian FROM mahasiswa WHERE id_mahasiswa = ?");
         $stmt->execute([$id_mahasiswa]);
         $existingFile = $stmt->fetchColumn(); // Ambil nama file dari database
 
@@ -20,10 +20,10 @@ try {
         }
 
         // Ambil informasi file yang diunggah
-        $file_name = $_FILES["lembar_persetujuan_proposal_ta_seminar"]["name"]; // Ambil nama asli file
-        $file_tmp = $_FILES["lembar_persetujuan_proposal_ta_seminar"]["tmp_name"];
-        $file_size = $_FILES["lembar_persetujuan_proposal_ta_seminar"]["size"];
-        $file_type = $_FILES["lembar_persetujuan_proposal_ta_seminar"]["type"];
+        $file_name = $_FILES["lembar_persetujuan_laporan_ta_ujian"]["name"]; // Ambil nama asli
+        $file_tmp = $_FILES["lembar_persetujuan_laporan_ta_ujian"]["tmp_name"];
+        $file_size = $_FILES["lembar_persetujuan_laporan_ta_ujian"]["size"];
+        $file_type = $_FILES["lembar_persetujuan_laporan_ta_ujian"]["type"];
 
         // Validasi tipe file harus PDF
         if ($file_type !== "application/pdf") {
@@ -48,11 +48,11 @@ try {
         move_uploaded_file($file_tmp, $file_path);
 
         // Simpan path file ke database
-        $sql = "UPDATE mahasiswa SET lembar_persetujuan_proposal_ta_seminar = ? WHERE id_mahasiswa = ?";
+        $sql = "UPDATE mahasiswa SET lembar_persetujuan_laporan_ta_ujian = ? WHERE id_mahasiswa = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$file_path, $id_mahasiswa]);
 
-        echo "<script>alert('File berhasil diunggah!'); window.location.href='../../pages/dospem/dokumenSempro.php';</script>";
+        echo "<script>alert('File berhasil diunggah!'); window.location.href='index.php';</script>";
     } else {
         echo "<script>alert('Terjadi kesalahan, silakan coba lagi!'); window.history.back();</script>";
     }

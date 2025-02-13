@@ -371,57 +371,65 @@ try {
                             <th>Nim</th>
                             <th>Doc</th>
                             <th>File Persetujuan</th>
-                            <th>Updated</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <?php
-                            try {
-                              // Use the existing PDO connection from above
-                              $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, 
-                                  seminar_proposal.tanggal_seminar, seminar_proposal.status_seminar, 
-                                  seminar_proposal.sppsp
-                                  FROM mahasiswa 
-                                  LEFT JOIN seminar_proposal ON mahasiswa.id_mahasiswa = seminar_proposal.id_mahasiswa 
-                                  WHERE 1";
+                          <?php
+                          try {
+                            // Use the existing PDO connection
+                            $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, mahasiswa.lembar_persetujuan_proposal_ta_seminar 
+                                    FROM mahasiswa";
 
-                              $stmt = $conn->prepare($sql1);
-                              $stmt->execute();
+                            $stmt = $conn->prepare($sql1);
+                            $stmt->execute();
 
-                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo "<tr>";
-                                echo "<td>" . htmlspecialchars($row['id_mahasiswa']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['nama_mahasiswa']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                              $id = htmlspecialchars($row['id_mahasiswa']);
 
-                                if (!empty($row['sppsp'])) {
-                                  echo "<td><a href='downloadsempro.php?id=" . htmlspecialchars($row['id_mahasiswa']) . "' target='_blank'>
-                              <button type='button' class='btn btn-outline-primary btn-fw'>Download</button></a></td>";
-                                } else {
-                                  echo "<td>No file</td>";
-                                }
+                              echo "<tr>";
+                              echo "<td>" . $id . "</td>";
+                              echo "<td>" . htmlspecialchars($row['nama_mahasiswa']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
 
-                                echo '<td>
-                                        <form id="uploadForm_' . htmlspecialchars($row['id_mahasiswa']) . '" method="POST" action="../../pages/dospem/uploadsempro.php" enctype="multipart/form-data">
-                                            <input type="file" name="sppsp" id="jurnal_' . htmlspecialchars($row['id_mahasiswa']) . '" accept=".pdf" style="display: none;">
-                                            <input type="hidden" name="id_mahasiswa" value="' . htmlspecialchars($row['id_mahasiswa']) . '">
-                                            <button type="button" onclick="triggerFileInput(' . htmlspecialchars($row['id_mahasiswa']) . ')" class="btn btn-outline-primary btn-fw">Upload</button>
-                                            <button type="submit" id="submitButton_' . htmlspecialchars($row['id_mahasiswa']) . '" class="btn btn-outline-success btn-fw" style="display: none;">Submit</button>
-                                        </form>
-                                    </td>';
-
-
-                                echo "<td><button type='button' class='btn btn-outline-warning btn-fw'>Update Status</button></td>";
-                                echo "</tr>";
+                              // Perbaikan pengecekan file untuk download
+                              if (!empty($row['lembar_persetujuan_proposal_ta_seminar'])) {
+                                echo "<td><a href='downloadsempro.php?id=" . $id . "' target='_blank'>
+                                        <button type='button' class='btn btn-outline-primary btn-fw'>Download</button>
+                                      </a></td>";
+                              } else {
+                                echo "<td>No file</td>";
                               }
-                            } catch (PDOException $e) {
-                              echo "Error: " . $e->getMessage();
-                            }
-                            ?>
 
-                          </tr>
+                              // Form untuk upload dengan tombol submit yang hanya muncul setelah memilih file
+                              echo '<td>
+                                      <form id="uploadForm_' . $id . '" method="POST" action="../../pages/dospem/uploadsempro.php" enctype="multipart/form-data">
+                                          <input type="file" name="lembar_persetujuan_proposal_ta_seminar" id="file_' . $id . '" accept=".pdf" style="display: none;">
+                                          <input type="hidden" name="id_mahasiswa" value="' . $id . '">
+                                          <button type="button" onclick="document.getElementById(\'file_' . $id . '\').click();" class="btn btn-outline-primary btn-fw">Upload</button>
+                                          <button type="submit" id="submitButton_' . $id . '" class="btn btn-outline-success btn-fw" style="display: none;">Submit</button>
+                                      </form>
+                                    </td>';
+                              echo "</tr>";
+
+                              // Tambahkan script JavaScript untuk setiap baris
+                              echo '<script>
+                                      document.getElementById("file_' . $id . '").addEventListener("change", function() {
+                                        var submitButton = document.getElementById("submitButton_' . $id . '");
+                                        if (this.files.length > 0) {
+                                          submitButton.style.display = "inline-block"; // Tampilkan tombol Submit
+                                        } else {
+                                          submitButton.style.display = "none"; // Sembunyikan jika file dihapus
+                                        }
+                                      });
+                                    </script>';
+                            }
+                          } catch (PDOException $e) {
+                            echo "<tr><td colspan='5'>Error: " . $e->getMessage() . "</td></tr>";
+                          }
+                          ?>
                         </tbody>
+
+
                         <script>
                           function triggerFileInput(id) {
                             document.getElementById('jurnal_' + id).click();

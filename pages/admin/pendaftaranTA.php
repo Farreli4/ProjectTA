@@ -528,7 +528,7 @@
           /* Saat opsi dalam dropdown dipilih */
           select[name="dosen_pembimbing"] option {
               background-color:rgb(162, 199, 241); /* Biru */
-              color: white;
+              color: black;
           }
 
 

@@ -8,12 +8,12 @@ if (isset($_GET['id'])) {
         $conn = new PDO("mysql:host=127.0.0.1;dbname=sistem_ta", "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $conn->prepare("SELECT lembar_persetujuan_proposal_ta_seminar FROM mahasiswa WHERE id_mahasiswa = ?");
+        $stmt = $conn->prepare("SELECT lembar_persetujuan_laporan_ta_ujian FROM mahasiswa WHERE id_mahasiswa = ?");
         $stmt->execute([$id_mahasiswa]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($row && !empty($row['lembar_persetujuan_proposal_ta_seminar'])) {
-            $file_path = $row['lembar_persetujuan_proposal_ta_seminar'];
+        if ($row && !empty($row['lembar_persetujuan_laporan_ta_ujian'])) {
+            $file_path = $row['lembar_persetujuan_laporan_ta_ujian'];
 
             if (file_exists($file_path)) {
                 // Ambil nama asli dari path
