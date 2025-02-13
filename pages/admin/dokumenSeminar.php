@@ -374,7 +374,7 @@
                           <tbody>
                                 <?php
                                 $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
-                                $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, form_pendaftaran_sempro_seminar, form_persetujuan_proposal_ta_seminar FROM mahasiswa WHERE 1";
+                                $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, form_pendaftaran_sempro_seminar, lembar_persetujuan_proposal_ta_seminar FROM mahasiswa WHERE 1";
                                 $result = $conn->query($sql1);
 
                                 while ($row = mysqli_fetch_array($result)) {
@@ -389,7 +389,7 @@
                                     echo "<td>No file</td>";
                                 }
                             
-                                if (strlen($row['form_persetujuan_proposal_ta_seminar']) > 0) {
+                                if (strlen($row['lembar_persetujuan_proposal_ta_seminar']) > 0) {
                                     echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Persetujuan</a></td>";
                                 } else {
                                     echo "<td>No file</td>";
