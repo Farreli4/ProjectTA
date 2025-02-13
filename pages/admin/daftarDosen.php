@@ -354,6 +354,55 @@
       </nav>
       <!-- partial -->
       
+      <style>
+            /* Styling Tabel */
+     /* Styling Tabel */
+/* Styling Tabel */
+/* Styling Tabel */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Header tetap berwarna biru */
+        th {
+            background-color: #1b4f72 !important;
+            color: white;
+            padding: 12px;
+            text-align: center;
+        }
+
+        /* Styling untuk isi tabel */
+        td {
+            background-color: #ffffff;
+            color: black;
+            padding: 12px;
+            text-align: center;
+        }
+
+        /* Menghilangkan garis antar kolom */
+        th, td {
+            border: none !important;
+        }
+
+        /* Menambahkan garis hanya antar baris */
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Menghilangkan garis di baris terakhir agar lebih rapi */
+        tr:last-child {
+            border-bottom: none;
+        }
+
+
+
+       
+          </style>
+
           <!--Advanced-->
       <div class="main-panel">
         <div class="content-wrapper">
