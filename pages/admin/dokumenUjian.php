@@ -23,13 +23,14 @@
   <link rel="stylesheet" type="text/css" href="../../assets/css/css/admin/mahasiswa.css">
   <link rel="stylesheet" href="../../assets/css/css/admin/mahasiswa.css">
 </head>
+
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.php"><img src="../../assets/img/logo2.png" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../assets/img/Logo.webp" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5" href="index.php"><img src="../../assets/img/logo2.png" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../assets/img/Logo.webp" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -98,7 +99,7 @@
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="../../Template/skydash/images/faces/face28.jpg" alt="profile"/>
+              <img src="../../Template/skydash/images/faces/face28.jpg" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
@@ -130,8 +131,12 @@
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
           <p class="settings-heading">SIDEBAR SKINS</p>
-          <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>Light</div>
-          <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark</div>
+          <div class="sidebar-bg-options selected" id="sidebar-light-theme">
+            <div class="img-ss rounded-circle bg-light border mr-3"></div>Light
+          </div>
+          <div class="sidebar-bg-options" id="sidebar-dark-theme">
+            <div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark
+          </div>
           <p class="settings-heading mt-2">HEADER SKINS</p>
           <div class="color-tiles mx-0 px-4">
             <div class="tiles success"></div>
@@ -343,60 +348,63 @@
               </ul>
             </div>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../../index.php">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Log Out</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
-      
+
       <style>
-            /* Styling Tabel */
-     /* Styling Tabel */
-/* Styling Tabel */
-/* Styling Tabel */
+        /* Styling Tabel */
+        /* Styling Tabel */
+        /* Styling Tabel */
+        /* Styling Tabel */
         table {
-            border-collapse: collapse;
-            width: 100%;
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
+          border-collapse: collapse;
+          width: 100%;
+          background: #fff;
+          border-radius: 8px;
+          overflow: hidden;
         }
 
         /* Header tetap berwarna biru */
         th {
-            background-color: #1b4f72 !important;
-            color: white;
-            padding: 12px;
-            text-align: center;
+          background-color: #1b4f72 !important;
+          color: white;
+          padding: 12px;
+          text-align: center;
         }
 
         /* Styling untuk isi tabel */
         td {
-            background-color: #ffffff;
-            color: black;
-            padding: 12px;
-            text-align: center;
+          background-color: #ffffff;
+          color: black;
+          padding: 12px;
+          text-align: center;
         }
 
         /* Menghilangkan garis antar kolom */
-        th, td {
-            border: none !important;
+        th,
+        td {
+          border: none !important;
         }
 
         /* Menambahkan garis hanya antar baris */
         tr {
-            border-bottom: 1px solid #ddd;
+          border-bottom: 1px solid #ddd;
         }
 
         /* Menghilangkan garis di baris terakhir agar lebih rapi */
         tr:last-child {
-            border-bottom: none;
+          border-bottom: none;
         }
+      </style>
 
-
-
-       
-          </style>
-
-          <!--Advanced-->
+      <!--Advanced-->
       <div class="main-panel">
         <div class="content-wrapper">
           <!--Advanced-->
@@ -410,7 +418,7 @@
                       <div class="table-responsive">
                         <table id="example" class="display expandable-table" style="width:100%">
                           <thead>
-                          <tr>
+                            <tr>
                               <th>No.</th>
                               <th>Nama</th>
                               <th>NIM</th>
@@ -422,74 +430,74 @@
                             </tr>
                           </thead>
                           <tbody>
-                                <?php
-                                $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
-                                $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, lembar_persetujuan_laporan_ta_ujian, form_pendaftaran_ujian_ta_ujian, lembar_kehadiran_sempro_ujian FROM mahasiswa WHERE 1";
-                                $result = $conn->query($sql1);
+                            <?php
+                            $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
+                            $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, lembar_persetujuan_laporan_ta_ujian, form_pendaftaran_ujian_ta_ujian, lembar_kehadiran_sempro_ujian FROM mahasiswa WHERE 1";
+                            $result = $conn->query($sql1);
 
-                                while ($row = mysqli_fetch_array($result)) {
-                                  echo "<tr>";
-                                  echo "<td>" . $row['id_mahasiswa'] . "</td>";
-                                  echo "<td>" . $row['nama_mahasiswa'] . "</td>";
-                                  echo "<td>" . $row['nim'] . "</td>";
-                                  echo "<td>" . $row['prodi'] . "</td>";
-                                  if (strlen($row['lembar_persetujuan_laporan_ta_ujian']) > 0) {
-                                    echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Pendaftaran</a></td>";
-                                } else {
-                                    echo "<td>No file</td>";
-                                }
-                            
-                                if (strlen($row['form_pendaftaran_ujian_ta_ujian']) > 0) {
-                                    echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Persetujuan</a></td>";
-                                } else {
-                                    echo "<td>No file</td>";
-                                }
-
-                                if (strlen($row['lembar_kehadiran_sempro_ujian']) > 0) {
-                                  echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Persetujuan</a></td>";
+                            while ($row = mysqli_fetch_array($result)) {
+                              echo "<tr>";
+                              echo "<td>" . $row['id_mahasiswa'] . "</td>";
+                              echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                              echo "<td>" . $row['nim'] . "</td>";
+                              echo "<td>" . $row['prodi'] . "</td>";
+                              if (strlen($row['lembar_persetujuan_laporan_ta_ujian']) > 0) {
+                                echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Pendaftaran</a></td>";
                               } else {
-                                  echo "<td>No file</td>";
+                                echo "<td>No file</td>";
                               }
+
+                              if (strlen($row['form_pendaftaran_ujian_ta_ujian']) > 0) {
+                                echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Persetujuan</a></td>";
+                              } else {
+                                echo "<td>No file</td>";
                               }
-                              $conn->close();
-                                ?>
-                            </tbody>
-                      </table>
+
+                              if (strlen($row['lembar_kehadiran_sempro_ujian']) > 0) {
+                                echo "<td><a href='download.php?id=" . $row['id_mahasiswa'] . "' target='_blank'>Download Form Persetujuan</a></td>";
+                              } else {
+                                echo "<td>No file</td>";
+                              }
+                            }
+                            $conn->close();
+                            ?>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
-                  </div>
                 </div>
-
-                
               </div>
+
+
             </div>
+          </div>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-              <footer class="footer">
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                    Copyright © 2025.
-                    <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-                    All rights reserved.
-                  </span>
-                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                    <a href="https://wa.me/628112951003" target="_blank">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-                      +6281 1295 1003
-                    </a>
-                  </span>
-                </div>
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+              Copyright © 2025.
+              <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+              All rights reserved.
+            </span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+              <a href="https://wa.me/628112951003" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                +6281 1295 1003
+              </a>
+            </span>
+          </div>
 
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://politekniknest.ac.id/" target="_blank">Anak Magang UNS</a></span>
-                </div>
-              </footer>
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://politekniknest.ac.id/" target="_blank">Anak Magang UNS</a></span>
+          </div>
+        </footer>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
-    </div>   
+    </div>
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
@@ -515,4 +523,3 @@
 </body>
 
 </html>
-

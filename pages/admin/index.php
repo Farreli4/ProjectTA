@@ -3,8 +3,8 @@
 <html lang="en">
 
 <head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
   <!-- Required meta tags -->
@@ -31,13 +31,14 @@
   <link rel="stylesheet" href="../../assets/css/css/admin/dashboard.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.php"><img src="../../assets/img/logo2.png" class="mr-2" alt=""/></a>
-        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../assets/img/Logo.webp" alt=""/></a>
+        <a class="navbar-brand brand-logo mr-5" href="index.php"><img src="../../assets/img/logo2.png" class="mr-2" alt="" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../../assets/img/Logo.webp" alt="" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -58,38 +59,38 @@
         <ul class="navbar-nav navbar-nav-right">
           <!-- Notification Dropdown -->
           <li class="nav-item dropdown">
-              <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-                  <i class="icon-bell mx-0"></i>
-                  <span class="count" id="notificationCount"></span> <!-- Notification count here -->
-              </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                  <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-                  <div id="notifications">
-                    <script>
-                      function fetchNotifications() {
-                          $.ajax({
-                              url: 'fetch_notif.php',
-                              method: 'GET',
-                              success: function(data) {
-                                  const notifications = JSON.parse(data);
-                                  const notificationCount = $('#notificationCount');
-                                  const notificationList = $('#notifications');
-                                  
-                                  notificationCount.text(notifications.length);
+            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+              <i class="icon-bell mx-0"></i>
+              <span class="count" id="notificationCount"></span> <!-- Notification count here -->
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+              <div id="notifications">
+                <script>
+                  function fetchNotifications() {
+                    $.ajax({
+                      url: 'fetch_notif.php',
+                      method: 'GET',
+                      success: function(data) {
+                        const notifications = JSON.parse(data);
+                        const notificationCount = $('#notificationCount');
+                        const notificationList = $('#notifications');
 
-                                  notificationList.empty();
+                        notificationCount.text(notifications.length);
 
-                                  if (notifications.length === 0) {
-                                      notificationList.append(`
+                        notificationList.empty();
+
+                        if (notifications.length === 0) {
+                          notificationList.append(`
                                           <a class="dropdown-item preview-item">
                                               <div class="preview-item-content">
                                                   <h6 class="preview-subject font-weight-normal">No new notifications</h6>
                                               </div>
                                           </a>
                                       `);
-                                  } else {
-                                      notifications.forEach(function(notification) {
-                                          const notificationItem = `
+                        } else {
+                          notifications.forEach(function(notification) {
+                            const notificationItem = `
                                               <a class="dropdown-item preview-item">
                                                   <div class="preview-thumbnail">
                                                       <div class="preview-icon bg-info">
@@ -102,70 +103,69 @@
                                                   </div>
                                               </a>
                                           `;
-                                          notificationList.append(notificationItem);
-                                      });
-                                  }
-                              },
-                              error: function() {
-                                  console.log("Error fetching notifications.");
-                              }
+                            notificationList.append(notificationItem);
                           });
+                        }
+                      },
+                      error: function() {
+                        console.log("Error fetching notifications.");
                       }
+                    });
+                  }
 
-                      function timeAgo(time) {
-                          const timeAgo = new Date(time);
-                          const currentTime = new Date();
-                          const diffInSeconds = Math.floor((currentTime - timeAgo) / 1000);
+                  function timeAgo(time) {
+                    const timeAgo = new Date(time);
+                    const currentTime = new Date();
+                    const diffInSeconds = Math.floor((currentTime - timeAgo) / 1000);
 
-                          if (diffInSeconds < 60) {
-                              return `${diffInSeconds} seconds ago`;
-                          }
-                          const diffInMinutes = Math.floor(diffInSeconds / 60);
-                          if (diffInMinutes < 60) {
-                              return `${diffInMinutes} minutes ago`;
-                          }
-                          const diffInHours = Math.floor(diffInMinutes / 60);
-                          if (diffInHours < 24) {
-                              return `${diffInHours} hours ago`;
-                          }
-                          const diffInDays = Math.floor(diffInHours / 24);
-                          return `${diffInDays} days ago`;
-                      }
+                    if (diffInSeconds < 60) {
+                      return `${diffInSeconds} seconds ago`;
+                    }
+                    const diffInMinutes = Math.floor(diffInSeconds / 60);
+                    if (diffInMinutes < 60) {
+                      return `${diffInMinutes} minutes ago`;
+                    }
+                    const diffInHours = Math.floor(diffInMinutes / 60);
+                    if (diffInHours < 24) {
+                      return `${diffInHours} hours ago`;
+                    }
+                    const diffInDays = Math.floor(diffInHours / 24);
+                    return `${diffInDays} days ago`;
+                  }
 
-                      $(document).ready(function() {
-                          fetchNotifications();
-                          setInterval(fetchNotifications, 30000);
-                      });
-
-                      </script>
-                  </div>
+                  $(document).ready(function() {
+                    fetchNotifications();
+                    setInterval(fetchNotifications, 30000);
+                  });
+                </script>
               </div>
+            </div>
           </li>
-          
+
           <!-- Profile Dropdown -->
           <li class="nav-item nav-profile dropdown">
-              <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                  <img src="../../Template/skydash/images/faces/face28.jpg" alt="profile"/>
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+              <img src="../../Template/skydash/images/faces/face28.jpg" alt="profile" />
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <a class="dropdown-item">
+                <i class="ti-settings text-primary"></i>
+                Settings
               </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                  <a class="dropdown-item">
-                      <i class="ti-settings text-primary"></i>
-                      Settings
-                  </a>
-                  <a class="dropdown-item" href="../../index.php" >
-                      <i class="ti-power-off text-primary"></i>
-                      Logout
-                  </a>
-              </div>
+              <a class="dropdown-item" href="../../index.php">
+                <i class="ti-power-off text-primary"></i>
+                Logout
+              </a>
+            </div>
           </li>
 
           <!-- Additional Settings Option (if any) -->
           <li class="nav-item nav-settings d-none d-lg-flex">
-              <a class="nav-link" href="#">
-                  <i class="icon-ellipsis"></i>
-              </a>
+            <a class="nav-link" href="#">
+              <i class="icon-ellipsis"></i>
+            </a>
           </li>
-      </ul>
+        </ul>
 
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="icon-menu"></span>
@@ -180,8 +180,12 @@
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
           <p class="settings-heading">SIDEBAR SKINS</p>
-          <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>Light</div>
-          <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark</div>
+          <div class="sidebar-bg-options selected" id="sidebar-light-theme">
+            <div class="img-ss rounded-circle bg-light border mr-3"></div>Light
+          </div>
+          <div class="sidebar-bg-options" id="sidebar-dark-theme">
+            <div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark
+          </div>
           <p class="settings-heading mt-2">HEADER SKINS</p>
           <div class="color-tiles mx-0 px-4">
             <div class="tiles success"></div>
@@ -393,6 +397,12 @@
               </ul>
             </div>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../../index.php">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Log Out</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -412,7 +422,7 @@
           // Koneksi ke database
           $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
           if ($conn->connect_error) {
-              die("Koneksi gagal: " . $conn->connect_error);
+            die("Koneksi gagal: " . $conn->connect_error);
           }
 
           // Ambil total pendaftar tugas akhir
@@ -434,230 +444,230 @@
           ?>
 
           <div class="row">
-              <!-- Card 1 -->
-              <div class="col-md-4 mb-4">
-                  <a href="pendaftaranTA.php">
-                      <div class="card card-dark-blue">
-                          <div class="card-body text-center">
-                              <p class="mb-4">Total Pendaftar Tugas Akhir</p>
-                              <p class="fs-30 mb-2"><?php echo number_format($totalTA); ?></p>
-                          </div>
-                      </div>
-                  </a>
-              </div>
+            <!-- Card 1 -->
+            <div class="col-md-4 mb-4">
+              <a href="pendaftaranTA.php">
+                <div class="card card-dark-blue">
+                  <div class="card-body text-center">
+                    <p class="mb-4">Total Pendaftar Tugas Akhir</p>
+                    <p class="fs-30 mb-2"><?php echo number_format($totalTA); ?></p>
+                  </div>
+                </div>
+              </a>
+            </div>
 
-              <!-- Card 2 -->
-              <div class="col-md-4 mb-4">
-                  <a href="pendaftaranSeminar.php">
-                      <div class="card card-dark-blue">
-                          <div class="card-body text-center">
-                              <p class="mb-4">Total Pendaftar Seminar</p>
-                              <p class="fs-30 mb-2"><?php echo number_format($totalSeminar); ?></p>
-                          </div>
-                      </div>
-                  </a>
-              </div>
+            <!-- Card 2 -->
+            <div class="col-md-4 mb-4">
+              <a href="pendaftaranSeminar.php">
+                <div class="card card-dark-blue">
+                  <div class="card-body text-center">
+                    <p class="mb-4">Total Pendaftar Seminar</p>
+                    <p class="fs-30 mb-2"><?php echo number_format($totalSeminar); ?></p>
+                  </div>
+                </div>
+              </a>
+            </div>
 
-              <!-- Card 3 -->
-              <div class="col-md-4 mb-4">
-                  <a href="pendaftaranUjian.php">
-                      <div class="card card-light-blue">
-                          <div class="card-body text-center">
-                              <p class="mb-4">Total Pendaftar Ujian</p>
-                              <p class="fs-30 mb-2"><?php echo number_format($totalUjian); ?></p>
-                          </div>
-                      </div>
-                  </a>
-              </div>
+            <!-- Card 3 -->
+            <div class="col-md-4 mb-4">
+              <a href="pendaftaranUjian.php">
+                <div class="card card-light-blue">
+                  <div class="card-body text-center">
+                    <p class="mb-4">Total Pendaftar Ujian</p>
+                    <p class="fs-30 mb-2"><?php echo number_format($totalUjian); ?></p>
+                  </div>
+                </div>
+              </a>
+            </div>
           </div>
 
 
-            <div class="row">
-              <!-- Chart 1 -->
-              <div class="col-md-4">
-                <canvas id="myChart2"></canvas>
-              </div>
-              <!-- Chart 2 -->
-              <div class="col-md-4">
-                <canvas id="myChart3"></canvas>
-              </div>
-              <!-- Chart 3 -->
-              <div class="col-md-4">
-                <canvas id="myChart4"></canvas>
-              </div>
+          <div class="row">
+            <!-- Chart 1 -->
+            <div class="col-md-4">
+              <canvas id="myChart2"></canvas>
             </div>
-                <?php
-                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+            <!-- Chart 2 -->
+            <div class="col-md-4">
+              <canvas id="myChart3"></canvas>
+            </div>
+            <!-- Chart 3 -->
+            <div class="col-md-4">
+              <canvas id="myChart4"></canvas>
+            </div>
+          </div>
+          <?php
+          $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
-                  if ($conn->connect_error) {
-                      die("Connection failed: " . $conn->connect_error);
-                  }
+          if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+          }
 
-                  $sql = "SELECT status_pengajuan, COUNT(*) as count FROM tugas_akhir
+          $sql = "SELECT status_pengajuan, COUNT(*) as count FROM tugas_akhir
                           WHERE status_pengajuan IN ('Disetujui', 'Revisi', 'Ditolak') 	
                           GROUP BY status_pengajuan";
-                  $result = $conn->query($sql);
+          $result = $conn->query($sql);
 
-                  $xValues = [];
-                  $yValues = [];
+          $xValues = [];
+          $yValues = [];
 
-                  if ($result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                          $xValues[] = $row['status_pengajuan']; 
-                          $yValues[] = $row['count'];
-                      }
-                  }
-                  $conn->close();
-                  ?>
-                  <canvas id="myChart2"></canvas>
-                  <script>
-                    var xValues = <?php echo json_encode($xValues); ?>; 
-                    var yValues = <?php echo json_encode($yValues); ?>;
+          if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+              $xValues[] = $row['status_pengajuan'];
+              $yValues[] = $row['count'];
+            }
+          }
+          $conn->close();
+          ?>
+          <canvas id="myChart2"></canvas>
+          <script>
+            var xValues = <?php echo json_encode($xValues); ?>;
+            var yValues = <?php echo json_encode($yValues); ?>;
 
-                    var barColors = ["#73ad91", "#ebd382", "#d25d5d",];
+            var barColors = ["#73ad91", "#ebd382", "#d25d5d", ];
 
-                    new Chart("myChart2", {
-                        type: "doughnut",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                backgroundColor: barColors,
-                                data: yValues
-                            }]
-                        },
-                        options: {
-                            title: {
-                                display: true,
-                                text: "Jumlah Pendaftar Tugas Akhir"
-                            }
-                        }
-                    });
-                </script>
+            new Chart("myChart2", {
+              type: "doughnut",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: "Jumlah Pendaftar Tugas Akhir"
+                }
+              }
+            });
+          </script>
 
-                <?php
-                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+          <?php
+          $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
-                  if ($conn->connect_error) {
-                      die("Connection failed: " . $conn->connect_error);
-                  }
+          if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+          }
 
-                  $sql = "SELECT status_seminar, COUNT(*) as count FROM seminar_proposal
+          $sql = "SELECT status_seminar, COUNT(*) as count FROM seminar_proposal
                           WHERE status_seminar IN ('dijadwalkan', 'ditunda', 'selesai')
                           GROUP BY status_seminar";
-                  $result = $conn->query($sql);
+          $result = $conn->query($sql);
 
-                  $xValues = [];
-                  $yValues = [];
+          $xValues = [];
+          $yValues = [];
 
-                  if ($result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                          $xValues[] = $row['status_seminar']; 
-                          $yValues[] = $row['count'];
-                      }
-                  }
-                  $conn->close();
-                  ?>
-                  <canvas id="myChart4"></canvas>
-                  <script>
-                    var xValues = <?php echo json_encode($xValues); ?>; 
-                    var yValues = <?php echo json_encode($yValues); ?>;
+          if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+              $xValues[] = $row['status_seminar'];
+              $yValues[] = $row['count'];
+            }
+          }
+          $conn->close();
+          ?>
+          <canvas id="myChart4"></canvas>
+          <script>
+            var xValues = <?php echo json_encode($xValues); ?>;
+            var yValues = <?php echo json_encode($yValues); ?>;
 
-                    var barColors = ["#73ad91", "#ebd382", "#d25d5d",];
+            var barColors = ["#73ad91", "#ebd382", "#d25d5d", ];
 
-                    new Chart("myChart4", {
-                        type: "doughnut",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                backgroundColor: barColors,
-                                data: yValues
-                            }]
-                        },
-                        options: {
-                            title: {
-                                display: true,
-                                text: "Jumlah Pendaftar Ujian"
-                            }
-                        }
-                    });
-                </script>
+            new Chart("myChart4", {
+              type: "doughnut",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: "Jumlah Pendaftar Ujian"
+                }
+              }
+            });
+          </script>
 
-                <?php
-                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
+          <?php
+          $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
-                  if ($conn->connect_error) {
-                      die("Connection failed: " . $conn->connect_error);
-                  }
+          if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+          }
 
-                  $sql = "SELECT status_pengajuan, COUNT(*) as count FROM tugas_akhir
+          $sql = "SELECT status_pengajuan, COUNT(*) as count FROM tugas_akhir
                           WHERE status_pengajuan IN ('Disetujui', 'Revisi', 'Ditolak') 	
                           GROUP BY status_pengajuan";
-                  $result = $conn->query($sql);
+          $result = $conn->query($sql);
 
-                  $xValues = [];
-                  $yValues = [];
+          $xValues = [];
+          $yValues = [];
 
-                  if ($result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                          $xValues[] = $row['status_pengajuan']; 
-                          $yValues[] = $row['count'];
-                      }
-                  }
-                  $conn->close();
-                  ?>
-                  <canvas id="myChart3"></canvas>
-                  <script>
-                    var xValues = <?php echo json_encode($xValues); ?>; 
-                    var yValues = <?php echo json_encode($yValues); ?>;
+          if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+              $xValues[] = $row['status_pengajuan'];
+              $yValues[] = $row['count'];
+            }
+          }
+          $conn->close();
+          ?>
+          <canvas id="myChart3"></canvas>
+          <script>
+            var xValues = <?php echo json_encode($xValues); ?>;
+            var yValues = <?php echo json_encode($yValues); ?>;
 
-                    var barColors = ["#73ad91", "#ebd382", "#d25d5d",];
+            var barColors = ["#73ad91", "#ebd382", "#d25d5d", ];
 
-                    new Chart("myChart3", {
-                        type: "doughnut",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                backgroundColor: barColors,
-                                data: yValues
-                            }]
-                        },
-                        options: {
-                            title: {
-                                display: true,
-                                text: "Jumlah Pendaftar Seminar"
-                            }
-                        }
-                    });
-                </script>
-                <!-- partial:partials/_footer.html -->
-              <footer class="footer">
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                    Copyright © 2025.
-                    <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-                    All rights reserved.
-                  </span>
-                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                    <a href="https://wa.me/628112951003" target="_blank">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-                      +6281 1295 1003
-                    </a>
-                  </span>
-                </div>
+            new Chart("myChart3", {
+              type: "doughnut",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: "Jumlah Pendaftar Seminar"
+                }
+              }
+            });
+          </script>
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                Copyright © 2025.
+                <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+                All rights reserved.
+              </span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                <a href="https://wa.me/628112951003" target="_blank">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                  +6281 1295 1003
+                </a>
+              </span>
+            </div>
 
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://politekniknest.ac.id/" target="_blank">Anak Magang UNS</a></span>
-                </div>
-              </footer>
-              <!-- partial -->
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://politekniknest.ac.id/" target="_blank">Anak Magang UNS</a></span>
+            </div>
+          </footer>
+          <!-- partial -->
 
-                
-          </div>
+
         </div>
       </div>
-      <!-- main-panel ends -->
-    </div>   
-    <!-- page-body-wrapper ends -->
+    </div>
+    <!-- main-panel ends -->
+  </div>
+  <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
 
@@ -685,4 +695,3 @@
 </body>
 
 </html>
-
