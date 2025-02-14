@@ -348,33 +348,20 @@
       </nav>
 
       <!-- partial -->
-      <?php
-          // Koneksi ke database
-          $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
-          if ($conn->connect_error) {
-              die("Koneksi gagal: " . $conn->connect_error);
-          }
-
-          // Ambil total pendaftar tugas akhir
-          $sqlUjian = "SELECT COUNT(*) AS total FROM ujian";
-          $resultUjian = $conn->query($sqlUjian);
-          $totalUjian = ($resultUjian->num_rows > 0) ? $resultUjian->fetch_assoc()['total'] : 0;
-      ?>
-      
       <div class="main-panel">
         <div class="content-wrapper">
-            <div class="col-md-5 grid-margin transparent">
+            <div class="col-md-10 grid-margin transparent">
               <div class="row">
                 <div class="col-md-6 stretch-card transparent">
                   <div class="card card-light-danger">
-                    <div class="card-body text-center">
-                      <p class="mb-4">Total Pendaftar Ujian</p>
-                      <p class="fs-30 mb-2"><?php echo number_format($totalUjian); ?></p>
+                    <div class="card-body">
+                      <p class="mb-4">Number of Clients</p>
+                      <p class="fs-30 mb-2">47033</p>
+                      <p>0.22% (30 days)</p>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 d-flex align-items-center justify-content-center">
-                
+                <div class="col-md-6 mt-3">
                 <?php
                   $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
@@ -503,7 +490,7 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4>Daftar Ujian</h4>
+                        <h4>Jadwal Seminar Proposal</h4>
                         <div class="table-responsive">
                             <table>
                                 <thead>
@@ -556,7 +543,7 @@
                                         echo "<td><input type='date' value='{$row['tanggal_ujian']}'></td>";
 
                                         // Tombol Verifikasi
-                                        echo "<td><button class='btn-update'>Verifikasi</button></td>";
+                                        echo "<td><button class='btn-update' onclick='confirmVerification(this)'>Verifikasi</button></td>";
 
                                         echo "</tr>";
                                     }
@@ -592,27 +579,29 @@
             }
         </script>
 
+<script>
+function confirmVerification(button) {
+    let confirmation = confirm("Apakah Anda yakin ingin melakukan verifikasi?");
+    if (confirmation) {
+        // Lakukan aksi verifikasi di sini
+        alert("Verifikasi berhasil!"); // Gantilah dengan aksi yang sesuai
+        // Bisa juga kirim request ke backend melalui AJAX atau form submission
+    }
+}
+</script>
+
+
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                    Copyright © 2025.
-                    <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-                    All rights reserved.
-                  </span>
-                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                    <a href="https://wa.me/628112951003" target="_blank">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-                      +6281 1295 1003
-                    </a>
-                  </span>
-                </div>
-
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://politekniknest.ac.id/" target="_blank">Anak Magang UNS</a></span>
-                </div>
-              </footer>
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin ../../Template</a> from BootstrapDash. All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
+          </div>
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
+          </div>
+        </footer> 
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
