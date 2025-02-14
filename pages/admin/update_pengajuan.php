@@ -4,7 +4,6 @@ if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
-
 if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset($_POST['dosen_pembimbing'])) {
     $id_mahasiswa = $_POST["id_mahasiswa"];
     $status_pengajuan = $_POST["status_pengajuan"];
@@ -23,6 +22,7 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
     $stmt_check->close();
 
     if ($count > 0) {
+        // Update the status_pengajuan and dosen_pembimbing if needed
         if ($status_pengajuan == 'Revisi' && !empty($alasan_revisi)) {
             $sql = "UPDATE tugas_akhir SET status_pengajuan=?, alasan_revisi=?, dosen_pembimbing=? WHERE id_mahasiswa=?";
             $stmt = $conn->prepare($sql);
@@ -38,8 +38,8 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
             }
             $stmt->bind_param("sii", $status_pengajuan, $dosen_pembimbing, $id_mahasiswa);
         }
-    
     } else {
+        // Insert a new record if the mahasiswa doesn't have a status_pengajuan
         if ($status_pengajuan == 'Revisi' && !empty($alasan_revisi)) {
             $sql = "INSERT INTO tugas_akhir (id_mahasiswa, status_pengajuan, alasan_revisi) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
@@ -63,6 +63,8 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
         exit;
     }
     $stmt->close();
+
+    // Check if the dosen exists in the dosen_pembimbing table
     $check_dosen_sql = "SELECT COUNT(*) FROM dosen_pembimbing WHERE id_dosen=?";
     $stmt_check_dosen = $conn->prepare($check_dosen_sql);
     if (!$stmt_check_dosen) {
@@ -75,6 +77,7 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
     $stmt_check_dosen->close();
 
     if ($dosen_exists > 0) {
+        // Check if the mahasiswa already has the dosen as pembimbing
         $check_relation_sql = "SELECT COUNT(*) FROM mahasiswa_dosen WHERE id_mahasiswa=? AND id_dosen=?";
         $stmt_check_relation = $conn->prepare($check_relation_sql);
         if (!$stmt_check_relation) {
@@ -86,7 +89,11 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
         $stmt_check_relation->fetch();
         $stmt_check_relation->close();
 
-        if ($relation_count == 0) {
+        if ($relation_count > 0) {
+            // Relation already exists, no need to update
+            echo "Dosen pembimbing sudah terhubung dengan mahasiswa ini.";
+        } else {
+            // Insert relation if it doesn't exist
             $insert_relation_sql = "INSERT INTO mahasiswa_dosen (id_mahasiswa, id_dosen) VALUES (?, ?)";
             $stmt_insert_relation = $conn->prepare($insert_relation_sql);
             if (!$stmt_insert_relation) {
@@ -101,16 +108,21 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
             }
 
             $stmt_insert_relation->close();
-        } else {
-            echo "Dosen pembimbing sudah terhubung dengan mahasiswa ini.";
         }
     } else {
         echo "Dosen pembimbing dengan ID tersebut tidak ditemukan.";
     }
 
-    $message = "Pengajuan tugas akhirmu telah '$status_pengajuan'";
+    $stmt_dosen = $conn->prepare("SELECT nama_mahasiswa FROM mahasiswa WHERE id_mahasiswa = ?");
+    $stmt_dosen->bind_param("i", $id_mahasiswa);
+    $stmt_dosen->execute();
+    $stmt_dosen->bind_result($nama_mahasiswa);
+    $stmt_dosen->fetch();
+    $stmt_dosen->close();
+
+    $message = "Pengajuan tugas ". $nama_mahasiswa ." telah '$status_pengajuan'";
     if ($status_pengajuan == 'Revisi') {
-        $message = "Pengajuan tugas akhirmu di kembalikan lagi karena $alasan_revisi";
+        $message = "Pengajuan tugas akhir milik ". $nama_mahasiswa . " dikembalikan lagi karena $alasan_revisi";
     }
 
     $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status) VALUES (?, ?, ?, 'unread')";
@@ -136,5 +148,4 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
 }
 
 $conn->close();
-
 ?>

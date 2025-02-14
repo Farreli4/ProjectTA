@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 12, 2025 at 05:51 AM
+-- Generation Time: Feb 14, 2025 at 04:25 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -131,6 +131,22 @@ INSERT INTO `mahasiswa_dosen` (`id_mahasiswa`, `id_dosen`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `notif`
+--
+
+CREATE TABLE `notif` (
+  `id` int(11) NOT NULL,
+  `admin` int(11) DEFAULT NULL,
+  `id_dosen` int(11) DEFAULT NULL,
+  `id_mahasiswa` int(11) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `status` enum('unread','read') DEFAULT 'unread',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `seminar_proposal`
 --
 
@@ -154,7 +170,7 @@ CREATE TABLE `seminar_proposal` (
 INSERT INTO `seminar_proposal` (`id_mahasiswa`, `dosen_pembimbing`, `penyaji_seminar`, `kehadiran`, `sppsp`, `lbta`, `tanggal_disetujui`, `status_seminar`, `tanggal_seminar`, `create_at`) VALUES
 (1, '', 'Rai', 0, '', '', '2004-06-16', 'ditunda', '2004-06-18', '2025-01-27 04:14:39'),
 (2, 'nama_dosen1', 'Izza', 0, '', '', '0000-00-00', 'dijadwalkan', '2020-10-23', '2025-01-24 03:43:16'),
-(3, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'dijadwalkan', '2025-01-24', '2025-01-24 04:13:03'),
+(3, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'ditunda', '2025-01-24', '2025-02-14 03:17:29'),
 (4, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'selesai', '2025-02-03', '2025-02-03 01:55:58');
 
 -- --------------------------------------------------------
@@ -246,6 +262,14 @@ ALTER TABLE `mahasiswa_dosen`
   ADD KEY `id_dosen` (`id_dosen`);
 
 --
+-- Indexes for table `notif`
+--
+ALTER TABLE `notif`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_mahasiswa` (`id_mahasiswa`),
+  ADD KEY `id_dosen` (`id_dosen`);
+
+--
 -- Indexes for table `seminar_proposal`
 --
 ALTER TABLE `seminar_proposal`
@@ -289,6 +313,12 @@ ALTER TABLE `mahasiswa`
   MODIFY `id_mahasiswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT for table `notif`
+--
+ALTER TABLE `notif`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tugas_akhir`
 --
 ALTER TABLE `tugas_akhir`
@@ -304,6 +334,13 @@ ALTER TABLE `tugas_akhir`
 ALTER TABLE `mahasiswa_dosen`
   ADD CONSTRAINT `mahasiswa_dosen_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`),
   ADD CONSTRAINT `mahasiswa_dosen_ibfk_2` FOREIGN KEY (`id_dosen`) REFERENCES `dosen_pembimbing` (`id_dosen`);
+
+--
+-- Constraints for table `notif`
+--
+ALTER TABLE `notif`
+  ADD CONSTRAINT `notif_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`),
+  ADD CONSTRAINT `notif_ibfk_2` FOREIGN KEY (`id_dosen`) REFERENCES `dosen_pembimbing` (`id_dosen`);
 
 --
 -- Constraints for table `seminar_proposal`

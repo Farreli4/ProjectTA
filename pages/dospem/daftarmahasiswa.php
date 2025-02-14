@@ -376,10 +376,56 @@ try {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php
-                                                    $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
-                                                    $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, kelas, nomor_telepon, tema, judul FROM mahasiswa WHERE 1";
-                                                    $result = $conn->query($sql1);
+                                                <?php
+                                                $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
+
+                                                $check_dosen_sql = "SELECT id_dosen FROM dosen_pembimbing WHERE nama_dosen=?";
+                                                $stmt_check_dosen = $conn->prepare($check_dosen_sql);
+                                                if (!$stmt_check_dosen) {
+                                                    die("Error preparing dosen check query: " . $conn->error);
+                                                }
+                                                $stmt_check_dosen->bind_param("s", $nama_dosen);
+                                                $stmt_check_dosen->execute();
+                                                $stmt_check_dosen->bind_result($id_dosen);
+                                                $stmt_check_dosen->fetch();
+                                                $stmt_check_dosen->close();
+
+                                                if (!$id_dosen) {
+                                                    die("Dosen tidak ditemukan.");
+                                                }
+
+                                                $id_mahasiswa_list = [];
+                                                $sql_im = "SELECT id_mahasiswa FROM mahasiswa_dosen WHERE id_dosen=?";
+                                                $stmt_im = $conn->prepare($sql_im);
+                                                if (!$stmt_im) {
+                                                    die("Error preparing mahasiswa query: " . $conn->error);
+                                                }
+                                                $stmt_im->bind_param("i", $id_dosen);
+                                                $stmt_im->execute();
+                                                $stmt_im->bind_result($id_mahasiswa);
+                                                while ($stmt_im->fetch()) {
+                                                    $id_mahasiswa_list[] = $id_mahasiswa;
+                                                }
+                                                $stmt_im->close();
+
+                                                if (empty($id_mahasiswa_list)) {
+                                                    die("Tidak ada mahasiswa yang dibimbing oleh dosen ini.");
+                                                }
+
+                                                $id_mahasiswa_placeholder = implode(',', array_map(fn() => '?', $id_mahasiswa_list));
+                                                $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, kelas, nomor_telepon, tema, judul 
+                                                        FROM mahasiswa 
+                                                        WHERE id_mahasiswa IN ($id_mahasiswa_placeholder)";
+
+                                                $stmt1 = $conn->prepare($sql1);
+                                                if (!$stmt1) {
+                                                    die("Error preparing mahasiswa detail query: " . $conn->error);
+                                                }
+
+                                                $type_str = str_repeat('i', count($id_mahasiswa_list));
+                                                $stmt1->bind_param($type_str, ...$id_mahasiswa_list);
+                                                $stmt1->execute();
+                                                $result = $stmt1->get_result();
 
                                                     while ($row = mysqli_fetch_array($result)) {
                                                         echo "<tr>";

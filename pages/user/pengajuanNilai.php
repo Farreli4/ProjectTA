@@ -1,26 +1,53 @@
 <?php
 session_start();
 $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
-$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Mengubah query untuk mengambil nim dan nama_mahasiswa
-$check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
-$checkNim = $conn->prepare($check);
-$checkNim->execute([':nama' => $nama_mahasiswa]);
-$row = $checkNim->fetch(PDO::FETCH_ASSOC);
+try {
+    $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if ($row) {
-  $nim = $row['nim'];
-  $nama = $row['nama_mahasiswa'];
-  $prodi = $row['prodi'];
-} else {
-  $nim = 'K3522068';
-  $nama = 'Nama Default';
-  $prodi = 'PRODI';
-  echo "NIM: " . $nim . "<br>";
-  echo "Nama: " . $nama . "<br>";
-  echo "Prodi: " . $prodi;
+    // Get student info
+    $check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
+    $checkNim = $conn->prepare($check);
+    $checkNim->execute([':nama' => $nama_mahasiswa]);
+    $row = $checkNim->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $nim = $row['nim'];
+        $nama = $row['nama_mahasiswa'];
+        $prodi = $row['prodi'];
+    } else {
+        $nim = 'K3522068';
+        $nama = 'Nama Default';
+        $prodi = 'PRODI';
+    }
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
+
+// Function to get document status
+function getDocumentStatus($nama_mahasiswa, $document_type)
+{
+    try {
+        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $columnMap = [
+            'Lembar Nilai Dosen Pembimbing 1' => 'lembar_hasil_nilai_dosbim1(nilai)',
+            'Lembar Nilai Dosen Pembimbing 2' => 'lembar_hasil_nilai_dosbim2(nilai)',
+        ];
+
+        $column = $columnMap[$document_type];
+
+        $sql = "SELECT `$column` FROM mahasiswa WHERE username = :nama";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([':nama' => $nama_mahasiswa]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result && $result[$column] !== null ? 'Menunggu Verifikasi' : 'Belum Upload';
+    } catch (PDOException $e) {
+        return 'Error';
+    }
 }
 ?>
 
@@ -47,6 +74,7 @@ if ($row) {
   <link rel="stylesheet" href="../../assets/css/css/pengajuan.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="../../assets/css/user/pengajuan.css" />
 
 </head>
 
@@ -204,64 +232,81 @@ if ($row) {
       <!-- MAIN-->
       <div class="main-panel">
         <div class="content-wrapper">
-          <!--BOX-->
-          <div class="container">
-            <h3>Pendaftaran Tugas Akhir</h3>
-            <div class="document-grid">
-              <!-- Form Pendaftaran -->
-              <div class="document-card">
-                <div class="document-title">Lembar Nilai Dosen Pembimbing 1</div>
-                <div class="status-badge status-terverifikasi">Terverifikasi</div>
-                <div class="document-info">
-                  <strong>Diupload:</strong> 20 Jan 2024<br>
-                  <strong>Diverifikasi:</strong> 21 Jan 2024
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Pengajuan Ujian Tugas Akhir</h4>
+                  <p class="card-description">Status Dokumen Pengajuan</p>
+
+                  <div class="status-grid">
+                    <?php
+                    $documents = [
+                      'Lembar Nilai Dosen Pembimbing 1',
+                      'Lembar Nilai Dosen Pembimbing 2',
+                    ];
+
+                    foreach ($documents as $doc) {
+                      $status = getDocumentStatus($nama_mahasiswa, $doc);
+                      $statusClass = '';
+
+                      switch ($status) {
+                        case 'Terverifikasi':
+                          $statusClass = 'status-verified';
+                          break;
+                        case 'Menunggu Verifikasi':
+                          $statusClass = 'status-pending';
+                          break;
+                        default:
+                          $statusClass = 'status-missing';
+                      }
+                    ?>
+                      <div class="status-box">
+                        <div class="status-title"><?php echo htmlspecialchars($doc); ?></div>
+                        <span class="status-badge <?php echo $statusClass; ?>">
+                          <?php echo $status; ?>
+                        </span>
+                        <div class="status-date">
+                          Last updated: <?php echo date('d M Y'); ?>
+                        </div>
+                      </div>
+                    <?php } ?>
+                  </div>
+
+                  <?php if (isset($_POST['submit_pengajuan'])): ?>
+                    <div class="alert alert-success mt-4">
+                      Pengajuan berhasil dikirim! Menunggu verifikasi admin.
+                    </div>
+                  <?php endif; ?>
+
+                  <div class="submit-section">
+                    <form method="post">
+                      <button type="submit" name="submit_pengajuan" class="btn-submit">
+                        Submit Pengajuan
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
-
-              <!-- Jurnal Magang -->
-              <div class="document-card">
-                <div class="document-title">Lembar Nilai Dosen Pembimbing 2</div>
-                <div class="status-badge status-terverifikasi">Terverifikasi</div>
-                <div class="document-info">
-                  <strong>Diupload:</strong> 20 Jan 2024<br>
-                  <strong>Diverifikasi:</strong> 29 Jan 2024
-                </div>
-              </div>
-
             </div>
-            <div class="status-header">
-              <h1 class="header-title">Status Dokumen Pengajuan</h1>
-              <button class="submission-button" onclick="showNotification()">Pengajuan Tugas Akhir</button>
-            </div>
-
           </div>
-
-          <div id="notification" class="notification">
-            Pengajuan berhasil dikirim! Menunggu verifikasi admin.
-          </div>
-
-          <script>
-            function showNotification() {
-              const notification = document.getElementById('notification');
-              notification.style.display = 'block';
-
-              // Hide notification after 3 seconds
-              setTimeout(() => {
-                notification.style.display = 'none';
-              }, 3000);
-            }
-          </script>
-          <!-- content-wrapper ends -->
-          <!-- partial:partials/_footer.html -->
-
-          <!-- partial -->
         </div>
-        <!-- main-panel ends -->
       </div>
-      <!-- page-body-wrapper ends -->
-    </div>
     <!-- container-scroller -->
+    <script>
+                function showNotification() {
+                    const notification = document.getElementById('notification');
+                    notification.style.display = 'block';
+                    setTimeout(() => {
+                        notification.style.display = 'none';
+                    }, 3000);
+                }
 
+                // Show notification if form was submitted
+                <?php if (isset($_POST['submit_pengajuan'])): ?>
+                    showNotification();
+                <?php endif; ?>
+            </script>
     <!-- plugins:js -->
     <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->

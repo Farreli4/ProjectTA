@@ -1,7 +1,6 @@
 <?php
 include '../../config/connection.php';
 
-
 $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
 if (isset($_POST['id_mahasiswa']) && isset($_POST['status_seminar'])) {
@@ -76,6 +75,32 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_seminar'])) {
         }
 
         $stmt->close();
+    }
+
+    $get_dosen_sql = "SELECT id_dosen FROM mahasiswa_dosen WHERE id_mahasiswa = ?";
+    $stmt_dosen = $conn->prepare($get_dosen_sql);
+    $stmt_dosen->bind_param("i", $id_mahasiswa);
+    $stmt_dosen->execute();
+    $stmt_dosen->bind_result($id_dosen);
+    $stmt_dosen->fetch();
+    $stmt_dosen->close();
+
+    if ($id_dosen) {
+        $message = "The seminar status has been updated to '" . $status_seminar . "'.";
+
+        $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status) VALUES (?, ?, ?, 'unread')";
+        $stmt_notify = $conn->prepare($notification_sql);
+        $stmt_notify->bind_param("iis", $id_dosen, $id_mahasiswa, $message);
+        
+        if (!$stmt_notify->execute()) {
+            echo "Error inserting notification: " . $stmt_notify->error;
+            $stmt_notify->close();
+            exit;
+        }
+
+        $stmt_notify->close();
+    } else {
+        echo "Error: Dosen pembimbing not found for the student.";
     }
 
     $check_stmt->close();

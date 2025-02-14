@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($username === $admin_username && $password === $admin_password) {
         $_SESSION['username'] = $username;
-        
+
         header("Location: pages/admin/index.php");
         exit();
     } else {

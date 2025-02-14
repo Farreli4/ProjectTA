@@ -11,7 +11,7 @@ try {
         // Cek apakah mahasiswa sudah memiliki file sebelumnya
         $stmt = $conn->prepare("SELECT lembar_persetujuan_proposal_ta_seminar FROM mahasiswa WHERE id_mahasiswa = ?");
         $stmt->execute([$id_mahasiswa]);
-        $existingFile = $stmt->fetchColumn(); // Ambil nama file dari database
+        $existingFile = $stmt->fetchColumn(); // Ambil file dari database
 
         // Jika mahasiswa belum pernah mengunggah file, tampilkan pop-up dan hentikan proses
         if (empty($existingFile)) {
@@ -20,10 +20,10 @@ try {
         }
 
         // Ambil informasi file yang diunggah
-        $file_name = $_FILES["lembar_persetujuan_proposal_ta_seminar"]["name"]; // Ambil nama asli file
         $file_tmp = $_FILES["lembar_persetujuan_proposal_ta_seminar"]["tmp_name"];
         $file_size = $_FILES["lembar_persetujuan_proposal_ta_seminar"]["size"];
         $file_type = $_FILES["lembar_persetujuan_proposal_ta_seminar"]["type"];
+        $file_content = file_get_contents($file_tmp); // Baca isi file
 
         // Validasi tipe file harus PDF
         if ($file_type !== "application/pdf") {
@@ -37,20 +37,33 @@ try {
             exit();
         }
 
-        // Buat folder uploads jika belum ada
-        $upload_dir = "../../uploads/";
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
-        }
-
-        // Simpan file dengan nama unik (misalnya: id_mahasiswa_namaasli.pdf)
-        $file_path = $upload_dir . $id_mahasiswa . "_" . $file_name;
-        move_uploaded_file($file_tmp, $file_path);
-
-        // Simpan path file ke database
+        // Simpan file langsung ke database dalam bentuk BLOB
         $sql = "UPDATE mahasiswa SET lembar_persetujuan_proposal_ta_seminar = ? WHERE id_mahasiswa = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->execute([$file_path, $id_mahasiswa]);
+        $stmt->execute([$file_content, $id_mahasiswa]);
+
+        // Retrieve the id_dosen from mahasiswa_dosen table
+        $stmt_dosen = $conn->prepare("SELECT id_dosen FROM mahasiswa_dosen WHERE id_mahasiswa = ?");
+        $stmt_dosen->execute([$id_mahasiswa]);
+        $id_dosen = $stmt_dosen->fetchColumn();
+
+        // If no dosen found, show an error
+        if (!$id_dosen) {
+            echo "<script>alert('Dosen pembimbing tidak ditemukan!'); window.history.back();</script>";
+            exit();
+        }
+
+        $stmt_dosen = $conn->prepare("SELECT nama_mahasiswa FROM mahasiswa WHERE id_mahasiswa = ?");
+        $stmt_dosen->execute([$id_mahasiswa]);
+        $nama_mahasiswa = $stmt_dosen->fetchColumn();
+
+        // Prepare notification message
+        $message = "File Seminar Proposal telah di upload oleh siswa " . $nama_mahasiswa . ".";
+
+        // Insert notification for dosen
+        $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status) VALUES (?, ?, ?, 'unread')";
+        $stmt_notify = $conn->prepare($notification_sql);
+        $stmt_notify->execute([$id_dosen, $id_mahasiswa, $message]);
 
         echo "<script>alert('File berhasil diunggah!'); window.location.href='../../pages/dospem/dokumenSempro.php';</script>";
     } else {

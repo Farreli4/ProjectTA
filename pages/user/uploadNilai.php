@@ -74,10 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         $checkStmt->execute([':nama' => $nama_mahasiswa]);
 
         if ($checkStmt->rowCount() > 0) {
-            // Update data yang sudah ada
             $sql = "UPDATE mahasiswa SET `$columnName` = :file_content WHERE username = :nama";
         } else {
-            // Insert data baru dengan kolom minimal yang diperlukan
             $sql = "INSERT INTO mahasiswa (nama_mahasiswa, `$columnName`) 
                    VALUES (:nama, :file_content)";
         }
@@ -88,7 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
             ':file_content' => $fileContent
         ];
 
-        // Tambahkan parameter nama jika melakukan INSERT
         if ($checkStmt->rowCount() == 0) {
             $params[':nama'] = $nama_mahasiswa;
         }
