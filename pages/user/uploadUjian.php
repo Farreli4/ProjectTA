@@ -6,6 +6,27 @@ $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
 $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+function checkTAFilesStatus($nama_mahasiswa)
+{
+    $requiredFiles = [
+        'Lembar Berita Acara (Foto, Buku Kehadiran, dll)'
+    ];
+
+    foreach ($requiredFiles as $file) {
+        $status = getFileStatus($nama_mahasiswa, $file);
+        if ($status !== 'Uploaded') {
+            return false; // Ada file yang belum diupload
+        }
+    }
+    return true; // Semua file sudah diupload
+}
+
+// Pengecekan status file di uploadTA
+if (!checkTAFilesStatus($nama_mahasiswa)) {
+    echo "<script>alert('Silakan lengkapi semua file pada Upload Seminar dan Upload Berita Acara terlebih dahulu.'); window.location.href='uploadBeritaAcara.php';</script>";
+    exit();
+}
+
 // Mengubah query untuk mengambil nim dan nama_mahasiswa
 $check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
 $checkNim = $conn->prepare($check);
@@ -70,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
                 break;
             case 'Buku Konsultasi Tugas Akhir':
                 $columnName = 'buku_konsultasi_ta(ujian)';
-                break;                                                                                                                                                                                      
+                break;
             default:
                 throw new Exception("Kategori file tidak valid");
         }
@@ -133,6 +154,9 @@ function getFileStatus($nama_mahasiswa, $tipe_file)
                 break;
             case 'Buku Konsultasi Tugas Akhir':
                 $columnName = 'buku_konsultasi_ta(ujian)';
+                break;
+            case 'Lembar Berita Acara (Foto, Buku Kehadiran, dll)':
+                $columnName = 'lembar_berita_acara(seminar)';
                 break;
         }
 

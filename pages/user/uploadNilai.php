@@ -6,6 +6,30 @@ $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
 $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+function checkTAFilesStatus($nama_mahasiswa)
+{
+    $requiredFiles = [
+        'Lembar Persetujuan Laporan Tugas Akhir',
+        'Form Pendaftaran Ujian Tugas Akhir',
+        'Lembar Kehadiran Seminar Proposal',
+        'Buku Konsultasi Tugas Akhir',
+    ];
+
+    foreach ($requiredFiles as $file) {
+        $status = getFileStatus($nama_mahasiswa, $file);
+        if ($status !== 'Uploaded') {
+            return false; // Ada file yang belum diupload
+        }
+    }
+    return true; // Semua file sudah diupload
+}
+
+// Pengecekan status file di uploadTA
+if (!checkTAFilesStatus($nama_mahasiswa)) {
+    echo "<script>alert('Silakan lengkapi semua file pada Upload Ujian terlebih dahulu.'); window.location.href='uploadUjian.php';</script>";
+    exit();
+}
+
 // Mengubah query untuk mengambil nim dan nama_mahasiswa
 $check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
 $checkNim = $conn->prepare($check);
@@ -120,6 +144,18 @@ function getFileStatus($nama_mahasiswa, $tipe_file)
                 break;
             case 'Lembar Hasil Nilai Dosen Pembimbing 2':
                 $columnName = 'lembar_hasil_nilai_dosbim2(nilai)';
+                break;
+            case 'Lembar Persetujuan Laporan Tugas Akhir':
+                $columnName = 'lembar_persetujuan_laporan_ta(ujian)';
+                break;
+            case 'Form Pendaftaran Ujian Tugas Akhir':
+                $columnName = 'form_pendaftaran_ujian_ta(ujian)';
+                break;
+            case 'Lembar Kehadiran Seminar Proposal':
+                $columnName = 'lembar_kehadiran_sempro(ujian)';
+                break;
+            case 'Buku Konsultasi Tugas Akhir':
+                $columnName = 'buku_konsultasi_ta(ujian)';
                 break;
         }
 

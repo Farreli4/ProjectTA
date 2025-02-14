@@ -6,6 +6,30 @@ $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
 $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+function checkTAFilesStatus($nama_mahasiswa)
+{
+    $requiredFiles = [
+        'Form Pendaftaran dan Persetujuan Tema',
+        'Bukti Pembayaran',
+        'Bukti Transkrip Nilai',
+        'Bukti Kelulusan Mata kuliah Magang / PI',
+    ];
+
+    foreach ($requiredFiles as $file) {
+        $status = getFileStatus($nama_mahasiswa, $file);
+        if ($status !== 'Uploaded') {
+            return false; // Ada file yang belum diupload
+        }
+    }
+    return true; // Semua file sudah diupload
+}
+
+// Pengecekan status file di uploadTA
+if (!checkTAFilesStatus($nama_mahasiswa)) {
+    echo "<script>alert('Silakan lengkapi semua file pada Upload TA terlebih dahulu.'); window.location.href='uploadTA.php';</script>";
+    exit();
+}
+
 // Mengubah query untuk mengambil nim dan nama_mahasiswa
 $check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
 $checkNim = $conn->prepare($check);
@@ -127,6 +151,18 @@ function getFileStatus($nama_mahasiswa, $fileCategory)
                 break;
             case 'Buku Konsultasi TA':
                 $columnName = 'buku_konsultasi_ta(seminar)';
+                break;
+            case 'Form Pendaftaran dan Persetujuan Tema':
+                $columnName = 'form_pendaftaran_persetujuan_tema(TA)';
+                break;
+            case 'Bukti Pembayaran':
+                $columnName = 'bukti_pembayaran(TA)';
+                break;
+            case 'Bukti Transkrip Nilai':
+                $columnName = 'bukti_transkip_nilai(TA)';
+                break;
+            case 'Bukti Kelulusan Mata kuliah Magang / PI':
+                $columnName = 'bukti_kelulusan_magang(TA)';
                 break;
         }
 
