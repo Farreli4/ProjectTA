@@ -11,7 +11,7 @@ try {
         // Cek apakah mahasiswa sudah memiliki file sebelumnya
         $stmt = $conn->prepare("SELECT lembar_persetujuan_laporan_ta_ujian FROM mahasiswa WHERE id_mahasiswa = ?");
         $stmt->execute([$id_mahasiswa]);
-        $existingFile = $stmt->fetchColumn(); // Ambil nama file dari database
+        $existingFile = $stmt->fetchColumn(); // Ambil file dari database
 
         // Jika mahasiswa belum pernah mengunggah file, tampilkan pop-up dan hentikan proses
         if (empty($existingFile)) {
@@ -20,7 +20,6 @@ try {
         }
 
         // Ambil informasi file yang diunggah
-        $file_name = $_FILES["lembar_persetujuan_laporan_ta_ujian"]["name"]; // Ambil nama asli
         $file_tmp = $_FILES["lembar_persetujuan_laporan_ta_ujian"]["tmp_name"];
         $file_size = $_FILES["lembar_persetujuan_laporan_ta_ujian"]["size"];
         $file_type = $_FILES["lembar_persetujuan_laporan_ta_ujian"]["type"];
@@ -37,20 +36,13 @@ try {
             exit();
         }
 
-        // Buat folder uploads jika belum ada
-        $upload_dir = "../../uploads/";
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
-        }
+        // Baca file sebagai BLOB
+        $file_content = file_get_contents($file_tmp);
 
-        // Simpan file dengan nama unik (misalnya: id_mahasiswa_namaasli.pdf)
-        $file_path = $upload_dir . $id_mahasiswa . "_" . $file_name;
-        move_uploaded_file($file_tmp, $file_path);
-
-        // Simpan path file ke database
+        // Simpan file ke database
         $sql = "UPDATE mahasiswa SET lembar_persetujuan_laporan_ta_ujian = ? WHERE id_mahasiswa = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->execute([$file_path, $id_mahasiswa]);
+        $stmt->execute([$file_content, $id_mahasiswa]);
 
         echo "<script>alert('File berhasil diunggah!'); window.location.href='index.php';</script>";
     } else {
