@@ -344,6 +344,12 @@
               </ul>
             </div>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../../index.php">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Log Out</span>
+            </a>
+          </li>
         </ul>
       </nav>
 
@@ -456,16 +462,13 @@
                 cursor: pointer;
                 font-weight: bold;
             }
-
             select option[value="dijadwalkan"] {
                 background: yellow;
             }
-
             select option[value="ditunda"] {
                 background: red;
                 color: white;
             }
-
             select option[value="selesai"] {
                 background: green;
                 color: white;
