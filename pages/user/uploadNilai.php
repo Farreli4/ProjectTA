@@ -24,11 +24,6 @@ function checkTAFilesStatus($nama_mahasiswa)
     return true; // Semua file sudah diupload
 }
 
-// Pengecekan status file di uploadTA
-if (!checkTAFilesStatus($nama_mahasiswa)) {
-    echo "<script>alert('Silakan lengkapi semua file pada Upload Ujian terlebih dahulu.'); window.location.href='uploadUjian.php';</script>";
-    exit();
-}
 
 // Mengubah query untuk mengambil nim dan nama_mahasiswa
 $check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
@@ -198,6 +193,8 @@ $driveLinks = [
     <!-- endinject -->
     <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
     <link rel="stylesheet" type="text/css" href="../../assets/css/user/uploadNilai.css" />
+    <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -485,6 +482,63 @@ $driveLinks = [
                 }
             }
         </script>
+        <?php
+        if (!checkTAFilesStatus($nama_mahasiswa)) {
+        ?>
+            <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Perhatian!',
+            text: 'Silakan lengkapi semua file pada Upload Seminar dan Upload Berita Acara terlebih dahulu.',
+            confirmButtonText: 'OK',
+            customClass: {
+                popup: 'custom-popup', // Class untuk modal
+                title: 'custom-title', // Class untuk judul
+                htmlContainer: 'custom-text', // Class untuk teks
+                confirmButton: 'custom-button' // Class untuk tombol
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'uploadBeritaAcara.php';
+            }
+        });
+    });
+
+    // Tambahkan CSS langsung di dalam script
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .custom-popup {
+            padding: 2rem !important;
+            background: rgba(208, 13, 13, 0.7) !important; /* Background merah transparan */
+            color: white !important; /* Warna teks putih */
+            border-radius: 10px; /* Tambahkan sudut melengkung */
+        }
+
+        .custom-title {
+            color: white !important; /* Warna judul putih */
+        }
+
+        .custom-text {
+            color: white !important; /* Warna teks putih */
+        }
+
+        .custom-button {
+            background-color: white !important; /* Tombol putih */
+            color: red !important; /* Warna teks tombol merah */
+            font-weight: bold;
+        }
+
+        .custom-button:hover {
+            background-color: #ffcccc !important; /* Warna tombol saat hover */
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+
+        <?php
+        }
+        ?>
         <!-- plugins:js -->
         <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
         <!-- endinject -->

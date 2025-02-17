@@ -432,6 +432,7 @@
                               <th>Nomor Telepon</th>
                               <th>Username</th>
                               <th>Password</th>
+                              <th>Edit</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -450,6 +451,7 @@
                                   echo "<td>" . $row['nomor_telepon'] . "</td>";
                                   echo "<td>" . $row['username'] . "</td>";
                                   echo "<td>" . $row['pass'] . "</td>";
+                                  echo "<td><button class='editBtn' data-id='" . $row['id_mahasiswa'] . "' data-nama='" . $row['nama_mahasiswa'] . "' data-nim='" . $row['nim'] . "' data-prodi='" . $row['prodi'] . "' data-kelas='" . $row['kelas'] . "' data-telepon='" . $row['nomor_telepon'] . "' data-username='" . $row['username'] . "'>Edit</button></td>";
                                   echo "</tr>";
                               }
                               $conn->close();
@@ -508,6 +510,49 @@
                   </form>
                 </div>
               </div>
+
+              <div id="editModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeEditModal">&times;</span>
+    <h2>Edit Data Mahasiswa</h2>
+    <form id="editForm">
+      <input type="hidden" id="edit_id" name="id_mahasiswa">
+
+      <div class="form-group">
+        <label for="edit_name">Nama:</label>
+        <input type="text" id="edit_name" name="nama_mahasiswa" required>
+      </div>
+
+      <div class="form-group">
+        <label for="edit_nim">NIM:</label>
+        <input type="text" id="edit_nim" name="nim" required>
+      </div>
+
+      <div class="form-group">
+        <label for="edit_prodi">Program Studi:</label>
+        <input type="text" id="edit_prodi" name="prodi" required>
+      </div>
+
+      <div class="form-group">
+        <label for="edit_kelas">Kelas:</label>
+        <input type="text" id="edit_kelas" name="kelas" required>
+      </div>
+
+      <div class="form-group">
+        <label for="edit_telepon">Nomor Telepon:</label>
+        <input type="text" id="edit_telepon" name="nomor_telepon" required>
+      </div>
+
+      <div class="form-group">
+        <label for="edit_username">Username:</label>
+        <input type="text" id="edit_username" name="username" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Simpan Perubahan</button>
+    </form>
+  </div>
+</div>
+
 
               <style>
                 /* Styling untuk modal */
@@ -642,6 +687,21 @@
                   text-decoration: none;
                   cursor: pointer;
                 }
+
+                .editBtn {
+    background-color: #007bff;  /* Warna biru */
+    color: white;  /* Warna teks putih */
+    border: none;  /* Hapus border */
+    padding: 8px 16px;  /* Ukuran padding */
+    border-radius: 8px;  /* Membuat sudut membulat */
+    cursor: pointer;  /* Ubah kursor menjadi pointer */
+    font-size: 14px;
+    transition: background 0.3s ease-in-out;
+}
+
+.editBtn:hover {
+    background-color: #0056b3;  /* Warna biru lebih gelap saat hover */
+}
               </style>
 
               <script>
@@ -695,6 +755,52 @@
                   xhr.send(formData);
                 };
               </script>
+
+<script>
+  // Fungsi untuk membuka modal edit dan mengisi data ke dalam form
+  document.querySelectorAll(".editBtn").forEach(button => {
+    button.addEventListener("click", function () {
+      document.getElementById("edit_id").value = this.getAttribute("data-id");
+      document.getElementById("edit_name").value = this.getAttribute("data-nama");
+      document.getElementById("edit_nim").value = this.getAttribute("data-nim");
+      document.getElementById("edit_prodi").value = this.getAttribute("data-prodi");
+      document.getElementById("edit_kelas").value = this.getAttribute("data-kelas");
+      document.getElementById("edit_telepon").value = this.getAttribute("data-telepon");
+      document.getElementById("edit_username").value = this.getAttribute("data-username");
+
+      document.getElementById("editModal").style.display = "flex";
+    });
+  });
+
+  // Menutup modal edit
+  document.getElementById("closeEditModal").onclick = function () {
+    document.getElementById("editModal").style.display = "none";
+  };
+
+  // Kirim data edit ke PHP
+  document.getElementById("editForm").onsubmit = function (event) {
+    event.preventDefault();
+
+    var formData = new FormData(document.getElementById("editForm"));
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "editSiswa.php", true);
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        alert("Data berhasil diperbarui!");
+        document.getElementById("editModal").style.display = "none";
+        location.reload(); // Refresh halaman agar data diperbarui
+      } else {
+        alert("Terjadi kesalahan: " + xhr.statusText);
+      }
+    };
+    xhr.onerror = function () {
+      alert("Terjadi kesalahan dalam koneksi.");
+    };
+    xhr.send(formData);
+  };
+</script>
+
 
 
             </div>

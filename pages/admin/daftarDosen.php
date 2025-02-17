@@ -431,6 +431,7 @@
                               <th>Nomor Telepon</th>
                               <th>Username</th>
                               <th>Password</th>
+                              <th>Edit</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -448,6 +449,7 @@
                                   echo "<td>" . $row['nomor_telepon'] . "</td>";
                                   echo "<td>" . $row['username'] . "</td>";
                                   echo "<td>" . $row['pass'] . "</td>";
+                                  echo "<td><button class='editBtn' data-id='" . $row['id_dosen'] . "'>Edit</button></td>";
                                   echo "</tr>";
                               }
                               $conn->close();
@@ -501,6 +503,49 @@
                   </form>
                 </div>
               </div>
+
+              <div id="editModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Edit Data Dosen</h2>
+    <form id="editForm">
+      <input type="hidden" id="edit_id" name="id_dosen">
+
+      <div class="form-group">
+        <label for="edit_name">Nama:</label>
+        <input type="text" id="edit_name" name="nama_dosen" required>
+      </div>
+
+      <div class="form-group">
+        <label for="edit_nip">NIP:</label>
+        <input type="text" id="edit_nip" name="nip" required>
+      </div>
+
+      <div class="form-group">
+        <label for="edit_prodi">Program Studi:</label>
+        <input type="text" id="edit_prodi" name="prodi" required>
+      </div>
+
+      <div class="form-group">
+        <label for="edit_phone">Nomor Telepon:</label>
+        <input type="text" id="edit_phone" name="nomor_telepon" required>
+      </div>
+
+      <div class="form-group">
+        <label for="edit_username">Username:</label>
+        <input type="text" id="edit_username" name="username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="edit_pass">Password:</label>
+        <input type="password" id="edit_pass" name="pass" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Update</button>
+    </form>
+  </div>
+</div>
+
 
               <style>
                 /* Styling untuk modal */
@@ -580,7 +625,24 @@
                 .btn-submit:hover {
                   background-color: #0056b3;
                 }
+
+                .editBtn {
+    background-color: #007bff;  /* Warna biru */
+    color: white;  /* Warna teks putih */
+    border: none;  /* Hapus border */
+    padding: 8px 16px;  /* Ukuran padding */
+    border-radius: 8px;  /* Membuat sudut membulat */
+    cursor: pointer;  /* Ubah kursor menjadi pointer */
+    font-size: 14px;
+    transition: background 0.3s ease-in-out;
+}
+
+.editBtn:hover {
+    background-color: #0056b3;  /* Warna biru lebih gelap saat hover */
+}
+
               </style>
+              
 
               <script>
                 // Script untuk membuka dan menutup modal
@@ -597,6 +659,53 @@
                     document.getElementById("myModal").style.display = "none";
                   }
                 }
+
+                document.querySelectorAll(".editBtn").forEach(button => {
+    button.addEventListener("click", function () {
+        var id = this.getAttribute("data-id");
+
+        // Fetch data dosen berdasarkan ID
+        fetch(`getDosen.php?id=${id}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("edit_id").value = data.id_dosen;
+            document.getElementById("edit_name").value = data.nama_dosen;
+            document.getElementById("edit_nip").value = data.nip;
+            document.getElementById("edit_prodi").value = data.prodi;
+            document.getElementById("edit_phone").value = data.nomor_telepon;
+            document.getElementById("edit_username").value = data.username;
+            document.getElementById("edit_pass").value = data.pass;
+
+            document.getElementById("editModal").style.display = "flex";
+        })
+        .catch(error => console.error("Error fetching data:", error));
+    });
+});
+
+// Close modal saat klik tombol close
+document.querySelector("#editModal .close").onclick = function () {
+    document.getElementById("editModal").style.display = "none";
+};
+
+// Handle submit form edit
+document.getElementById("editForm").onsubmit = function (event) {
+    event.preventDefault();
+
+    var formData = new FormData(document.getElementById("editForm"));
+
+    fetch("editDosen.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.text())
+    .then(response => {
+        alert("Data berhasil diperbarui!");
+        document.getElementById("editModal").style.display = "none";
+        location.reload(); // Refresh halaman setelah update
+    })
+    .catch(error => console.error("Error:", error));
+};
+
               </script>
 
 

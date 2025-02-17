@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 if (isset($_GET['id'])) {
     $file_id = $_GET['id'];
 
-    $sql = "SELECT form_pendaftaran, bukti_transkip, sistem_magang, form_persetujuan FROM mahasiswa WHERE id_mahasiswa = ?";
+    $sql = "SELECT form_pendaftaran_TA, bukti_transkip_nilai_TA, sistem_magang, lembar_persetujuan_proposal_ta_seminar FROM mahasiswa WHERE id_mahasiswa = ?";
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
@@ -24,15 +24,15 @@ if (isset($_GET['id'])) {
 
     $stmt->bind_param("i", $file_id);
     $stmt->execute();
-    $stmt->bind_result($form_pendaftaran, $bukti_transkip, $sistem_magang);
+    $stmt->bind_result($form_pendaftaran_TA, $bukti_transkip_nilai_TA, $sistem_magang, $lembar_persetujuan_proposal_ta_seminar);
 
     if ($stmt->fetch()) {
         echo "Data fetched successfully.<br>";
 
-        echo "Form Pendaftaran (length): " . (empty($form_pendaftaran) ? "No file" : strlen($form_pendaftaran)) . " bytes<br>";
-        echo "Bukti Transkip (length): " . (empty($bukti_transkip) ? "No file" : strlen($bukti_transkip)) . " bytes<br>";
+        echo "Form Pendaftaran (length): " . (empty($form_pendaftaran_TA) ? "No file" : strlen($form_pendaftaran_TA)) . " bytes<br>";
+        echo "Bukti Transkip (length): " . (empty($bukti_transkip_nilai_TA) ? "No file" : strlen($bukti_transkip_nilai_TA)) . " bytes<br>";
         echo "Sistem Magang (length): " . (empty($sistem_magang) ? "No file" : strlen($sistem_magang)) . " bytes<br>";
-        echo "Form Persetujuan (length): " . (empty($form_persetujuan) ? "No file" : strlen($form_persetujuan)) . " bytes<br>";
+        echo "Form Persetujuan (length): " . (empty($lembar_persetujuan_proposal_ta_seminar) ? "No file" : strlen($lembar_persetujuan_ta_seminar)) . " bytes<br>";
     } else {
         echo "No data found for the provided ID.<br>";
     }
@@ -40,16 +40,16 @@ if (isset($_GET['id'])) {
     $file = null;
     $file_name = '';
 
-    if (!empty($form_pendaftaran)) {
-        $file = $form_pendaftaran;
-        $file_name = 'Form_Pendaftaran.pdf';
-    } elseif (!empty($bukti_transkip)) {
-        $file = $bukti_transkip;
+    if (!empty($form_pendaftaran_TA)) {
+        $file = $form_pendaftaran_TA;
+        $file_name = 'form_pendaftaran_TA.pdf';
+    } elseif (!empty($bukti_transkip_nilai_TA)) {
+        $file = $bukti_transkip_nilai_TA;
         $file_name = 'Bukti_Transkip.pdf';
     } elseif (!empty($sistem_magang)) {
         $file = $sistem_magang;
         $file_name = 'Sistem_Magang.pdf';
-    } elseif (!empty($form_persetujuan)) {
+    } elseif (!empty($lembar_persetujuan_proposal_ta_seminar)) {
         $file = $sistem_magang;
         $file_name = 'Sistem_Magang.pdf';
     }
