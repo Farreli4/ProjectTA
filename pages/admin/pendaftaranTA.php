@@ -544,14 +544,7 @@
               text-decoration: none;
           }
           
-          .small-text {
-              font-size: 12px;
-              color: #666;
-              margin-top: 5px;
-              border: none;
-              background: none;
-              display: inline-block;
-          }
+          
           </style>
 <div class="row">  
     <div class="col-md-12 grid-margin stretch-card">
@@ -603,18 +596,24 @@
                                 echo "</select>";
                                 echo "</td>";
 
-                                // Status Pengajuan dropdown
                                 echo "<td>";
-                                echo "<select name='status_pengajuan' onchange='changeColor(this); toggleRevisiTextbox(this)' required>";
+                                echo "<select name='status_pengajuan' onchange='toggleRevisiTextbox(this)' required>";
                                 echo "<option value='Ditolak'" . ($status_pengajuan == 'Ditolak' ? ' selected' : '') . ">Ditolak</option>";
                                 echo "<option value='Revisi'" . ($status_pengajuan == 'Revisi' ? ' selected' : '') . ">Revisi</option>";
                                 echo "<option value='Disetujui'" . ($status_pengajuan == 'Disetujui' ? ' selected' : '') . ">Disetujui</option>";
                                 echo "</select>";
-
-                                // Revisi textbox, shown when "Revisi" is selected
-                                echo "<div id='revisi-textbox-" . $row['id_mahasiswa'] . "' style='display:none; margin-top:10px;'>";
-                                echo "<textarea name='alasan_revisi' id='revisi_reason_" . $row['id_mahasiswa'] . "' rows='3'>" . $row['alasan_revisi'] . "</textarea>";
+                                if ($status_pengajuan == 'Revisi') {
+                                  echo "<div class='revisi-textbox' id='revisi-textbox-" . $row['id_mahasiswa'] . "' data-id='" . $row['id_mahasiswa'] . "' style='display:none;'>";
+                                echo "<textarea name='alasan_revisi' rows='3'>" . $row['alasan_revisi'] . "</textarea>";
                                 echo "</div>";
+                              }
+                              
+
+                                // Revisi Text (Displayed after update)
+                                echo "<p class='small-text' id='revisi-text-" . $row['id_mahasiswa'] . "' style='display:none;'>" . $row['alasan_revisi'] . "</p>";
+
+                                echo "</td>";
+
 
                                 // Hidden field for mahasiswa ID
                                 echo "<input type='hidden' name='id_mahasiswa' value='" . $row['id_mahasiswa'] . "'>";
@@ -653,29 +652,54 @@ function changeColor(selectElement) {
     }
 }
 
-// Function to toggle the visibility of the revisi textbox for each row
+// Function to toggle the visibility of the rev
 function toggleRevisiTextbox(selectElement) {
     var mahasiswaId = selectElement.closest('tr').querySelector('input[name="id_mahasiswa"]').value;
     var revisiTextbox = document.getElementById('revisi-textbox-' + mahasiswaId);
-    var selectedValue = selectElement.value;
+    var revisiText = document.getElementById('revisi-text-' + mahasiswaId);
 
-    // Show or hide revisi textbox based on selected status
-    if (selectedValue == 'Revisi') {
-        revisiTextbox.style.display = 'block'; // Show the textbox
-    } else {
-        revisiTextbox.style.display = 'none'; // Hide the textbox
+    if (revisiTextbox && revisiText) {  // Ensure elements exist before modifying
+        if (selectElement.value === 'Revisi') {
+            revisiTextbox.style.display = 'block';  // Show textarea
+            revisiText.style.display = 'none';      // Hide small text
+        } else {
+            revisiTextbox.style.display = 'none';  // Hide textarea
+            revisiText.style.display = 'none';     // Hide small text
+        }
     }
 }
 
 // Initialize the page when it loads
-window.onload = function() {
+window.onload = function () {
     var selects = document.querySelectorAll('select');
-    selects.forEach(function(select) {
-        changeColor(select);
-        toggleRevisiTextbox(select);
+
+    selects.forEach(function (select) {
+        changeColor(select);  // Ensure color updates properly
     });
-}
+
+    document.querySelectorAll('.revisi-textbox').forEach(function (box) {
+        var mahasiswaId = box.getAttribute('data-id');
+        var revisiText = document.getElementById('revisi-text-' + mahasiswaId);
+
+        if (revisiText && revisiText.innerText.trim() !== '') {
+            revisiText.style.display = 'block';  // Show small text
+            box.style.display = 'none';         // Hide textarea
+        }
+    });
+};
+
 </script>
+
+<style>
+  .small-text {
+              font-size: 12px;
+              color: #666;
+              margin-top: 5px;
+              border: none;
+              background: none;
+              display: inline-block;
+          }
+</style>
 
 
         <!-- content-wrapper ends -->
