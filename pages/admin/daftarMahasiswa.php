@@ -465,6 +465,7 @@
                 </div>
               </div>
               <button id="openModalBtn" class="btn btn-primary">Add Data</button>
+              <button id="openModal" class="btn btn-primary">Add Batch</button>
 
               <div id="myModal" class="modal">
                 <div class="modal-content">
@@ -511,47 +512,55 @@
                 </div>
               </div>
 
+              <div id="ModalBatch" class="modal">
+              <form action="upload_aksi.php" method="post" enctype="multipart/form-data">
+                  <label for="file">Choose an Excel file to upload:</label>
+                  <input type="file" name="excel_file" id="excel_file" required>
+                  <button type="submit" name="submit">Upload</button>
+              </form>
+              </div>
+
               <div id="editModal" class="modal">
-  <div class="modal-content">
-    <span class="close" id="closeEditModal">&times;</span>
-    <h2>Edit Data Mahasiswa</h2>
-    <form id="editForm">
-      <input type="hidden" id="edit_id" name="id_mahasiswa">
+              <div class="modal-content">
+                <span class="close" id="closeEditModal">&times;</span>
+                <h2>Edit Data Mahasiswa</h2>
+                <form id="editForm">
+                  <input type="hidden" id="edit_id" name="id_mahasiswa">
 
-      <div class="form-group">
-        <label for="edit_name">Nama:</label>
-        <input type="text" id="edit_name" name="nama_mahasiswa" required>
-      </div>
+                  <div class="form-group">
+                    <label for="edit_name">Nama:</label>
+                    <input type="text" id="edit_name" name="nama_mahasiswa" required>
+                  </div>
 
-      <div class="form-group">
-        <label for="edit_nim">NIM:</label>
-        <input type="text" id="edit_nim" name="nim" required>
-      </div>
+                  <div class="form-group">
+                    <label for="edit_nim">NIM:</label>
+                    <input type="text" id="edit_nim" name="nim" required>
+                  </div>
 
-      <div class="form-group">
-        <label for="edit_prodi">Program Studi:</label>
-        <input type="text" id="edit_prodi" name="prodi" required>
-      </div>
+                  <div class="form-group">
+                    <label for="edit_prodi">Program Studi:</label>
+                    <input type="text" id="edit_prodi" name="prodi" required>
+                  </div>
 
-      <div class="form-group">
-        <label for="edit_kelas">Kelas:</label>
-        <input type="text" id="edit_kelas" name="kelas" required>
-      </div>
+                  <div class="form-group">
+                    <label for="edit_kelas">Kelas:</label>
+                    <input type="text" id="edit_kelas" name="kelas" required>
+                  </div>
 
-      <div class="form-group">
-        <label for="edit_telepon">Nomor Telepon:</label>
-        <input type="text" id="edit_telepon" name="nomor_telepon" required>
-      </div>
+                  <div class="form-group">
+                    <label for="edit_telepon">Nomor Telepon:</label>
+                    <input type="text" id="edit_telepon" name="nomor_telepon" required>
+                  </div>
 
-      <div class="form-group">
-        <label for="edit_username">Username:</label>
-        <input type="text" id="edit_username" name="username" required>
-      </div>
+                  <div class="form-group">
+                    <label for="edit_username">Username:</label>
+                    <input type="text" id="edit_username" name="username" required>
+                  </div>
 
-      <button type="submit" class="btn-submit">Simpan Perubahan</button>
-    </form>
-  </div>
-</div>
+                  <button type="submit" class="btn-submit">Simpan Perubahan</button>
+                </form>
+              </div>
+            </div>
 
 
               <style>
@@ -635,13 +644,20 @@
               </style>
 
               <script>
-                // Script untuk membuka dan menutup modal
                 document.getElementById("openModalBtn").onclick = function() {
                   document.getElementById("myModal").style.display = "flex";
                 }
 
                 document.querySelector(".close").onclick = function() {
                   document.getElementById("myModal").style.display = "none";
+                }
+
+                document.getElementById("openModal").onclick = function() {
+                  document.getElementById("ModalBatch").style.display = "flex";
+                }
+
+                document.querySelector(".close").onclick = function() {
+                  document.getElementById("ModalBatch").style.display = "none";
                 }
 
                 window.onclick = function(event) {
