@@ -2,9 +2,17 @@
 <?php
 // Ambil data mahasiswa dari session (sesuaikan dengan sistem login Anda)
 session_start();
+function showNotification($type, $message)
+{
+    $_SESSION['notification'] = [
+        'type' => $type,
+        'message' => $message
+    ];
+}
 $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
 $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 
 function checkTAFilesStatus($nama_mahasiswa)
 {
@@ -22,12 +30,6 @@ function checkTAFilesStatus($nama_mahasiswa)
         }
     }
     return true; // Semua file sudah diupload
-}
-
-// Pengecekan status file di uploadTA
-if (!checkTAFilesStatus($nama_mahasiswa)) {
-    echo "<script>alert('Silakan lengkapi semua file pada Upload TA terlebih dahulu.'); window.location.href='uploadTA.php';</script>";
-    exit();
 }
 
 // Mengubah query untuk mengambil nim dan nama_mahasiswa
@@ -60,13 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
 
     // Validasi file
     if ($fileType != "pdf") {
-        echo "<script>alert('Maaf, hanya file PDF yang diperbolehkan.');</script>";
-        return;
-    }
-
-    if ($file['size'] > 2000000) { // 2MB
-        echo "<script>alert('Maaf, ukuran file terlalu besar (max 2MB).');</script>";
-        return;
+        showNotification('error', 'Maaf, hanya file PDF yang diperbolehkan.');
+    } elseif ($file['size'] > 2000000) { // 2MB
+        showNotification('error', 'Maaf, ukuran file terlalu besar (maksimal 2MB).');
     }
 
     try {
@@ -124,12 +122,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         $result = $stmt->execute($params);
 
         if ($result) {
-            echo "<script>alert('File berhasil diupload.');</script>";
+            showNotification('success', 'File berhasil diupload! Silakan tunggu verifikasi dari admin.');
         } else {
             throw new Exception("Gagal menyimpan ke database");
         }
     } catch (Exception $e) {
-        echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
+        showNotification('error', 'Error: ' . $e->getMessage());
     }
 }
 
@@ -209,7 +207,8 @@ $driveLinks = [
     <!-- endinject -->
     <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
     <link rel="stylesheet" type="text/css" href="../../assets/css/user/uploadSeminar.css" />
-
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 </head>
 
 <body>
@@ -454,30 +453,6 @@ $driveLinks = [
                         </div>
                     </div>
 
-                    <!-- Process Upload -->
-                    <?php
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['jurnal'])) {
-                        $uploadDir = 'uploads/';
-                        $uploadFile = $uploadDir . basename($_FILES['jurnal']['name']);
-
-                        // Validasi file
-                        $fileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
-                        if ($fileType != "pdf") {
-                            echo "<script>alert('Maaf, hanya file PDF yang diperbolehkan.');</script>";
-                        } elseif ($_FILES["jurnal"]["size"] > 2000000) { // 2MB
-                            echo "<script>alert('Maaf, ukuran file terlalu besar (max 2MB).');</script>";
-                        } else {
-                            if (move_uploaded_file($_FILES['jurnal']['tmp_name'], $uploadFile)) {
-                                echo "<script>alert('File berhasil diupload.');</script>";
-                                // Di sini Anda bisa menambahkan kode untuk update database
-                            } else {
-                                echo "<script>alert('Maaf, terjadi error saat upload file.');</script>";
-                            }
-                        }
-                    }
-                    ?>
-                    <!-- content-wrapper ends -->
-                    <!-- partial:partials/_footer.html -->
 
                     <!-- partial -->
                 </div>
@@ -498,6 +473,163 @@ $driveLinks = [
                 }
             }
         </script>
+        <script>
+            // Function to show notifications
+            function showToast(type, message) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+                Toast.fire({
+                    icon: type,
+                    title: message
+                });
+            }
+
+            // Function to handle file upload
+            function handleFileUpload(formElement) {
+                const fileInput = formElement.querySelector('input[type="file"]');
+                const file = fileInput.files[0];
+
+                if (!file) {
+                    showToast('error', 'Silakan pilih file terlebih dahulu');
+                    return false;
+                }
+
+                if (file.size > 2000000) {
+                    showToast('error', 'Ukuran file terlalu besar (maksimal 2MB)');
+                    return false;
+                }
+
+                if (!file.type.includes('pdf')) {
+                    showToast('error', 'Hanya file PDF yang diperbolehkan');
+                    return false;
+                }
+
+                // Show loading state
+                Swal.fire({
+                    title: 'Mengupload File...',
+                    html: 'Mohon tunggu sebentar',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                return true;
+            }
+
+            // Add event listeners to all upload forms
+            document.querySelectorAll('.upload-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    if (!handleFileUpload(this)) {
+                        e.preventDefault();
+                    }
+                });
+            });
+
+            // Check for PHP notifications on page load
+            <?php if (isset($_SESSION['notification'])): ?>
+                showToast('<?php echo $_SESSION['notification']['type']; ?>',
+                    '<?php echo $_SESSION['notification']['message']; ?>');
+                <?php unset($_SESSION['notification']); ?>
+            <?php endif; ?>
+        </script>
+        <?php
+        if (!checkTAFilesStatus($nama_mahasiswa)) {
+        ?>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Perhatian!',
+                        text: 'Silakan lengkapi semua file pada Upload Tugas Akhir (TA) terlebih dahulu.',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            popup: 'custom-popup', // Class untuk modal
+                            title: 'custom-title', // Class untuk judul
+                            htmlContainer: 'custom-text', // Class untuk teks
+                            confirmButton: 'custom-button' // Class untuk tombol
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'uploadTA.php';
+                        }
+                    });
+                });
+
+                // Tambahkan CSS langsung di dalam script
+                const style = document.createElement('style');
+                style.innerHTML = `
+        .custom-popup {
+            padding: 2rem !important;
+            background: rgba(208, 13, 13, 0.7) !important; /* Background merah transparan */
+            color: white !important; /* Warna teks putih */
+            border-radius: 10px; /* Tambahkan sudut melengkung */
+        }
+
+        .custom-title {
+            color: white !important; /* Warna judul putih */
+        }
+
+        .custom-text {
+            color: white !important; /* Warna teks putih */
+        }
+
+        .custom-button {
+            background-color: white !important; /* Tombol putih */
+            color: red !important; /* Warna teks tombol merah */
+            font-weight: bold;
+        }
+
+        .custom-button:hover {
+            background-color: #ffcccc !important; /* Warna tombol saat hover */
+        }
+    `;
+                document.head.appendChild(style);
+            </script>
+
+        <?php
+        }
+        ?>
+        <style>
+            /* Add these styles to your CSS */
+            .swal2-popup.swal2-toast {
+                padding: 0.75em 1em;
+                background: #fff;
+                box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+            }
+
+            .swal2-popup.swal2-toast .swal2-title {
+                margin: 0.5em;
+                font-size: 1em;
+                color: #333;
+            }
+
+            .swal2-popup.swal2-toast.swal2-icon-success {
+                border-left: 4px solid #28a745;
+            }
+
+            .swal2-popup.swal2-toast.swal2-icon-error {
+                border-left: 4px solid #dc3545;
+            }
+
+            .swal2-popup.swal2-toast.swal2-icon-warning {
+                border-left: 4px solid #ffc107;
+            }
+
+            .swal2-popup.swal2-toast.swal2-icon-info {
+                border-left: 4px solid #17a2b8;
+            }
+        </style>
         <!-- plugins:js -->
         <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
         <!-- endinject -->
