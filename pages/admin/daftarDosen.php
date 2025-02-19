@@ -465,6 +465,7 @@
                 </div>
               </div>
               <button id="openModalBtn" class="btn btn-primary">Add Data</button>
+              <button id="openModal" class="btn btn-primary">Add Batch</button>
 
               <div id="myModal" class="modal">
                 <div class="modal-content">
@@ -504,6 +505,14 @@
                     <button type="submit" id="submitBtn" class="btn-submit">Submit</button>
                   </form>
                 </div>
+              </div>
+
+              <div id="ModalBatch" class="modal">
+              <form action="upload_aksi_dosen.php" method="post" enctype="multipart/form-data">
+                  <label for="file">Choose an Excel file to upload:</label>
+                  <input type="file" name="excel_file" id="excel_file" required>
+                  <button type="submit" name="submit">Upload</button>
+              </form>
               </div>
 
               <div id="editModal" class="modal">

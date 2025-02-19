@@ -344,30 +344,37 @@
               </ul>
             </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../../index.php">
-              <i class="icon-head menu-icon"></i>
-              <span class="menu-title">Log Out</span>
-            </a>
-          </li>
         </ul>
       </nav>
 
       <!-- partial -->
+      <?php
+          // Koneksi ke database
+          $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
+          if ($conn->connect_error) {
+              die("Koneksi gagal: " . $conn->connect_error);
+          }
+
+          // Ambil total pendaftar tugas akhir
+          $sqlUjian = "SELECT COUNT(*) AS total FROM ujian";
+          $resultUjian = $conn->query($sqlUjian);
+          $totalUjian = ($resultUjian->num_rows > 0) ? $resultUjian->fetch_assoc()['total'] : 0;
+      ?>
+      
       <div class="main-panel">
         <div class="content-wrapper">
-            <div class="col-md-10 grid-margin transparent">
+            <div class="col-md-5 grid-margin transparent">
               <div class="row">
                 <div class="col-md-6 stretch-card transparent">
                   <div class="card card-light-danger">
-                    <div class="card-body">
-                      <p class="mb-4">Number of Clients</p>
-                      <p class="fs-30 mb-2">47033</p>
-                      <p>0.22% (30 days)</p>
+                    <div class="card-body text-center">
+                      <p class="mb-4">Total Pendaftar Ujian</p>
+                      <p class="fs-30 mb-2"><?php echo number_format($totalUjian); ?></p>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 mt-3">
+                <div class="col-md-6 d-flex align-items-center justify-content-center">
+                
                 <?php
                   $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
@@ -462,13 +469,16 @@
                 cursor: pointer;
                 font-weight: bold;
             }
+
             select option[value="dijadwalkan"] {
                 background: yellow;
             }
+
             select option[value="ditunda"] {
                 background: red;
                 color: white;
             }
+
             select option[value="selesai"] {
                 background: green;
                 color: white;
@@ -493,7 +503,7 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4>Jadwal Seminar Proposal</h4>
+                        <h4>Daftar Ujian</h4>
                         <div class="table-responsive">
                             <table>
                                 <thead>
@@ -546,7 +556,7 @@
                                         echo "<td><input type='date' value='{$row['tanggal_ujian']}'></td>";
 
                                         // Tombol Verifikasi
-                                        echo "<td><button class='btn-update' onclick='confirmVerification(this)'>Verifikasi</button></td>";
+                                        echo "<td><button class='btn-update'>Verifikasi</button></td>";
 
                                         echo "</tr>";
                                     }
@@ -581,18 +591,6 @@
                 });
             }
         </script>
-
-<script>
-function confirmVerification(button) {
-    let confirmation = confirm("Apakah Anda yakin ingin melakukan verifikasi?");
-    if (confirmation) {
-        // Lakukan aksi verifikasi di sini
-        alert("Verifikasi berhasil!"); // Gantilah dengan aksi yang sesuai
-        // Bisa juga kirim request ke backend melalui AJAX atau form submission
-    }
-}
-</script>
-
 
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->

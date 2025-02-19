@@ -64,7 +64,7 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
     }
     $stmt->close();
 
-    // Check if the dosen exists in the dosen_pembimbing table
+    // Check if the dosen exists
     $check_dosen_sql = "SELECT COUNT(*) FROM dosen_pembimbing WHERE id_dosen=?";
     $stmt_check_dosen = $conn->prepare($check_dosen_sql);
     if (!$stmt_check_dosen) {
@@ -77,37 +77,37 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
     $stmt_check_dosen->close();
 
     if ($dosen_exists > 0) {
-        // Check if the mahasiswa already has the dosen as pembimbing
-        $check_relation_sql = "SELECT COUNT(*) FROM mahasiswa_dosen WHERE id_mahasiswa=? AND id_dosen=?";
+        // Check the relation between mahasiswa and dosen pembimbing
+        $check_relation_sql = "SELECT id_dosen FROM mahasiswa_dosen WHERE id_mahasiswa=?";
         $stmt_check_relation = $conn->prepare($check_relation_sql);
         if (!$stmt_check_relation) {
             die("Error preparing relation check query: " . $conn->error);
         }
-        $stmt_check_relation->bind_param("ii", $id_mahasiswa, $dosen_pembimbing);
+        $stmt_check_relation->bind_param("i", $id_mahasiswa);
         $stmt_check_relation->execute();
-        $stmt_check_relation->bind_result($relation_count);
+        $stmt_check_relation->bind_result($current_dosen);
         $stmt_check_relation->fetch();
         $stmt_check_relation->close();
 
-        if ($relation_count > 0) {
-            // Relation already exists, no need to update
-            echo "Dosen pembimbing sudah terhubung dengan mahasiswa ini.";
-        } else {
-            // Insert relation if it doesn't exist
-            $insert_relation_sql = "INSERT INTO mahasiswa_dosen (id_mahasiswa, id_dosen) VALUES (?, ?)";
-            $stmt_insert_relation = $conn->prepare($insert_relation_sql);
-            if (!$stmt_insert_relation) {
-                die("Error preparing insert relation query: " . $conn->error);
+        if ($current_dosen != $dosen_pembimbing) {
+            // Update the dosen pembimbing if it's different
+            $update_relation_sql = "UPDATE mahasiswa_dosen SET id_dosen=? WHERE id_mahasiswa=?";
+            $stmt_update_relation = $conn->prepare($update_relation_sql);
+            if (!$stmt_update_relation) {
+                die("Error preparing update relation query: " . $conn->error);
             }
-            $stmt_insert_relation->bind_param("ii", $id_mahasiswa, $dosen_pembimbing);
+            $stmt_update_relation->bind_param("ii", $dosen_pembimbing, $id_mahasiswa);
 
-            if (!$stmt_insert_relation->execute()) {
-                echo "Gagal menambahkan dosen pembimbing. Error: " . $stmt_insert_relation->error;
-                $stmt_insert_relation->close();
+            if (!$stmt_update_relation->execute()) {
+                echo "Gagal memperbarui dosen pembimbing. Error: " . $stmt_update_relation->error;
+                $stmt_update_relation->close();
                 exit;
             }
 
-            $stmt_insert_relation->close();
+            $stmt_update_relation->close();
+            echo "Dosen pembimbing berhasil diperbarui.";
+        } else {
+            echo "Dosen pembimbing sudah terhubung dengan mahasiswa ini.";
         }
     } else {
         echo "Dosen pembimbing dengan ID tersebut tidak ditemukan.";
@@ -148,4 +148,5 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
 }
 
 $conn->close();
+
 ?>
