@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
 
     // Format nama file
     $newFileName = $nama_mahasiswa . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
-    
+
     // Validasi file
     if ($fileType != "pdf") {
         showNotification('error', 'Maaf, hanya file PDF yang diperbolehkan.');
@@ -389,12 +389,16 @@ $driveLinks = [
                                     foreach ($files as $file) {
                                         $status = getFileStatus($nama_mahasiswa, $file);
                                         $statusClass = '';
+                                        $statusText = $status;
                                         switch ($status) {
+                                            case 'Uploaded':
+                                                $statusClass = 'status-uploaded';
+                                                break;
+                                            case 'Belum Upload':
+                                                $statusClass = 'status-pending';
+                                                break;
                                             case 'Revisi':
                                                 $statusClass = 'status-revisi';
-                                                break;
-                                            case 'Lulus':
-                                                $statusClass = 'status-lulus';
                                                 break;
                                             case 'Tolak':
                                                 $statusClass = 'status-tolak';
@@ -458,7 +462,7 @@ $driveLinks = [
                 }
             }
         </script>
-       <script>
+        <script>
             // Function to show notifications
             function showToast(type, message) {
                 const Toast = Swal.mixin({
@@ -529,7 +533,7 @@ $driveLinks = [
             <?php endif; ?>
         </script>
 
-<style>
+        <style>
             /* Add these styles to your CSS */
             .swal2-popup.swal2-toast {
                 padding: 0.75em 1em;
@@ -558,8 +562,40 @@ $driveLinks = [
             .swal2-popup.swal2-toast.swal2-icon-info {
                 border-left: 4px solid #17a2b8;
             }
+
+            .status {
+                padding: 6px 12px;
+                border-radius: 4px;
+                font-weight: 500;
+                font-size: 14px;
+                display: inline-block;
+            }
+
+            .status-uploaded {
+                background-color: #e8f5e9;
+                color: #2e7d32;
+                border: 1px solid #a5d6a7;
+            }
+
+            .status-pending {
+                background-color: #fff3e0;
+                color: #ef6c00;
+                border: 1px solid #ffcc80;
+            }
+
+            .status-revisi {
+                background-color: #e3f2fd;
+                color: #1565c0;
+                border: 1px solid #90caf9;
+            }
+
+            .status-tolak {
+                background-color: #ffebee;
+                color: #c62828;
+                border: 1px solid #ef9a9a;
+            }
         </style>
-        
+
         <!-- plugins:js -->
         <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
         <!-- endinject -->
