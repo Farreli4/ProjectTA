@@ -438,28 +438,6 @@ $driveLinks = [
                         </div>
                     </div>
 
-                    <!-- Process Upload -->
-                    <?php
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['jurnal'])) {
-                        $uploadDir = 'uploads/';
-                        $uploadFile = $uploadDir . basename($_FILES['jurnal']['name']);
-
-                        // Validasi file
-                        $fileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
-                        if ($fileType != "pdf") {
-                            echo "<script>alert('Maaf, hanya file PDF yang diperbolehkan.');</script>";
-                        } elseif ($_FILES["jurnal"]["size"] > 2000000) { // 2MB
-                            echo "<script>alert('Maaf, ukuran file terlalu besar (max 2MB).');</script>";
-                        } else {
-                            if (move_uploaded_file($_FILES['jurnal']['tmp_name'], $uploadFile)) {
-                                echo "<script>alert('File berhasil diupload.');</script>";
-                                // Di sini Anda bisa menambahkan kode untuk update database
-                            } else {
-                                echo "<script>alert('Maaf, terjadi error saat upload file.');</script>";
-                            }
-                        }
-                    }
-                    ?>
                     <!-- content-wrapper ends -->
                     <!-- partial:partials/_footer.html -->
 
@@ -500,7 +478,7 @@ $driveLinks = [
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = 'uploadBeritaAcara.php';
+                window.location.href = 'uploadUjian.php';
             }
         });
     });

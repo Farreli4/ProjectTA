@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 14, 2025 at 04:25 AM
+-- Generation Time: Feb 19, 2025 at 03:54 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,7 +58,22 @@ CREATE TABLE `dosen_pembimbing` (
 --
 
 INSERT INTO `dosen_pembimbing` (`id_dosen`, `nama_dosen`, `username`, `pass`, `nomor_telepon`, `create_at`, `nip`, `prodi`) VALUES
-(1, 'dosen\r\n', 'dosen1', 'dosen', '085', '2025-02-03 02:03:14', '2676478762574', 'PTIK');
+(1, 'dosen\r\n', 'dosen1', 'dosen', '085', '2025-02-03 02:03:14', '2676478762574', 'PTIK'),
+(2, 'nama_mahasiswa', 'nomor_telepon', 'username', 'kelas', '2025-02-19 01:49:20', 'nim', 'prodi'),
+(3, 'John Doe', '8123456789', 'jdoe', 'A', '2025-02-19 01:49:20', '123456789', 'Informatics'),
+(4, 'Jane Smith', '8987654321', 'jsmith', 'B', '2025-02-19 01:49:20', '987654321', 'Mathematics'),
+(5, 'Mark Taylor', '8211223344', 'mtaylor', 'C', '2025-02-19 01:49:20', '555666777', 'Physics'),
+(6, 'Alice Johnson', '8334455667', 'ajohnson', 'D', '2025-02-19 01:49:20', '222333444', 'Chemistry'),
+(7, 'nama_mahasiswa', 'nomor_telepon', 'username', 'kelas', '2025-02-19 01:49:43', 'nim', 'prodi'),
+(8, 'John Doe', '8123456789', 'jdoe', 'A', '2025-02-19 01:49:43', '123456789', 'Informatics'),
+(9, 'Jane Smith', '8987654321', 'jsmith', 'B', '2025-02-19 01:49:43', '987654321', 'Mathematics'),
+(10, 'Mark Taylor', '8211223344', 'mtaylor', 'C', '2025-02-19 01:49:43', '555666777', 'Physics'),
+(11, 'Alice Johnson', '8334455667', 'ajohnson', 'D', '2025-02-19 01:49:43', '222333444', 'Chemistry'),
+(12, 'nama_mahasiswa', 'nomor_telepon', 'username', 'kelas', '2025-02-19 01:49:53', 'nim', 'prodi'),
+(13, 'John Doe', '8123456789', 'jdoe', 'A', '2025-02-19 01:49:53', '123456789', 'Informatics'),
+(14, 'Jane Smith', '8987654321', 'jsmith', 'B', '2025-02-19 01:49:53', '987654321', 'Mathematics'),
+(15, 'Mark Taylor', '8211223344', 'mtaylor', 'C', '2025-02-19 01:49:53', '555666777', 'Physics'),
+(16, 'Alice Johnson', '8334455667', 'ajohnson', 'D', '2025-02-19 01:49:53', '222333444', 'Chemistry');
 
 -- --------------------------------------------------------
 
@@ -80,21 +95,21 @@ CREATE TABLE `mahasiswa` (
   `tema` varchar(255) NOT NULL,
   `judul` varchar(255) NOT NULL,
   `dosen_pembimbing` varchar(255) NOT NULL,
-  `form_pendaftaran_TA` varchar(255) DEFAULT NULL,
-  `form_persetujuan_TA` varchar(255) DEFAULT NULL,
-  `bukti_pembayaran_TA` varchar(255) DEFAULT NULL,
-  `bukti_transkip_nilai_TA` varchar(255) DEFAULT NULL,
-  `bukti_kelulusan_magang_TA` varchar(255) DEFAULT NULL,
-  `form_pendaftaran_sempro_seminar` varchar(255) DEFAULT NULL,
-  `lembar_persetujuan_proposal_ta_seminar` varchar(255) DEFAULT NULL,
-  `buku_konsultasi_ta_seminar` varchar(255) DEFAULT NULL,
-  `lembar_berita_acara_seminar` varchar(255) DEFAULT NULL,
-  `lembar_persetujuan_laporan_ta_ujian` varchar(255) DEFAULT NULL,
-  `form_pendaftaran_ujian_ta_ujian` varchar(255) DEFAULT NULL,
-  `lembar_kehadiran_sempro_ujian` varchar(255) DEFAULT NULL,
-  `buku_konsultasi_ta_ujian` varchar(255) DEFAULT NULL,
-  `lembar_hasil_nilai_dosbim1_nilai` varchar(255) DEFAULT NULL,
-  `lembar_hasil_nilai_dosbim2_nilai` varchar(255) DEFAULT NULL
+  `form_pendaftaran_TA` blob DEFAULT NULL,
+  `form_persetujuan_TA` blob DEFAULT NULL,
+  `bukti_pembayaran_TA` blob DEFAULT NULL,
+  `bukti_transkip_nilai_TA` blob DEFAULT NULL,
+  `bukti_kelulusan_magang_TA` blob DEFAULT NULL,
+  `form_pendaftaran_sempro_seminar` blob DEFAULT NULL,
+  `lembar_persetujuan_proposal_ta_seminar` blob DEFAULT NULL,
+  `buku_konsultasi_ta_seminar` blob DEFAULT NULL,
+  `lembar_berita_acara_seminar` blob DEFAULT NULL,
+  `lembar_persetujuan_laporan_ta_ujian` blob DEFAULT NULL,
+  `form_pendaftaran_ujian_ta_ujian` blob DEFAULT NULL,
+  `lembar_kehadiran_sempro_ujian` blob DEFAULT NULL,
+  `buku_konsultasi_ta_ujian` blob DEFAULT NULL,
+  `lembar_hasil_nilai_dosbim1_nilai` blob DEFAULT NULL,
+  `lembar_hasil_nilai_dosbim2_nilai` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -107,7 +122,11 @@ INSERT INTO `mahasiswa` (`id_mahasiswa`, `nama_mahasiswa`, `username`, `pass`, `
 (3, 'Nur', '', '', 'K3522078', '', '', 0x30, '', '2025-01-22 09:09:32', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (4, 'Zidan', '', '', 'K3522085', 'PTIK', 'A', '', '085729360001', '2025-01-31 02:36:41', 'Pemrograman', 'Pemrograman web menggunakan php', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (7, 'reih', 'rei', 'c1d6e4fc7422656509d6988df576d75c439f2102297cc477633a02bb7d190c12', 'K3522032', 'ptik', 'A', '', '085772345231', '2025-02-10 01:48:44', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(8, 'Kai', 'r', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 'K3522032', 'ptik', 'A', '', '085772345231', '2025-02-10 01:49:20', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(8, 'Kai', 'r', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 'K3522032', 'ptik', 'A', '', '085772345231', '2025-02-10 01:49:20', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(10, 'John Doe', 'jdoe', 'pass123', '123456789', 'Informatics', 'A', '', '8123456789', '2025-02-19 01:24:23', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(11, 'Jane Smith', 'jsmith', 'pass456', '987654321', 'Mathematics', 'B', '', '8987654321', '2025-02-19 01:24:23', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(12, 'Mark Taylor', 'mtaylor', 'pass789', '555666777', 'Physics', 'C', '', '8211223344', '2025-02-19 01:24:23', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(13, 'Alice Johnson', 'ajohnson', 'pass101', '222333444', 'Chemistry', 'D', '', '8334455667', '2025-02-19 01:24:23', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -160,6 +179,10 @@ CREATE TABLE `seminar_proposal` (
   `tanggal_disetujui` date NOT NULL,
   `status_seminar` enum('dijadwalkan','ditunda','selesai') NOT NULL,
   `tanggal_seminar` date NOT NULL,
+  `lembar_persetujuan_proposal_ta_seminar` tinyint(1) NOT NULL DEFAULT 0,
+  `buku_konsultasi_ta_seminar` tinyint(1) NOT NULL DEFAULT 0,
+  `lembar_berita_acara_seminar` tinyint(1) NOT NULL DEFAULT 0,
+  `form_pendaftaran_sempro_seminar` tinyint(1) NOT NULL DEFAULT 0,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -167,11 +190,11 @@ CREATE TABLE `seminar_proposal` (
 -- Dumping data for table `seminar_proposal`
 --
 
-INSERT INTO `seminar_proposal` (`id_mahasiswa`, `dosen_pembimbing`, `penyaji_seminar`, `kehadiran`, `sppsp`, `lbta`, `tanggal_disetujui`, `status_seminar`, `tanggal_seminar`, `create_at`) VALUES
-(1, '', 'Rai', 0, '', '', '2004-06-16', 'ditunda', '2004-06-18', '2025-01-27 04:14:39'),
-(2, 'nama_dosen1', 'Izza', 0, '', '', '0000-00-00', 'dijadwalkan', '2020-10-23', '2025-01-24 03:43:16'),
-(3, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'ditunda', '2025-01-24', '2025-02-14 03:17:29'),
-(4, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'selesai', '2025-02-03', '2025-02-03 01:55:58');
+INSERT INTO `seminar_proposal` (`id_mahasiswa`, `dosen_pembimbing`, `penyaji_seminar`, `kehadiran`, `sppsp`, `lbta`, `tanggal_disetujui`, `status_seminar`, `tanggal_seminar`, `lembar_persetujuan_proposal_ta_seminar`, `buku_konsultasi_ta_seminar`, `lembar_berita_acara_seminar`, `form_pendaftaran_sempro_seminar`, `create_at`) VALUES
+(1, '', 'Rai', 0, '', '', '2004-06-16', 'ditunda', '2004-06-18', 0, 0, 0, 0, '2025-01-27 04:14:39'),
+(2, 'nama_dosen1', 'Izza', 0, '', '', '0000-00-00', 'dijadwalkan', '2020-10-23', 0, 0, 0, 0, '2025-01-24 03:43:16'),
+(3, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'ditunda', '2025-01-24', 0, 0, 0, 0, '2025-02-14 03:17:29'),
+(4, 'nama_dosen1', '', 0, '', '', '0000-00-00', 'selesai', '2025-02-03', 0, 0, 0, 0, '2025-02-03 01:55:58');
 
 -- --------------------------------------------------------
 
@@ -193,6 +216,11 @@ CREATE TABLE `tugas_akhir` (
   `tanggal_pengajuan` date NOT NULL,
   `tanggal_disetujui` date NOT NULL,
   `dosen_pembimbing` varchar(255) NOT NULL,
+  `form_pendaftaran_ta` tinyint(1) NOT NULL DEFAULT 0,
+  `form_persetujuan_ta` tinyint(1) NOT NULL DEFAULT 0,
+  `bukti_pembayaran_ta` tinyint(1) NOT NULL DEFAULT 0,
+  `bukti_transkip_nilai_ta` tinyint(1) NOT NULL DEFAULT 0,
+  `bukti_kelulusan_magang_ta` tinyint(1) NOT NULL DEFAULT 0,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -200,11 +228,11 @@ CREATE TABLE `tugas_akhir` (
 -- Dumping data for table `tugas_akhir`
 --
 
-INSERT INTO `tugas_akhir` (`id_mahasiswa`, `id_ta`, `tema`, `judul`, `alasan`, `tujuan`, `file_ta`, `status_pengajuan`, `alasan_revisi`, `status_tanggapan`, `tanggal_pengajuan`, `tanggal_disetujui`, `dosen_pembimbing`, `create_at`) VALUES
-(1, 5, '', '', '', '', '', 'Revisi', 'belum maem', 0, '0000-00-00', '0000-00-00', 'dosen_1', '2025-02-12 00:03:39'),
-(2, 6, '', '', '', '', '', 'Ditolak', '', 0, '0000-00-00', '0000-00-00', '1', '2025-02-12 00:35:49'),
-(3, 7, '', '', '', '', '', 'Revisi', '', 0, '0000-00-00', '0000-00-00', '', '2025-02-07 04:02:17'),
-(4, 8, '', '', '', '', '', 'Disetujui', '', 0, '0000-00-00', '0000-00-00', '', '2025-02-07 04:01:46');
+INSERT INTO `tugas_akhir` (`id_mahasiswa`, `id_ta`, `tema`, `judul`, `alasan`, `tujuan`, `file_ta`, `status_pengajuan`, `alasan_revisi`, `status_tanggapan`, `tanggal_pengajuan`, `tanggal_disetujui`, `dosen_pembimbing`, `form_pendaftaran_ta`, `form_persetujuan_ta`, `bukti_pembayaran_ta`, `bukti_transkip_nilai_ta`, `bukti_kelulusan_magang_ta`, `create_at`) VALUES
+(1, 5, '', '', '', '', '', 'Revisi', 'belum maem', 0, '0000-00-00', '0000-00-00', 'dosen_1', 0, 0, 0, 0, 0, '2025-02-12 00:03:39'),
+(2, 6, '', '', '', '', '', 'Ditolak', '', 0, '0000-00-00', '0000-00-00', '1', 0, 0, 0, 0, 0, '2025-02-12 00:35:49'),
+(3, 7, '', '', '', '', '', 'Revisi', '', 0, '0000-00-00', '0000-00-00', '', 0, 0, 0, 0, 0, '2025-02-07 04:02:17'),
+(4, 8, '', '', '', '', '', 'Disetujui', '', 0, '0000-00-00', '0000-00-00', '', 0, 0, 0, 0, 0, '2025-02-07 04:01:46');
 
 -- --------------------------------------------------------
 
@@ -222,15 +250,21 @@ CREATE TABLE `ujian` (
   `lbta` varchar(255) DEFAULT NULL,
   `penguji` enum('nama_dosen1','nama_dosen2','nama_dosen3') DEFAULT NULL,
   `nilai` int(100) DEFAULT NULL,
-  `status_ujian` enum('dijadwalkan','selesai') DEFAULT NULL
+  `status_ujian` enum('dijadwalkan','selesai') DEFAULT NULL,
+  `lembar_persetujuan_laporan_ta_ujian` tinyint(1) DEFAULT 0,
+  `form_pendaftaran_ujian_ta_ujian` tinyint(1) DEFAULT 0,
+  `lembar_kehadiran_sempro_ujian` tinyint(1) DEFAULT 0,
+  `buku_konsultasi_ta_ujian` tinyint(1) DEFAULT 0,
+  `lembar_hasil_nilai_dosbim1_nilai` tinyint(1) DEFAULT 0,
+  `lembar_hasil_nilai_dosbim2_nilai` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ujian`
 --
 
-INSERT INTO `ujian` (`id_mahasiswa`, `id_ujian`, `pernyataan_persetujuan`, `tanggal_disetujui`, `tanggal_ujian`, `pembimbing`, `lbta`, `penguji`, `nilai`, `status_ujian`) VALUES
-(1, 0, NULL, NULL, '2025-01-24', NULL, NULL, NULL, NULL, 'dijadwalkan');
+INSERT INTO `ujian` (`id_mahasiswa`, `id_ujian`, `pernyataan_persetujuan`, `tanggal_disetujui`, `tanggal_ujian`, `pembimbing`, `lbta`, `penguji`, `nilai`, `status_ujian`, `lembar_persetujuan_laporan_ta_ujian`, `form_pendaftaran_ujian_ta_ujian`, `lembar_kehadiran_sempro_ujian`, `buku_konsultasi_ta_ujian`, `lembar_hasil_nilai_dosbim1_nilai`, `lembar_hasil_nilai_dosbim2_nilai`) VALUES
+(1, 0, NULL, NULL, '2025-01-24', NULL, NULL, NULL, NULL, 'dijadwalkan', 0, 0, 0, 0, 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -304,13 +338,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `dosen_pembimbing`
 --
 ALTER TABLE `dosen_pembimbing`
-  MODIFY `id_dosen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_dosen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id_mahasiswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_mahasiswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `notif`
@@ -332,34 +366,33 @@ ALTER TABLE `tugas_akhir`
 -- Constraints for table `mahasiswa_dosen`
 --
 ALTER TABLE `mahasiswa_dosen`
-  ADD CONSTRAINT `mahasiswa_dosen_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`),
+  ADD CONSTRAINT `mahasiswa_dosen_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`) ON DELETE CASCADE,
   ADD CONSTRAINT `mahasiswa_dosen_ibfk_2` FOREIGN KEY (`id_dosen`) REFERENCES `dosen_pembimbing` (`id_dosen`);
 
 --
 -- Constraints for table `notif`
 --
 ALTER TABLE `notif`
-  ADD CONSTRAINT `notif_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`),
-  ADD CONSTRAINT `notif_ibfk_2` FOREIGN KEY (`id_dosen`) REFERENCES `dosen_pembimbing` (`id_dosen`);
+  ADD CONSTRAINT `notif_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`) ON DELETE CASCADE,
+  ADD CONSTRAINT `notif_ibfk_2` FOREIGN KEY (`id_dosen`) REFERENCES `dosen_pembimbing` (`id_dosen`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `seminar_proposal`
 --
 ALTER TABLE `seminar_proposal`
-  ADD CONSTRAINT `seminar_proposal_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`);
+  ADD CONSTRAINT `seminar_proposal_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `tugas_akhir`
 --
 ALTER TABLE `tugas_akhir`
-  ADD CONSTRAINT `fk_id_mahasiswa` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tugas_akhir_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`);
+  ADD CONSTRAINT `fk_id_mahasiswa` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ujian`
 --
 ALTER TABLE `ujian`
-  ADD CONSTRAINT `ujian_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`);
+  ADD CONSTRAINT `ujian_ibfk_1` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

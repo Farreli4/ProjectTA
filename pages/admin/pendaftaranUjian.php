@@ -545,17 +545,13 @@
                                         echo "</select>";
                                         echo "</td>";
 
-                                        // Nilai
                                         $nilai = isset($row['nilai']) ? $row['nilai'] : '0';
                                         echo "<td><input type='text' value='$nilai'></td>";
 
-                                        // Dokumen
-                                        echo "<td><a href='#'><span class='material-symbols-outlined'>folder_open</span></a></td>";
+                                        echo "<td><button id='open' class='material-symbols-outlined'><span>folder_open</span></button></td>";
 
-                                        // Jadwal
                                         echo "<td><input type='date' value='{$row['tanggal_ujian']}'></td>";
 
-                                        // Tombol Verifikasi
                                         echo "<td><button class='btn-update'>Verifikasi</button></td>";
 
                                         echo "</tr>";
@@ -572,6 +568,13 @@
         </div>
 
         <script>
+          document.getElementById("open").onclick = function() {
+                  document.getElementById("myModal").style.display = "flex";
+                }
+
+          document.querySelector(".close").onclick = function() {
+            document.getElementById("myModal").style.display = "none";
+          }
             function changeSelectColor(selectElement) {
                 var selectedValue = selectElement.value;
 

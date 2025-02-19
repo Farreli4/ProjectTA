@@ -374,14 +374,33 @@ try {
                         <tbody>
                           <?php
                           try {
-                            // Gunakan koneksi PDO yang sudah ada
-                            $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, 
-                                    mahasiswa.lembar_persetujuan_laporan_ta_ujian
-                                    FROM mahasiswa";
+                            // Pastikan session sudah dimulai
+                            if (session_status() === PHP_SESSION_NONE) {
+                              session_start();
+                            }
+                            $username = $_SESSION['username'];
 
+                            // Ambil id dosen berdasarkan username dari session
+                            $sql_dosen = "SELECT id_dosen FROM dosen_pembimbing WHERE username = :username";
+                            $stmt_dosen = $conn->prepare($sql_dosen);
+                            $stmt_dosen->execute([':username' => $username]);
+                            $dosen = $stmt_dosen->fetch(PDO::FETCH_ASSOC);
+
+                            if (!$dosen) {
+                              die("Dosen tidak ditemukan.");
+                            }
+                            $id_dosen = $dosen['id_dosen'];
+
+                            // Query untuk mendapatkan mahasiswa yang dibimbing oleh dosen tersebut
+                            $sql1 = "SELECT m.id_mahasiswa, m.nama_mahasiswa, m.nim, m.lembar_persetujuan_laporan_ta_ujian
+                                    FROM mahasiswa m
+                                    JOIN mahasiswa_dosen md ON m.id_mahasiswa = md.id_mahasiswa
+                                    WHERE md.id_dosen = :id_dosen";
                             $stmt = $conn->prepare($sql1);
-                            $stmt->execute();
-
+                            $stmt->execute([':id_dosen' => $id_dosen]);
+                            if ($stmt->rowCount() == 0) {
+                              die("Tidak ada mahasiswa yang dibimbing.");
+                            }
                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                               echo "<tr>";
                               echo "<td>" . htmlspecialchars($row['id_mahasiswa']) . "</td>";
@@ -389,9 +408,10 @@ try {
                               echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
 
                               if (!empty($row['lembar_persetujuan_laporan_ta_ujian'])) {
-                                echo "<td><a href='downloadUjian.php?id=" . htmlspecialchars($row['id_mahasiswa']) . "' target='_blank'>
+                                echo "<td>
+                                        <a href='downloadUjian.php?id=" . htmlspecialchars($row['id_mahasiswa']) . "' target='_blank'>
                                             <button type='button' class='btn btn-outline-primary btn-fw'>Download</button>
-                                          </a>
+                                        </a>
                                       </td>";
                               } else {
                                 echo "<td>No file</td>";
@@ -412,6 +432,7 @@ try {
                           }
                           ?>
                         </tbody>
+
 
                         <script>
                           function triggerFileInput(id) {
