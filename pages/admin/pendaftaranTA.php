@@ -641,40 +641,37 @@
 function changeColor(selectElement) {
     var selectedValue = selectElement.value;
 
-    if (selectedValue == 'Revisi') {
+    if (selectedValue === 'Revisi') {
         selectElement.style.backgroundColor = 'rgb(255, 251, 0)'; // Yellow
-    } else if (selectedValue == 'Ditolak') {
+    } else if (selectedValue === 'Ditolak') {
         selectElement.style.backgroundColor = 'rgb(255, 99, 71)'; // Red
-    } else if (selectedValue == 'Disetujui') {
+    } else if (selectedValue === 'Disetujui') {
         selectElement.style.backgroundColor = 'rgb(34, 139, 34)'; // Green
     } else {
         selectElement.style.backgroundColor = 'rgb(174, 215, 242)'; // Gray
     }
 }
 
-// Function to toggle the visibility of the rev
 function toggleRevisiTextbox(selectElement) {
     var mahasiswaId = selectElement.closest('tr').querySelector('input[name="id_mahasiswa"]').value;
     var revisiTextbox = document.getElementById('revisi-textbox-' + mahasiswaId);
     var revisiText = document.getElementById('revisi-text-' + mahasiswaId);
 
-    if (revisiTextbox && revisiText) {  // Ensure elements exist before modifying
-        if (selectElement.value === 'Revisi') {
-            revisiTextbox.style.display = 'block';  // Show textarea
-            revisiText.style.display = 'none';      // Hide small text
-        } else {
-            revisiTextbox.style.display = 'none';  // Hide textarea
-            revisiText.style.display = 'none';     // Hide small text
-        }
+    if (!revisiTextbox || !revisiText) return; // Prevent errors if elements are missing
+
+    if (selectElement.value === 'Revisi') {
+        revisiTextbox.style.display = 'block';  // Show textarea
+        revisiText.style.display = 'none';      // Hide small text
+    } else {
+        revisiTextbox.style.display = 'none';   // Hide textarea
+        revisiText.style.display = 'none';      // Hide small text
     }
 }
 
-// Initialize the page when it loads
 window.onload = function () {
-    var selects = document.querySelectorAll('select');
-
-    selects.forEach(function (select) {
-        changeColor(select);  // Ensure color updates properly
+    document.querySelectorAll('select[name="status_pengajuan"]').forEach(function (select) {
+        changeColor(select);  // Apply color on page load
+        toggleRevisiTextbox(select);  // Ensure correct visibility
     });
 
     document.querySelectorAll('.revisi-textbox').forEach(function (box) {
@@ -683,12 +680,12 @@ window.onload = function () {
 
         if (revisiText && revisiText.innerText.trim() !== '') {
             revisiText.style.display = 'block';  // Show small text
-            box.style.display = 'none';         // Hide textarea
+            box.style.display = 'none';          // Hide textarea
         }
     });
 };
-
 </script>
+
 
 <style>
   .small-text {
