@@ -14,15 +14,20 @@ try {
   $checkNip->execute([':nama' => $nama_dosen]);
   $row = $checkNip->fetch(PDO::FETCH_ASSOC);
 
-  if ($row) {
-    $nip = $row['nip'];
-    $nama_dosen = $row['nama_dosen'];
-    $prodi = $row['prodi'];
-  } else {
-    $nip = '2676478762574';
-    $nama_dosen = 'Nama Default';
-    $prodi = 'PRODI';
-  }
+  // Setelah berhasil fetch data dosen
+if ($row) {
+  $nip = $row['nip'];
+  $nama_dosen = $row['nama_dosen'];
+  $prodi = $row['prodi'];
+  // Simpan ke session
+  $_SESSION['nama_dosen'] = $nama_dosen;
+} else {
+  $nip = '2676478762574';
+  $nama_dosen = 'Nama Default';
+  $prodi = 'PRODI';
+  $_SESSION['nama_dosen'] = $nama_dosen;
+}
+
 } catch (PDOException $e) {
   die("Koneksi database gagal: " . $e->getMessage());
 }
@@ -376,52 +381,66 @@ try {
                         <tbody>
                           <?php
                           try {
-                            // Use the existing PDO connection
-                            $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, mahasiswa.lembar_persetujuan_proposal_ta_seminar 
-                                    FROM mahasiswa";
+                            // Pastikan $nama_dosen sudah didefinisikan, misalnya dari session atau parameter
+                            $nama_dosen = $_SESSION['nama_dosen']; // Contoh: ambil dari session login
 
+                            // Ambil id_dosen berdasarkan nama_dosen
+                            $sql_dosen = "SELECT id_dosen FROM dosen_pembimbing WHERE nama_dosen = ?";
+                            $stmt_dosen = $conn->prepare($sql_dosen);
+                            $stmt_dosen->execute([$nama_dosen]);
+                            $dosen = $stmt_dosen->fetch(PDO::FETCH_ASSOC);
+
+                            if (!$dosen) {
+                              die("Dosen tidak ditemukan.");
+                            }
+                            $id_dosen = $dosen['id_dosen'];
+
+                            // Query untuk mendapatkan mahasiswa yang dibimbing oleh dosen tersebut
+                            $sql1 = "SELECT m.id_mahasiswa, m.nama_mahasiswa, m.nim, m.lembar_persetujuan_proposal_ta_seminar 
+             FROM mahasiswa m 
+             JOIN mahasiswa_dosen md ON m.id_mahasiswa = md.id_mahasiswa
+             WHERE md.id_dosen = ?";
                             $stmt = $conn->prepare($sql1);
-                            $stmt->execute();
+                            $stmt->execute([$id_dosen]);
 
                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                               $id = htmlspecialchars($row['id_mahasiswa']);
-
                               echo "<tr>";
                               echo "<td>" . $id . "</td>";
                               echo "<td>" . htmlspecialchars($row['nama_mahasiswa']) . "</td>";
                               echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
 
-                              // Perbaikan pengecekan file untuk download
+                              // Cek keberadaan file dokumen
                               if (!empty($row['lembar_persetujuan_proposal_ta_seminar'])) {
                                 echo "<td><a href='downloadsempro.php?id=" . $id . "' target='_blank'>
-                                        <button type='button' class='btn btn-outline-primary btn-fw'>Download</button>
-                                      </a></td>";
+                    <button type='button' class='btn btn-outline-primary btn-fw'>Download</button>
+                  </a></td>";
                               } else {
                                 echo "<td>No file</td>";
                               }
 
-                              // Form untuk upload dengan tombol submit yang hanya muncul setelah memilih file
+                              // Form upload dokumen
                               echo '<td>
-                                      <form id="uploadForm_' . $id . '" method="POST" action="../../pages/dospem/uploadsempro.php" enctype="multipart/form-data">
-                                          <input type="file" name="lembar_persetujuan_proposal_ta_seminar" id="file_' . $id . '" accept=".pdf" style="display: none;">
-                                          <input type="hidden" name="id_mahasiswa" value="' . $id . '">
-                                          <button type="button" onclick="document.getElementById(\'file_' . $id . '\').click();" class="btn btn-outline-primary btn-fw">Upload</button>
-                                          <button type="submit" id="submitButton_' . $id . '" class="btn btn-outline-success btn-fw" style="display: none;">Submit</button>
-                                      </form>
-                                    </td>';
+                <form id="uploadForm_' . $id . '" method="POST" action="../../pages/dospem/uploadsempro.php" enctype="multipart/form-data">
+                    <input type="file" name="lembar_persetujuan_proposal_ta_seminar" id="file_' . $id . '" accept=".pdf" style="display: none;">
+                    <input type="hidden" name="id_mahasiswa" value="' . $id . '">
+                    <button type="button" onclick="document.getElementById(\'file_' . $id . '\').click();" class="btn btn-outline-primary btn-fw">Upload</button>
+                    <button type="submit" id="submitButton_' . $id . '" class="btn btn-outline-success btn-fw" style="display: none;">Submit</button>
+                </form>
+              </td>';
                               echo "</tr>";
 
-                              // Tambahkan script JavaScript untuk setiap baris
+                              // Script untuk menampilkan tombol submit setelah file dipilih
                               echo '<script>
-                                      document.getElementById("file_' . $id . '").addEventListener("change", function() {
-                                        var submitButton = document.getElementById("submitButton_' . $id . '");
-                                        if (this.files.length > 0) {
-                                          submitButton.style.display = "inline-block"; // Tampilkan tombol Submit
-                                        } else {
-                                          submitButton.style.display = "none"; // Sembunyikan jika file dihapus
-                                        }
-                                      });
-                                    </script>';
+                document.getElementById("file_' . $id . '").addEventListener("change", function() {
+                  var submitButton = document.getElementById("submitButton_' . $id . '");
+                  if (this.files.length > 0) {
+                    submitButton.style.display = "inline-block";
+                  } else {
+                    submitButton.style.display = "none";
+                  }
+                });
+              </script>';
                             }
                           } catch (PDOException $e) {
                             echo "<tr><td colspan='5'>Error: " . $e->getMessage() . "</td></tr>";
