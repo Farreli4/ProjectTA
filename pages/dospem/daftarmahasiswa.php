@@ -409,7 +409,7 @@ try {
                                                 $stmt_im->close();
 
                                                 if (empty($id_mahasiswa_list)) {
-                                                    die("Tidak ada mahasiswa yang dibimbing oleh dosen ini.");
+                                                    die("Tidak ada mahasiswa yang dibimbing.");
                                                 }
 
                                                 $id_mahasiswa_placeholder = implode(',', array_map(fn() => '?', $id_mahasiswa_list));
