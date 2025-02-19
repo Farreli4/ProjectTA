@@ -706,14 +706,23 @@
 }
               </style>
 
-<script>
-  document.getElementById("openModalBtn").onclick = function() {
-    document.getElementById("myModal").style.display = "flex";
-};
+              <script>
+                
+                document.getElementById("openModalBtn").onclick = function() {
+                  document.getElementById("myModal").style.display = "flex";
+                }
 
-document.querySelector(".close").onclick = function() {
-    document.getElementById("myModal").style.display = "none";
-};
+                document.querySelector(".close").onclick = function() {
+                  document.getElementById("myModal").style.display = "none";
+                }
+
+                document.getElementById("openModal").onclick = function() {
+                  document.getElementById("ModalBatch").style.display = "flex";
+                }
+
+                document.querySelector(".close").onclick = function() {
+                  document.getElementById("ModalBatch").style.display = "none";
+                }
 
 window.onclick = function(event) {
     if (event.target == document.getElementById("myModal")) {

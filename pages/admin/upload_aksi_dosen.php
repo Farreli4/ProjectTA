@@ -3,7 +3,8 @@ require '../../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 if (isset($_POST['submit'])) {
-    // Check if file is uploaded
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
     if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] == 0) {
         $fileTmpName = $_FILES['excel_file']['tmp_name'];
         $fileName = $_FILES['excel_file']['name'];
@@ -37,6 +38,7 @@ if (isset($_POST['submit'])) {
 
             echo "File successfully uploaded and data inserted into database!";
             $conn->close();
+            header("Location : daftarDosen.php");
         } else {
             echo "Please upload a valid Excel file.";
         }

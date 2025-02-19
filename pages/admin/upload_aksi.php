@@ -37,6 +37,7 @@ if (isset($_POST['submit'])) {
 
             echo "File successfully uploaded and data inserted into database!";
             $conn->close();
+            header("Location : daftarMahasiswa.php");
         } else {
             echo "Please upload a valid Excel file.";
         }
