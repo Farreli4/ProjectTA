@@ -653,72 +653,6 @@
 }
 
               </style>
-              
-
-              <script>
-                // Script untuk membuka dan menutup modal
-                document.getElementById("openModalBtn").onclick = function() {
-                  document.getElementById("myModal").style.display = "flex";
-                }
-
-                document.querySelector(".close").onclick = function() {
-                  document.getElementById("myModal").style.display = "none";
-                }
-
-                window.onclick = function(event) {
-                  if (event.target == document.getElementById("myModal")) {
-                    document.getElementById("myModal").style.display = "none";
-                  }
-                }
-
-                document.querySelectorAll(".editBtn").forEach(button => {
-    button.addEventListener("click", function () {
-        var id = this.getAttribute("data-id");
-
-        // Fetch data dosen berdasarkan ID
-        fetch(`getDosen.php?id=${id}`)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("edit_id").value = data.id_dosen;
-            document.getElementById("edit_name").value = data.nama_dosen;
-            document.getElementById("edit_nip").value = data.nip;
-            document.getElementById("edit_prodi").value = data.prodi;
-            document.getElementById("edit_phone").value = data.nomor_telepon;
-            document.getElementById("edit_username").value = data.username;
-            document.getElementById("edit_pass").value = data.pass;
-
-            document.getElementById("editModal").style.display = "flex";
-        })
-        .catch(error => console.error("Error fetching data:", error));
-    });
-});
-
-// Close modal saat klik tombol close
-document.querySelector("#editModal .close").onclick = function () {
-    document.getElementById("editModal").style.display = "none";
-};
-
-// Handle submit form edit
-document.getElementById("editForm").onsubmit = function (event) {
-    event.preventDefault();
-
-    var formData = new FormData(document.getElementById("editForm"));
-
-    fetch("editDosen.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.text())
-    .then(response => {
-        alert("Data berhasil diperbarui!");
-        document.getElementById("editModal").style.display = "none";
-        location.reload(); // Refresh halaman setelah update
-    })
-    .catch(error => console.error("Error:", error));
-};
-
-              </script>
-
 
               <style>
                 .modal {
@@ -772,76 +706,127 @@ document.getElementById("editForm").onsubmit = function (event) {
 }
               </style>
 
-              <script>
-                document.getElementById("openModalBtn").onclick = function() {
-                  document.getElementById("myModal").style.display = "flex";
-                }
+<script>
+  document.getElementById("openModalBtn").onclick = function() {
+    document.getElementById("myModal").style.display = "flex";
+};
 
-                document.getElementsByClassName("close")[0].onclick = function() {
-                  document.getElementById("myModal").style.display = "none";
-                }
+document.querySelector(".close").onclick = function() {
+    document.getElementById("myModal").style.display = "none";
+};
 
-                document.getElementById("studentForm").onsubmit = function(event) {
-                  event.preventDefault();
+window.onclick = function(event) {
+    if (event.target == document.getElementById("myModal")) {
+        document.getElementById("myModal").style.display = "none";
+    }
+};
 
-                  var name = document.getElementById("name").value;
-                  var nim = document.getElementById("nip").value;
-                  var phone = document.getElementById("phone").value;
+document.querySelectorAll(".editBtn").forEach(button => {
+    button.addEventListener("click", function () {
+        var id = this.getAttribute("data-id");
 
-                  console.log('Form data:', {name, nim, phone});
+        fetch(`getDosen.php?id=${id}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("edit_id").value = data.id_dosen;
+            document.getElementById("edit_name").value = data.nama_dosen;
+            document.getElementById("edit_nip").value = data.nip;
+            document.getElementById("edit_prodi").value = data.prodi;
+            document.getElementById("edit_phone").value = data.nomor_telepon;
+            document.getElementById("edit_username").value = data.username;
+            document.getElementById("edit_pass").value = data.pass;
 
-                  if (name === "" || nip === "" || phone === "") {
-                    alert("Please fill in all fields.");
-                    return;
-                  }
+            document.getElementById("editModal").style.display = "flex";
+        })
+        .catch(error => console.error("Error fetching data:", error));
+    });
+});
 
-                  var phoneRegex = /^[0-9]{10,15}$/;
-                  if (!phoneRegex.test(phone)) {
-                    alert("Please enter a valid phone number.");
-                    return;
-                  }
+document.querySelector("#editModal .close").onclick = function () {
+    document.getElementById("editModal").style.display = "none";
+};
 
-                  var formData = new FormData(document.getElementById("studentForm"));
+document.getElementById("editForm").onsubmit = function (event) {
+    event.preventDefault();
+    var formData = new FormData(document.getElementById("editForm"));
 
-                  var xhr = new XMLHttpRequest();
-                  xhr.open("POST", "addDosen.php", true);
-                  xhr.onload = function() {
-                    console.log('Response from PHP:', xhr.responseText);
-                    if (xhr.status === 200) {
-                      alert("Data added successfully!");
-                      document.getElementById("myModal").style.display = "none";
-                      document.getElementById("studentForm").reset();
-                    } else {
-                      alert("Error: " + xhr.statusText);
-                    }
-                  };
+    fetch("editDosen.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.text())
+    .then(response => {
+        Swal.fire({
+            icon: "success",
+            title: "Berhasil!",
+            text: "Data berhasil diperbarui!",
+        }).then(() => {
+            document.getElementById("editModal").style.display = "none";
+            location.reload();
+        });
+    })
+    .catch(error => console.error("Error:", error));
+};
 
-                  xhr.onerror = function() {
-                    alert("An error occurred during the request. Please try again.");
-                  };
+document.getElementById("studentForm").onsubmit = function(event) {
+    event.preventDefault();
+    var formData = new FormData(document.getElementById("studentForm"));
 
-                  xhr.send(formData);
-                };
+    fetch("addDosen.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.text())
+    .then(response => {
+        Swal.fire({
+            icon: "success",
+            title: "Berhasil!",
+            text: "Data dosen berhasil ditambahkan!",
+        }).then(() => {
+            document.getElementById("myModal").style.display = "none";
+            document.getElementById("studentForm").reset();
+        });
+    })
+    .catch(error => console.error("Error:", error));
+};
 
-                document.querySelectorAll(".deleteBtn").forEach(button => {
+document.querySelectorAll(".deleteBtn").forEach(button => {
     button.addEventListener("click", function () {
         let id = this.getAttribute("data-id");
 
-        if (confirm("Apakah Anda yakin ingin menghapus dosen ini?")) {
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", "deleteDosen.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert("Data berhasil dihapus!");
-                    location.reload();
-                }
-            };
-            xhr.send("id_dosen=" + id);
-        }
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Data akan dihapus secara permanen!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, hapus!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch("deleteDosen.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "id_dosen=" + id
+                })
+                .then(response => response.text())
+                .then(response => {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Terhapus!",
+                        text: "Data dosen telah dihapus.",
+                    }).then(() => {
+                        location.reload();
+                    });
+                });
+            }
+        });
     });
 });
-              </script>
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
             </div>
