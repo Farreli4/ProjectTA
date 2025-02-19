@@ -398,7 +398,9 @@ try {
                                     WHERE md.id_dosen = :id_dosen";
                             $stmt = $conn->prepare($sql1);
                             $stmt->execute([':id_dosen' => $id_dosen]);
-
+                            if ($stmt->rowCount() == 0) {
+                              die("Tidak ada mahasiswa yang dibimbing.");
+                            }
                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                               echo "<tr>";
                               echo "<td>" . htmlspecialchars($row['id_mahasiswa']) . "</td>";
