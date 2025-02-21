@@ -717,81 +717,99 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
       </div>
 
         <script>
-          document.getElementById("open").onclick = function() {
-                  document.getElementById("myModal").style.display = "flex";
-                }
+          document.addEventListener("DOMContentLoaded", function () {
+    // Open Modal
+    let openBtn = document.getElementById("open");
+    if (openBtn) {
+        openBtn.onclick = function () {
+            document.getElementById("myModal").style.display = "flex";
+        };
+    }
 
-          document.querySelector(".close").onclick = function() {
+    // Close Modal
+    let closeBtn = document.querySelector(".close");
+    if (closeBtn) {
+        closeBtn.onclick = function () {
             document.getElementById("myModal").style.display = "none";
-          }
-          function changeSelectColor(selectElement) {
-              var selectedValue = selectElement.value;
+        };
+    }
 
-              if (selectedValue === 'dijadwalkan') {
-                  selectElement.style.backgroundColor = 'rgb(255, 251, 0)';
-              } else if (selectedValue === 'ditunda') {
-                  SselectElement.style.backgroundColor = 'rgb(255, 99, 71)';
-              } else if (selectedValue === 'selesai') {
-                  selectElement.style.backgroundColor = 'rgb(34, 139, 34)';
-              }
-          }
+    // Change select background color
+    function changeSelectColor(selectElement) {
+        var selectedValue = selectElement.value;
 
+        if (selectedValue === "dijadwalkan") {
+            selectElement.style.backgroundColor = "rgb(255, 251, 0)";
+        } else if (selectedValue === "ditunda") {
+            selectElement.style.backgroundColor = "rgb(255, 99, 71)";
+        } else if (selectedValue === "selesai") {
+            selectElement.style.backgroundColor = "rgb(34, 139, 34)";
+        }
+    }
 
-        document.querySelectorAll("select[name='status_ujian']").forEach(function (select) {
-            changeSelectColor(select);
-        });
+    document.querySelectorAll("select[name='status_ujian']").forEach(function (select) {
+        changeSelectColor(select);
+    });
 
-        document.addEventListener("change", function (event) {
-            if (event.target.matches("select[name='status_ujian']")) {
-                changeSelectColor(event.target);
-            }
-        });
+    document.addEventListener("change", function (event) {
+        if (event.target.matches("select[name='status_ujian']")) {
+            changeSelectColor(event.target);
+        }
+    });
 
-        document.addEventListener("click", function (event) {
-            if (event.target.closest(".folder-btn")) {
-                let button = event.target.closest(".folder-btn");
-                let eventParam = button.getAttribute("data-event");
-                let userId = button.getAttribute("data-userid");
+    // 🔹 Click Event for Folder Button
+    document.addEventListener("click", function (event) {
+        let button = event.target.closest(".folder-btn");
 
-                console.log("Clicked button for event:", eventParam, "User ID:", userId);
+        if (button) {
+            let eventParam = button.getAttribute("data-event");
+            let userId = button.getAttribute("data-userid");
 
-                fetch("fetch_pdfs.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams({ event: eventParam, userId: userId })
-                })
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("popup-content-table").innerHTML = data;
-                    document.getElementById("popup").style.display = "block";
-                })
-                .catch(error => console.error("AJAX Error:", error));
-            }
-        });
+            console.log("Clicked button for event:", eventParam, "User ID:", userId);
 
-        // 🔹 Event untuk menutup pop-up saat tombol close diklik
-        document.querySelector(".close-btn").addEventListener("click", function () {
+            fetch("fetch_pdfs.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams({ event: eventParam, userId: userId }),
+          })
+          .then(response => response.text())
+          .then(data => {
+              console.log("Response from fetch_pdfs.php:", data); // Debugging
+              document.getElementById("popup-content-table").innerHTML = data;
+              document.getElementById("popup").style.display = "block";
+          })
+          .catch(error => console.error("AJAX Error:", error));
+
+        }
+    });
+
+    // 🔹 Close Button for Popup
+    let closePopupBtn = document.querySelector(".close-btn");
+    if (closePopupBtn) {
+        closePopupBtn.addEventListener("click", function () {
             document.getElementById("popup").style.display = "none";
         });
+    }
 
-        // 🔹 Event untuk verifikasi data
-        document.addEventListener("click", function (event) {
-            if (event.target.matches(".verify-btn")) {
-                let button = event.target;
-                let userId = button.getAttribute("data-userid");
-                let eventParam = button.getAttribute("data-event");
-                let column = button.getAttribute("data-column");
+    // 🔹 Event to Verify Data
+    document.addEventListener("click", function (event) {
+        if (event.target.matches(".verify-btn")) {
+            let button = event.target;
+            let userId = button.getAttribute("data-userid");
+            let eventParam = button.getAttribute("data-event");
+            let column = button.getAttribute("data-column");
 
-                fetch("verify.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams({ userId: userId, event: eventParam, column: column })
-                })
-                .then(() => {
-                    document.querySelector(".folder-btn[data-event='" + eventParam + "']").click();
-                });
-            }
-        });
+            fetch("verify.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ userId: userId, event: eventParam, column: column }),
+            }).then(() => {
+                document.querySelector(".folder-btn[data-event='" + eventParam + "']").click();
+            });
+        }
+    });
+});
+
 </script>
 
 

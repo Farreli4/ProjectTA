@@ -295,60 +295,78 @@
       </div>
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
+      <?php 
+        $current_page = basename($_SERVER['PHP_SELF']); 
+      ?>
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.php">
+            <a class="nav-link <?= ($current_page == 'index.php') ? 'active' : ''; ?>" href="index.php">
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="daftarDosen.php">
+            <a class="nav-link <?= ($current_page == 'daftarDosen.php') ? 'active' : ''; ?>" href="daftarDosen.php">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Daftar Dosen</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="daftarMahasiswa.php">
+            <a class="nav-link <?= ($current_page == 'daftarMahasiswa.php') ? 'active' : ''; ?>" href="daftarMahasiswa.php">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Daftar Mahasiswa</span>
             </a>
           </li>
+
+          <!-- Pendaftaran Dropdown -->
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" 
+              aria-expanded="<?= in_array($current_page, ['pendaftaranTA.php', 'pendaftaranSeminar.php', 'pendaftaranUjian.php']) ? 'true' : 'false'; ?>" 
+              aria-controls="ui-basic">
               <i class="icon-layout menu-icon"></i>
               <span class="menu-title">Pendaftaran</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-basic">
+            <div class="collapse <?= in_array($current_page, ['pendaftaranTA.php', 'pendaftaranSeminar.php', 'pendaftaranUjian.php']) ? 'show' : ''; ?>" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranTA.php">Tugas Akhir</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranSeminar.php">Seminar</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranUjian.php">Ujian</a></li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'pendaftaranTA.php') ? 'active' : ''; ?>" href="pendaftaranTA.php">Tugas Akhir</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'pendaftaranSeminar.php') ? 'active' : ''; ?>" href="pendaftaranSeminar.php">Seminar</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'pendaftaranUjian.php') ? 'active' : ''; ?>" href="pendaftaranUjian.php">Ujian</a>
+                </li>
               </ul>
             </div>
           </li>
+
+          <!-- Dokumen Dropdown -->
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" 
+              aria-expanded="<?= in_array($current_page, ['dokumenTA.php', 'dokumenSeminar.php', 'dokumenUjian.php']) ? 'true' : 'false'; ?>" 
+              aria-controls="ui-basic2">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Dokumen</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-basic2">
+            <div class="collapse <?= in_array($current_page, ['dokumenTA.php', 'dokumenSeminar.php', 'dokumenUjian.php']) ? 'show' : ''; ?>" id="ui-basic2">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
-                <li class="nav-item"> <a class="nav-link" href="dokumenSeminar.php">Seminar</a></li>
-                <li class="nav-item"> <a class="nav-link" href="dokumenUjian.php">Ujian</a></li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'dokumenTA.php') ? 'active' : ''; ?>" href="dokumenTA.php">Tugas Akhir</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'dokumenSeminar.php') ? 'active' : ''; ?>" href="dokumenSeminar.php">Seminar</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'dokumenUjian.php') ? 'active' : ''; ?>" href="dokumenUjian.php">Ujian</a>
+                </li>
               </ul>
             </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../../index.php">
-              <i class="icon-head menu-icon"></i>
-              <span class="menu-title">Log Out</span>
-            </a>
-          </li>
+
         </ul>
       </nav>
       <!-- partial -->

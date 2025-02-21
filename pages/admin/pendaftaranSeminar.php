@@ -356,60 +356,78 @@
       </div>
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
+      <?php 
+        $current_page = basename($_SERVER['PHP_SELF']); 
+      ?>
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.php">
+            <a class="nav-link <?= ($current_page == 'index.php') ? 'active' : ''; ?>" href="index.php">
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="daftarDosen.php">
+            <a class="nav-link <?= ($current_page == 'daftarDosen.php') ? 'active' : ''; ?>" href="daftarDosen.php">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Daftar Dosen</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="daftarMahasiswa.php">
+            <a class="nav-link <?= ($current_page == 'daftarMahasiswa.php') ? 'active' : ''; ?>" href="daftarMahasiswa.php">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Daftar Mahasiswa</span>
             </a>
           </li>
+
+          <!-- Pendaftaran Dropdown -->
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" 
+              aria-expanded="<?= in_array($current_page, ['pendaftaranTA.php', 'pendaftaranSeminar.php', 'pendaftaranUjian.php']) ? 'true' : 'false'; ?>" 
+              aria-controls="ui-basic">
               <i class="icon-layout menu-icon"></i>
               <span class="menu-title">Pendaftaran</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-basic">
+            <div class="collapse <?= in_array($current_page, ['pendaftaranTA.php', 'pendaftaranSeminar.php', 'pendaftaranUjian.php']) ? 'show' : ''; ?>" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranTA.php">Tugas Akhir</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranSeminar.php">Seminar</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pendaftaranUjian.php">Ujian</a></li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'pendaftaranTA.php') ? 'active' : ''; ?>" href="pendaftaranTA.php">Tugas Akhir</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'pendaftaranSeminar.php') ? 'active' : ''; ?>" href="pendaftaranSeminar.php">Seminar</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'pendaftaranUjian.php') ? 'active' : ''; ?>" href="pendaftaranUjian.php">Ujian</a>
+                </li>
               </ul>
             </div>
           </li>
+
+          <!-- Dokumen Dropdown -->
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" 
+              aria-expanded="<?= in_array($current_page, ['dokumenTA.php', 'dokumenSeminar.php', 'dokumenUjian.php']) ? 'true' : 'false'; ?>" 
+              aria-controls="ui-basic2">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Dokumen</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-basic2">
+            <div class="collapse <?= in_array($current_page, ['dokumenTA.php', 'dokumenSeminar.php', 'dokumenUjian.php']) ? 'show' : ''; ?>" id="ui-basic2">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
-                <li class="nav-item"> <a class="nav-link" href="dokumenSeminar.php">Seminar</a></li>
-                <li class="nav-item"> <a class="nav-link" href="dokumenUjian.php">Ujian</a></li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'dokumenTA.php') ? 'active' : ''; ?>" href="dokumenTA.php">Tugas Akhir</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'dokumenSeminar.php') ? 'active' : ''; ?>" href="dokumenSeminar.php">Seminar</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($current_page == 'dokumenUjian.php') ? 'active' : ''; ?>" href="dokumenUjian.php">Ujian</a>
+                </li>
               </ul>
             </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../../index.php">
-              <i class="icon-head menu-icon"></i>
-              <span class="menu-title">Log Out</span>
-            </a>
-          </li>
+
         </ul>
       </nav>
 
@@ -625,51 +643,102 @@
           <div class="popup-content">
               <span class="close-btn">&times;</span>
               <h2>Documents</h2>
-              <div id="popup-content">
+              <div id="popup-content-table">
               </div>
           </div>
       </div>
 
         <script>
-          $(document).on("click", ".folder-btn", function () {
-          let event = $(this).data("event");
-          let userId = $(this).data("userid");
+          document.addEventListener("DOMContentLoaded", function () {
+    // Open Modal
+    let openBtn = document.getElementById("open");
+    if (openBtn) {
+        openBtn.onclick = function () {
+            document.getElementById("myModal").style.display = "flex";
+        };
+    }
 
-          console.log("Clicked button for event:", event, "User ID:", userId); // Debugging
+    // Close Modal
+    let closeBtn = document.querySelector(".close");
+    if (closeBtn) {
+        closeBtn.onclick = function () {
+            document.getElementById("myModal").style.display = "none";
+        };
+    }
 
-          $.ajax({
-              url: "fetch_pdfs.php",
-              type: "POST",
-              data: { event: event, userId: userId },
-              success: function (response) {
-                  $("#popup-content").html(response);
-                  $("#popup").show();
-              },
-              error: function (xhr, status, error) {
-                  console.error("AJAX Error:", error);
-              }
-          });
-      });
+    // Change select background color
+    function changeSelectColor(selectElement) {
+        var selectedValue = selectElement.value;
 
-      $(document).on("click", ".close-btn", function () {
-          $("#popup").hide();
-      });
-          
+        if (selectedValue === "dijadwalkan") {
+            selectElement.style.backgroundColor = "rgb(255, 251, 0)";
+        } else if (selectedValue === "ditunda") {
+            selectElement.style.backgroundColor = "rgb(255, 99, 71)";
+        } else if (selectedValue === "selesai") {
+            selectElement.style.backgroundColor = "rgb(34, 139, 34)";
+        }
+    }
 
-            $(document).on("click", ".verify-btn", function () {
-                let userId = $(this).data("userid");
-                let event = $(this).data("event");
-                let column = $(this).data("column");
+    document.querySelectorAll("select[name='status_ujian']").forEach(function (select) {
+        changeSelectColor(select);
+    });
 
-                $.ajax({
-                    url: "verify.php",
-                    type: "POST",
-                    data: { userId: userId, event: event, column: column },
-                    success: function () {
-                        $(".folder-btn[data-event='" + event + "']").click();
-                    }
-                });
+    document.addEventListener("change", function (event) {
+        if (event.target.matches("select[name='status_ujian']")) {
+            changeSelectColor(event.target);
+        }
+    });
+
+    document.addEventListener("click", function (event) {
+        let button = event.target.closest(".folder-btn");
+
+        if (button) {
+            let eventParam = button.getAttribute("data-event");
+            let userId = button.getAttribute("data-userid");
+
+            console.log("Clicked button for event:", eventParam, "User ID:", userId);
+
+            fetch("fetch_pdfs.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams({ event: eventParam, userId: userId }),
+          })
+          .then(response => response.text())
+          .then(data => {
+              console.log("Response from fetch_pdfs.php:", data); // Debugging
+              document.getElementById("popup-content-table").innerHTML = data;
+              document.getElementById("popup").style.display = "block";
+          })
+          .catch(error => console.error("AJAX Error:", error));
+
+        }
+    });
+
+    let closePopupBtn = document.querySelector(".close-btn");
+    if (closePopupBtn) {
+        closePopupBtn.addEventListener("click", function () {
+            document.getElementById("popup").style.display = "none";
+        });
+    }
+
+    document.addEventListener("click", function (event) {
+        if (event.target.matches(".verify-btn")) {
+            let button = event.target;
+            let userId = button.getAttribute("data-userid");
+            let eventParam = button.getAttribute("data-event");
+            let column = button.getAttribute("data-column");
+
+            fetch("verify.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ userId: userId, event: eventParam, column: column }),
+            }).then(() => {
+                document.querySelector(".folder-btn[data-event='" + eventParam + "']").click();
             });
+        }
+    });
+});
+
 
                   </script>
 
