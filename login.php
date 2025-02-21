@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Dosen Pembimbing</title>
+    <title>Sistem Informasi Tugas Akhir</title>
     <link rel="stylesheet" href="Template/skydash/vendors/feather/feather.css">
     <link rel="stylesheet" href="Template/skydash/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="Template/skydash/vendors/css/vendor.bundle.base.css">
