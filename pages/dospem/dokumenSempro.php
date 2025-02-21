@@ -15,19 +15,18 @@ try {
   $row = $checkNip->fetch(PDO::FETCH_ASSOC);
 
   // Setelah berhasil fetch data dosen
-if ($row) {
-  $nip = $row['nip'];
-  $nama_dosen = $row['nama_dosen'];
-  $prodi = $row['prodi'];
-  // Simpan ke session
-  $_SESSION['nama_dosen'] = $nama_dosen;
-} else {
-  $nip = '2676478762574';
-  $nama_dosen = 'Nama Default';
-  $prodi = 'PRODI';
-  $_SESSION['nama_dosen'] = $nama_dosen;
-}
-
+  if ($row) {
+    $nip = $row['nip'];
+    $nama_dosen = $row['nama_dosen'];
+    $prodi = $row['prodi'];
+    // Simpan ke session
+    $_SESSION['nama_dosen'] = $nama_dosen;
+  } else {
+    $nip = '2676478762574';
+    $nama_dosen = 'Nama Default';
+    $prodi = 'PRODI';
+    $_SESSION['nama_dosen'] = $nama_dosen;
+  }
 } catch (PDOException $e) {
   die("Koneksi database gagal: " . $e->getMessage());
 }
@@ -368,78 +367,78 @@ if ($row) {
                       Pemeriksaan kelengkapan dan kesesuaian<code>Dokumen Seminar Proposal</code>
                     </p>
                     <div class="table-responsive">
-                    <table id="example" class="display expandable-table" style="width:100%">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Nama</th>
-            <th>Nim</th>
-            <th>Doc</th>
-            <th>File Persetujuan</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        try {
-            // Pastikan $nama_dosen sudah didefinisikan dari session
-            if (!isset($_SESSION['nama_dosen'])) {
-                throw new Exception("Sesi dosen tidak ditemukan.");
-            }
-            $nama_dosen = $_SESSION['nama_dosen'];
+                      <table id="example" class="display expandable-table" style="width:100%">
+                        <thead>
+                          <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Nim</th>
+                            <th>Doc</th>
+                            <th>File Persetujuan</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php
+                          try {
+                            // Pastikan $nama_dosen sudah didefinisikan dari session
+                            if (!isset($_SESSION['nama_dosen'])) {
+                              throw new Exception("Sesi dosen tidak ditemukan.");
+                            }
+                            $nama_dosen = $_SESSION['nama_dosen'];
 
-            // Ambil id_dosen berdasarkan nama_dosen
-            $sql_dosen = "SELECT id_dosen FROM dosen_pembimbing WHERE nama_dosen = ?";
-            $stmt_dosen = $conn->prepare($sql_dosen);
-            $stmt_dosen->execute([$nama_dosen]);
-            $dosen = $stmt_dosen->fetch(PDO::FETCH_ASSOC);
+                            // Ambil id_dosen berdasarkan nama_dosen
+                            $sql_dosen = "SELECT id_dosen FROM dosen_pembimbing WHERE nama_dosen = ?";
+                            $stmt_dosen = $conn->prepare($sql_dosen);
+                            $stmt_dosen->execute([$nama_dosen]);
+                            $dosen = $stmt_dosen->fetch(PDO::FETCH_ASSOC);
 
-            if (!$dosen) {
-                throw new Exception("Data dosen tidak ditemukan.");
-            }
-            $id_dosen = $dosen['id_dosen'];
+                            if (!$dosen) {
+                              throw new Exception("Data dosen tidak ditemukan.");
+                            }
+                            $id_dosen = $dosen['id_dosen'];
 
-            // Query untuk mendapatkan mahasiswa bimbingan
-            $sql1 = "SELECT m.id_mahasiswa, m.nama_mahasiswa, m.nim, m.lembar_persetujuan_proposal_ta_seminar 
-                    FROM mahasiswa m
-                    JOIN mahasiswa_dosen md ON m.id_mahasiswa = md.id_mahasiswa
-                    WHERE md.id_dosen = ?
-                    ORDER BY m.nama_mahasiswa ASC";
-            $stmt = $conn->prepare($sql1);
-            $stmt->execute([$id_dosen]);
-            
-            if ($stmt->rowCount() == 0) {
-                echo "<tr><td colspan='5' class='text-center'>Tidak ada mahasiswa bimbingan.</td></tr>";
-            } else {
-                $no = 1;
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $id = htmlspecialchars($row['id_mahasiswa']);
-                    echo "<tr>";
-                    echo "<td>" . $no++ . "</td>";
-                    echo "<td>" . htmlspecialchars($row['nama_mahasiswa']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
+                            // Query untuk mendapatkan mahasiswa bimbingan
+                            $sql1 = "SELECT m.id_mahasiswa, m.nama_mahasiswa, m.nim, m.lembar_persetujuan_proposal_ta_seminar 
+                                    FROM mahasiswa m
+                                    JOIN mahasiswa_dosen md ON m.id_mahasiswa = md.id_mahasiswa
+                                    WHERE md.id_dosen = ?
+                                    ORDER BY m.nama_mahasiswa ASC";
+                            $stmt = $conn->prepare($sql1);
+                            $stmt->execute([$id_dosen]);
 
-                    // Tombol Download
-                    if (!empty($row['lembar_persetujuan_proposal_ta_seminar'])) {
-                        echo "<td>
+                            if ($stmt->rowCount() == 0) {
+                              echo "<tr><td colspan='5' class='text-center'>Tidak ada mahasiswa bimbingan.</td></tr>";
+                            } else {
+                              $no = 1;
+                              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $id = htmlspecialchars($row['id_mahasiswa']);
+                                echo "<tr>";
+                                echo "<td>" . $no++ . "</td>";
+                                echo "<td>" . htmlspecialchars($row['nama_mahasiswa']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
+
+                                // Tombol Download
+                                if (!empty($row['lembar_persetujuan_proposal_ta_seminar'])) {
+                                  echo "<td>
                                 <a href='downloadsempro.php?id=" . $id . "' target='_blank' 
-                                   class='btn btn-outline-primary btn-fw'>
+                                  class='btn btn-outline-primary btn-fw'>
                                     <i class='mdi mdi-download'></i> Download
                                 </a>
                               </td>";
-                    } else {
-                        echo "<td><span class='badge badge-warning'>No file</span></td>";
-                    }
+                                } else {
+                                  echo "<td><span class='badge badge-warning'>No file</span></td>";
+                                }
 
-                    // Form Upload
-                    echo '<td>
+                                // Form Upload
+                                echo '<td>
                         <form id="uploadForm_' . $id . '" method="POST" action="../../pages/dospem/uploadsempro.php" 
                               enctype="multipart/form-data" onsubmit="return validateForm(' . $id . ')">
                             <input type="file" 
-                                   name="lembar_persetujuan_proposal_ta_seminar" 
-                                   id="file_' . $id . '" 
-                                   accept=".pdf" 
-                                   style="display: none;"
-                                   onchange="handleFileSelect(' . $id . ')">
+                                  name="lembar_persetujuan_proposal_ta_seminar" 
+                                  id="file_' . $id . '" 
+                                  accept=".pdf" 
+                                  style="display: none;"
+                                  onchange="handleFileSelect(' . $id . ')">
                             <input type="hidden" name="id_mahasiswa" value="' . $id . '">
                             <button type="button" 
                                     onclick="document.getElementById(\'file_' . $id . '\').click();" 
@@ -448,118 +447,118 @@ if ($row) {
                             </button>
                         </form>
                     </td>';
-                    echo "</tr>";
-                }
-            }
-        } catch (Exception $e) {
-            echo "<tr><td colspan='5' class='text-center text-danger'>Error: " . $e->getMessage() . "</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
+                                echo "</tr>";
+                              }
+                            }
+                          } catch (Exception $e) {
+                            echo "<tr><td colspan='5' class='text-center text-danger'>Error: " . $e->getMessage() . "</td></tr>";
+                          }
+                          ?>
+                        </tbody>
+                      </table>
 
-<!-- Sweet Alert dan Script -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-function handleFileSelect(id) {
-    const fileInput = document.getElementById("file_" + id);
-    const file = fileInput.files[0];
-    
-    if (file) {
-        // Validasi tipe file
-        if (file.type !== "application/pdf") {
-            Swal.fire({
-                icon: "error",
-                title: "Tipe File Tidak Valid",
-                text: "Hanya file PDF yang diperbolehkan!",
-                confirmButtonText: "Ok"
-            });
-            fileInput.value = "";
-            return;
-        }
-        
-        // Validasi ukuran file (5MB)
-        if (file.size > 5 * 1024 * 1024) {
-            Swal.fire({
-                icon: "error",
-                title: "Ukuran File Terlalu Besar",
-                text: "Maksimal ukuran file adalah 5MB!",
-                confirmButtonText: "Ok"
-            });
-            fileInput.value = "";
-            return;
-        }
+                      <!-- Sweet Alert dan Script -->
+                      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                      <script>
+                        function handleFileSelect(id) {
+                          const fileInput = document.getElementById("file_" + id);
+                          const file = fileInput.files[0];
 
-        // Konfirmasi upload
-        Swal.fire({
-            icon: "info",
-            title: "Konfirmasi Upload",
-            html: `
-                <p>File terpilih: <strong>${file.name}</strong></p>
-                <p>Ukuran: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>
+                          if (file) {
+                            // Validasi tipe file
+                            if (file.type !== "application/pdf") {
+                              Swal.fire({
+                                icon: "error",
+                                title: "Tipe File Tidak Valid",
+                                text: "Hanya file PDF yang diperbolehkan!",
+                                confirmButtonText: "Ok"
+                              });
+                              fileInput.value = "";
+                              return;
+                            }
+
+                            // Validasi ukuran file (5MB)
+                            if (file.size > 5 * 1024 * 1024) {
+                              Swal.fire({
+                                icon: "error",
+                                title: "Ukuran File Terlalu Besar",
+                                text: "Maksimal ukuran file adalah 5MB!",
+                                confirmButtonText: "Ok"
+                              });
+                              fileInput.value = "";
+                              return;
+                            }
+
+                            // Konfirmasi upload
+                            Swal.fire({
+                              icon: "info",
+                              title: "Konfirmasi Upload",
+                              html: `
+                                    <p>File terpilih: <strong>${file.name}</strong></p>
+                                    <p>Ukuran: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>
             `,
-            showCancelButton: true,
-            confirmButtonText: "Upload",
-            cancelButtonText: "Batal",
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Show loading state
-                Swal.fire({
-                    title: "Mengupload...",
-                    text: "Mohon tunggu sebentar",
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    showConfirmButton: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-                
-                // Submit form
-                document.getElementById("uploadForm_" + id).submit();
-            } else {
-                fileInput.value = "";
-            }
-        });
-    }
-}
+                              showCancelButton: true,
+                              confirmButtonText: "Upload",
+                              cancelButtonText: "Batal",
+                              reverseButtons: true
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                // Show loading state
+                                Swal.fire({
+                                  title: "Mengupload...",
+                                  text: "Mohon tunggu sebentar",
+                                  allowOutsideClick: false,
+                                  allowEscapeKey: false,
+                                  showConfirmButton: false,
+                                  didOpen: () => {
+                                    Swal.showLoading();
+                                  }
+                                });
 
-function validateForm(id) {
-    const fileInput = document.getElementById("file_" + id);
-    if (!fileInput.files || fileInput.files.length === 0) {
-        Swal.fire({
-            icon: "error",
-            title: "File Belum Dipilih",
-            text: "Silakan pilih file terlebih dahulu!",
-            confirmButtonText: "Ok"
-        });
-        return false;
-    }
-    return true;
-}
+                                // Submit form
+                                document.getElementById("uploadForm_" + id).submit();
+                              } else {
+                                fileInput.value = "";
+                              }
+                            });
+                          }
+                        }
 
-// Inisialisasi DataTable
-$(document).ready(function() {
-    $('#example').DataTable({
-        responsive: true,
-        language: {
-            search: "Cari:",
-            lengthMenu: "Tampilkan _MENU_ data per halaman",
-            zeroRecords: "Tidak ada data yang ditemukan",
-            info: "Menampilkan halaman _PAGE_ dari _PAGES_",
-            infoEmpty: "Tidak ada data yang tersedia",
-            infoFiltered: "(difilter dari _MAX_ total data)",
-            paginate: {
-                first: "Pertama",
-                last: "Terakhir",
-                next: "Selanjutnya",
-                previous: "Sebelumnya"
-            }
-        }
-    });
-});
-</script>
+                        function validateForm(id) {
+                          const fileInput = document.getElementById("file_" + id);
+                          if (!fileInput.files || fileInput.files.length === 0) {
+                            Swal.fire({
+                              icon: "error",
+                              title: "File Belum Dipilih",
+                              text: "Silakan pilih file terlebih dahulu!",
+                              confirmButtonText: "Ok"
+                            });
+                            return false;
+                          }
+                          return true;
+                        }
+
+                        // Inisialisasi DataTable
+                        $(document).ready(function() {
+                          $('#example').DataTable({
+                            responsive: true,
+                            language: {
+                              search: "Cari:",
+                              lengthMenu: "Tampilkan _MENU_ data per halaman",
+                              zeroRecords: "Tidak ada data yang ditemukan",
+                              info: "Menampilkan halaman _PAGE_ dari _PAGES_",
+                              infoEmpty: "Tidak ada data yang tersedia",
+                              infoFiltered: "(difilter dari _MAX_ total data)",
+                              paginate: {
+                                first: "Pertama",
+                                last: "Terakhir",
+                                next: "Selanjutnya",
+                                previous: "Sebelumnya"
+                              }
+                            }
+                          });
+                        });
+                      </script>
 
                     </div>
                   </div>
