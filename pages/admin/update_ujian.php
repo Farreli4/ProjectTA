@@ -121,9 +121,7 @@ if (isset($_POST['id_mahasiswa'], $_POST['status_ujian'], $_POST['nilai'], $_POS
         if ($stmt === false) {
             die("Error preparing update statement: " . $conn->error);
         }
-
         $stmt->bind_param("siis", $status_ujian, $nilai, $tgl, $id_mahasiswa);
-
         if ($stmt->execute()) {
             echo "Status updated successfully.";
         } else {
@@ -132,7 +130,6 @@ if (isset($_POST['id_mahasiswa'], $_POST['status_ujian'], $_POST['nilai'], $_POS
 
         $stmt->close();
     } else {
-        // Jika belum ada, lakukan insert
         $sql = "INSERT INTO ujian (id_mahasiswa, status_ujian, nilai, tanggal_ujian) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         if ($stmt === false) {

@@ -671,20 +671,24 @@
       });
           
 
-            $(document).on("click", ".verify-btn", function () {
-                let userId = $(this).data("userid");
-                let event = $(this).data("event");
-                let column = $(this).data("column");
+      $(document).off("click", ".verify-btn").on("click", ".verify-btn", function (e) {
+    e.preventDefault(); 
 
-                $.ajax({
-                    url: "verify.php",
-                    type: "POST",
-                    data: { userId: userId, event: event, column: column },
-                    success: function () {
-                        $(".folder-btn[data-event='" + event + "']").click();
-                    }
-                });
-            });
+    let userId = $(this).data("userid");
+    let event = $(this).data("event");
+    let column = $(this).data("column");
+
+    $(this).prop("disabled", true).text("Verifying...");
+
+    $.post("verify.php", { userId: userId, event: event, column: column }, function (response) {
+        console.log(response);
+        alert("Verification successful!");
+        location.reload();
+    }).fail(function (xhr) {
+        console.error("Error:", xhr.responseText);
+    });
+});
+
             
             function changeColor(selectElement) {
     var selectedValue = selectElement.value;

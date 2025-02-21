@@ -564,45 +564,45 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                    $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
-                                    if ($conn->connect_error) {
-                                        die("Koneksi gagal: " . $conn->connect_error);
-                                    }
+                                <?php
+                                  $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
+                                  if ($conn->connect_error) {
+                                      die("Koneksi gagal: " . $conn->connect_error);
+                                  }
 
-                                    $event = "ujian";
+                                  $event = "ujian";
+                                  $sql = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, 
+                                          ujian.status_ujian, ujian.nilai, ujian.tanggal_ujian
+                                          FROM mahasiswa
+                                          LEFT JOIN ujian ON mahasiswa.id_mahasiswa = ujian.id_mahasiswa";
+                                  $result = $conn->query($sql);
 
-                                    $sql = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, ujian.status_ujian, ujian.nilai, ujian.tanggal_ujian 
-                                            FROM mahasiswa 
-                                            LEFT JOIN ujian ON mahasiswa.id_mahasiswa = ujian.id_mahasiswa";
-                                    $result = $conn->query($sql);
+                                  while ($row = $result->fetch_assoc()) {
+                                      echo "<tr>";
+                                      echo "<td>{$row['id_mahasiswa']}</td>";
+                                      echo "<td>{$row['nama_mahasiswa']}</td>";
+                                      echo "<td>{$row['nim']}</td>";
+                                      echo "<td>
+                                              <form action='update_ujian.php' method='POST'>
+                                                  <input type='hidden' name='id_mahasiswa' value='{$row['id_mahasiswa']}'>
+                                                  <select name='status_ujian'>
+                                                      <option value='dijadwalkan' " . ($row['status_ujian'] == 'dijadwalkan' ? 'selected' : '') . ">Dijadwalkan</option>
+                                                      <option value='ditunda' " . ($row['status_ujian'] == 'ditunda' ? 'selected' : '') . ">Ditunda</option>
+                                                      <option value='selesai' " . ($row['status_ujian'] == 'selesai' ? 'selected' : '') . ">Selesai</option>
+                                                  </select>
+                                              </td>
+                                              <td><input type='text' name='nilai' value='" . ($row['nilai'] ?? '0') . "'></td>
+                                              <td><input type='date' name='tanggal_ujian' value='" . $row['tanggal_ujian'] . "'></td>
+                                              <td><button class='btn-update' type='submit'>Verifikasi</button></form></td>
+                                              <td><button class='folder-btn' data-event='{$event}' data-userid='{$row['id_mahasiswa']}'>
+                                                      <span class='material-symbols-outlined'>folder_open</span>
+                                                  </button></td>";
+                                      echo "</tr>";
+                                  }
 
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td>{$row['id_mahasiswa']}</td>";
-                                        echo "<td>{$row['nama_mahasiswa']}</td>";
-                                        echo "<td>{$row['nim']}</td>";
-                                        echo "<td>";
-                                        echo "<form action='update_ujian.php' method='POST'>";
-                                        echo "<select onchange='changeSelectColor(this)'>";
-                                        echo "<option value='dijadwalkan' " . ($row['status_ujian'] == 'dijadwalkan' ? 'selected' : '') . ">Dijadwalkan</option>";
-                                        echo "<option value='ditunda' " . ($row['status_ujian'] == 'ditunda' ? 'selected' : '') . ">Ditunda</option>";
-                                        echo "<option value='selesai' " . ($row['status_ujian'] == 'selesai' ? 'selected' : '') . ">Selesai</option>";
-                                        echo "</select>";
-                                        echo "</td>";
-                                        $nilai = isset($row['nilai']) ? $row['nilai'] : '0';
-                                        echo "<td><input type='text' value='$nilai'></td>";
-                                        echo "<td><input type='date' value='{$row['tanggal_ujian']}'></td>";
-                                        echo "<td><button class='btn-update' type='submit'>Verifikasi</button></td>";
-                                        echo "</form>";
-                                        echo "<td><button class='folder-btn' data-event='" . $event . "' data-userid='" . $row['id_mahasiswa'] . "'><span class='material-symbols-outlined'>folder_open</span></button></td>";
-
-                                        echo "</tr>";
-                                    }
-
-                                    $conn->close();
-                                    ?>
-                                </tbody>
+                                  $conn->close();
+                                  ?>
+                                  </tbody>
                             </table>
                         </div>
                     </div>
