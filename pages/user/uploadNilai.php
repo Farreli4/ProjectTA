@@ -146,16 +146,16 @@ function getFileStatus($nama_mahasiswa, $tipe_file)
                 $columnName = 'lembar_hasil_nilai_dosbim2(nilai)';
                 break;
             case 'Lembar Persetujuan Laporan Tugas Akhir':
-                $columnName = 'lembar_persetujuan_laporan_ta(ujian)';
+                $columnName = 'lembar_persetujuan_laporan_ta_ujian';
                 break;
             case 'Form Pendaftaran Ujian Tugas Akhir':
-                $columnName = 'form_pendaftaran_ujian_ta(ujian)';
+                $columnName = 'form_pendaftaran_ujian_ta_ujian';
                 break;
             case 'Lembar Kehadiran Seminar Proposal':
-                $columnName = 'lembar_kehadiran_sempro(ujian)';
+                $columnName = 'lembar_kehadiran_sempro_ujian';
                 break;
             case 'Buku Konsultasi Tugas Akhir':
-                $columnName = 'buku_konsultasi_ta(ujian)';
+                $columnName = 'buku_konsultasi_ta_ujian';
                 break;
         }
 

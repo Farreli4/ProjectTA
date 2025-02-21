@@ -30,16 +30,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
             $tableName = '';
             switch($fileCategory) {
                 case 'Form Pendaftaran dan Persetujuan Tema':
-                    $tableName = 'form_pendaftaran_persetujuan_tema(TA)';
+                    $tableName = 'form_pendaftaran_persetujuan_tema_ta';
                     break;
                 case 'Bukti Pembayaran':
-                    $tableName = 'bukti_pembayaran(TA)';
+                    $tableName = 'bukti_pembayaran_ta';
                     break;
                 case 'Bukti Transkrip Nilai':
-                    $tableName = 'bukti_transkip_nilai(TA)';
+                    $tableName = 'bukti_transkip_nilai_ta';
                     break;
                 case 'Bukti Kelulusan Mata kuliah Magang / PI':
-                    $tableName = 'bukti_kelulusan_magang(TA)';
+                    $tableName = 'bukti_kelulusan_magang_ta';
                     break;
             }
             

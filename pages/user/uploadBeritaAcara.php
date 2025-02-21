@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         $columnName = '';
         switch ($fileCategory) {
             case 'Lembar Berita Acara (Foto, Buku Kehadiran, dll)':
-                $columnName = 'lembar_berita_acara(seminar)';
+                $columnName = 'lembar_berita_acara_seminar';
                 break;
             default:
                 throw new Exception("Kategori file tidak valid");
@@ -140,16 +140,16 @@ function getFileStatus($nama_mahasiswa, $tipe_file)
         $columnName = '';
         switch ($tipe_file) {
             case 'Lembar Berita Acara (Foto, Buku Kehadiran, dll)':
-                $columnName = 'lembar_berita_acara(seminar)';
+                $columnName = 'lembar_berita_acara_seminar';
                 break;
             case 'Form Pendaftaran Seminar Proposal':
-                $columnName = 'form_pendaftaran_sempro(seminar)';
+                $columnName = 'form_pendaftaran_sempro_seminar';
                 break;
             case 'Lembar Persetujuan Proposal Tugas Akhir':
-                $columnName = 'lembar_persetujuan_proposal_ta(seminar)';
+                $columnName = 'lembar_persetujuan_proposal_ta_seminar';
                 break;
             case 'Buku Konsultasi TA':
-                $columnName = 'buku_konsultasi_ta(seminar)';
+                $columnName = 'buku_konsultasi_ta_seminar';
                 break;
         }
 
@@ -628,7 +628,7 @@ $driveLinks = [
                     Swal.fire({
                         icon: 'warning',
                         title: 'Perhatian!',
-                        text: 'Silakan lengkapi semua file pada Upload Tugas Akhir (TA) terlebih dahulu.',
+                        text: 'Silakan lengkapi semua file pada Upload Tugas Akhir _ta terlebih dahulu.',
                         confirmButtonText: 'OK',
                         customClass: {
                             popup: 'custom-popup', // Class untuk modal

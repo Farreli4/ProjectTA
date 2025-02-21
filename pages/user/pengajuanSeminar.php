@@ -28,33 +28,49 @@ try {
 }
 
 // Function to get document status
-function getDocumentStatus($nama_mahasiswa, $document_type)
+function getDocumentStatus($nama_mahasiswa, $id, $document_type)
 {
-    try {
-        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  try {
+    $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $columnMap = [
-            'Form Pendaftaran Seminar Proposal' => 'form_pendaftaran_sempro(seminar)',
-            'Lembar Persetujuan Proposal Tugas Akhir' => 'lembar_persetujuan_proposal_ta(seminar)',
-            'Buku Konsultasi Tugas Akhir' => 'buku_konsultasi_ta(seminar)',
-        ];
+    // Mapping document name to column
+    $columnMap = [
+        'Form Pendaftaran Seminar Proposal' => 'form_pendaftaran_sempro_seminar',
+        'Lembar Persetujuan Proposal Tugas Akhir' => 'lembar_persetujuan_proposal_ta_seminar',
+        'Buku Konsultasi Tugas Akhir' => 'buku_konsultasi_ta_seminar',
+    ];
 
-        if (!isset($columnMap[$document_type])) {
-            return 'Dokumen tidak valid';
-          } 
-
-        $column = $columnMap[$document_type];
-
-        $sql = "SELECT `$column` FROM mahasiswa WHERE username = :nama";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([':nama' => $nama_mahasiswa]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $result && $result[$column] !== null ? 'Menunggu Verifikasi' : 'Belum Upload';
-    } catch (PDOException $e) {
-        return 'Error';
+    if (!isset($columnMap[$document_type])) {
+      return 'Dokumen tidak valid';
     }
+
+    $column = $columnMap[$document_type];
+
+    // Step 1: Check verification status in tugas_akhir
+    $sql2 = "SELECT `$column` FROM seminar_proposal WHERE id_mahasiswa = :id";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute([':id' => $id]);
+    $verify = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+    if ($verify && $verify[$column] == 1) {
+      return 'Terverifikasi'; // If verification status is 1
+    }
+
+    // Step 2: Check if the file exists in mahasiswa
+    $sql = "SELECT `$column` FROM mahasiswa WHERE username = :nama";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([':nama' => $nama_mahasiswa]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($result && !empty($result[$column])) {
+      return 'Menunggu Verifikasi'; // File exists & verification is 0
+    }
+
+    return 'Belum Upload'; // No file & verification = 0
+  } catch (PDOException $e) {
+    return 'Error: ' . $e->getMessage();
+  }
 }
 
 function areAllDocumentsVerified($nama_mahasiswa, $id)
@@ -99,6 +115,7 @@ function areAllDocumentsVerified($nama_mahasiswa, $id)
     <!-- endinject -->
     <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
     <link rel="stylesheet" type="text/css" href="../../assets/css/user/pengajuan.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 
@@ -139,11 +156,102 @@ function areAllDocumentsVerified($nama_mahasiswa, $id)
                             <span class="count"></span>
                         </a>
 
-                        <!-- NOTIFIKASI -->
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-                        </div>
-                    </li>
+            <div id="notifications">
+            <script>
+              function fetchNotifications() {
+                $.ajax({
+                  url: '../../fetch_notif.php',
+                  method: 'GET',
+                  success: function(data) {
+                    const notifications = JSON.parse(data);
+                    const notificationCount = $('#notificationCount');
+                    const notificationList = $('#notifications');
+                          
+                    notificationCount.text(notifications.length);
+                    notificationList.empty();
+
+                    if (notifications.length === 0 || notifications.message === 'No unread notifications') {
+                      notificationList.append(`
+                        <a class="dropdown-item preview-item">
+                          <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal"></h6>
+                          </div>
+                        </a>
+                      `);
+                    } else {
+                      notifications.forEach(function(notification) {
+                      const notificationItem = `
+                        <a class="dropdown-item preview-item" data-notification-id="${notification.id}">
+                          <div class="preview-thumbnail">
+                            <div class="preview-icon bg-info">
+                              <i class="ti-info-alt mx-0"></i>
+                            </div>
+                          </div>
+                          <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal">${notification.message}</h6>
+                            <p class="font-weight-light small-text mb-0 text-muted">${timeAgo(notification.created_at)}</p>
+                          </div>
+                        </a>
+                        `;
+                        notificationList.append(notificationItem);
+                      });
+                    }
+                  },
+                error: function() {
+                  console.log("Error fetching notifications.");
+                }
+              });
+            }
+
+              function timeAgo(time) {
+                const timeAgo = new Date(time);
+                const currentTime = new Date();
+                const diffInSeconds = Math.floor((currentTime - timeAgo) / 1000);
+
+                if (diffInSeconds < 60) {
+                  return `${diffInSeconds} seconds ago`;
+                }
+                const diffInMinutes = Math.floor(diffInSeconds / 60);
+                if (diffInMinutes < 60) {
+                  return `${diffInMinutes} minutes ago`;
+                }
+                const diffInHours = Math.floor(diffInMinutes / 60);
+                if (diffInHours < 24) {
+                  return `${diffInHours} hours ago`;
+                }
+                const diffInDays = Math.floor(diffInHours / 24);
+                return `${diffInDays} days ago`;
+            }
+
+              $(document).on('click', '.dropdown-item', function() {
+                const notificationId = $(this).data('notification-id');
+                markNotificationAsRead(notificationId);
+              });
+
+              function markNotificationAsRead(notificationId) {
+                $.ajax({
+                  url: '../../mark_read.php',
+                  method: 'POST',
+                  data: { id: notificationId },
+                  success: function(response) {
+                  console.log(response);
+                  fetchNotifications();
+                },
+                error: function() {
+                  console.log("Error marking notification as read.");
+                }
+              });
+            }
+
+            $(document).ready(function() {
+              fetchNotifications();
+              setInterval(fetchNotifications, 30000);
+            });
+          </script>
+              </div>
+            </div>
+          </li>
 
                     <!--PROFIL-->
                     <li class="nav-item nav-profile dropdown">
@@ -272,7 +380,7 @@ function areAllDocumentsVerified($nama_mahasiswa, $id)
                                         ];
 
                                         foreach ($documents as $doc) {
-                                            $status = getDocumentStatus($nama_mahasiswa, $doc);
+                                            $status = getDocumentStatus($nama_mahasiswa, $id, $doc);
                                             $statusClass = '';
 
                                             switch ($status) {

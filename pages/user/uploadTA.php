@@ -67,19 +67,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         $columnName = '';
         switch ($fileCategory) {
             case 'Form Pendaftaran dan Persetujuan Tema':
-                $columnName = 'form_pendaftaran_persetujuan_tema(TA)';
+                $columnName = 'form_pendaftaran_persetujuan_tema_ta';
                 break;
             case 'Bukti Pembayaran':
-                $columnName = 'bukti_pembayaran(TA)';
+                $columnName = 'bukti_pembayaran_ta';
                 break;
             case 'Bukti Transkrip Nilai':
-                $columnName = 'bukti_transkip_nilai(TA)';
+                $columnName = 'bukti_transkip_nilai_ta';
                 break;
             case 'Bukti Kelulusan Mata kuliah Magang / PI':
-                $columnName = 'bukti_kelulusan_magang(TA)';
+                $columnName = 'bukti_kelulusan_magang_ta';
                 break;
             case 'Buku Konsultasi Tugas Akhir':
-                $columnName = 'buku_konsultasi_ta(ujian)';
+                $columnName = 'buku_konsultasi_ta_ujian';
                 break;
             default:
                 throw new Exception("Kategori file tidak valid");
@@ -132,16 +132,16 @@ function getFileStatus($nama_mahasiswa, $fileCategory)
         $columnName = '';
         switch ($fileCategory) {
             case 'Form Pendaftaran dan Persetujuan Tema':
-                $columnName = 'form_pendaftaran_persetujuan_tema(TA)';
+                $columnName = 'form_pendaftaran_persetujuan_tema_ta';
                 break;
             case 'Bukti Pembayaran':
-                $columnName = 'bukti_pembayaran(TA)';
+                $columnName = 'bukti_pembayaran_ta';
                 break;
             case 'Bukti Transkrip Nilai':
-                $columnName = 'bukti_transkip_nilai(TA)';
+                $columnName = 'bukti_transkip_nilai_ta';
                 break;
             case 'Bukti Kelulusan Mata kuliah Magang / PI':
-                $columnName = 'bukti_kelulusan_magang(TA)';
+                $columnName = 'bukti_kelulusan_magang_ta';
                 break;
         }
 

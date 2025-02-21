@@ -1,80 +1,105 @@
 <?php
 session_start();
 $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
-$event = 'ujian';
+$event = 'tugas_akhir';
 
 try {
-    $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Get student info
-    $check = "SELECT id_mahasiswa, nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
-    $checkNim = $conn->prepare($check);
-    $checkNim->execute([':nama' => $nama_mahasiswa]);
-    $row = $checkNim->fetch(PDO::FETCH_ASSOC);
+  // Get student info
+  $check = "SELECT id_mahasiswa, nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
+  $checkNim = $conn->prepare($check);
+  $checkNim->execute([':nama' => $nama_mahasiswa]);
+  $row = $checkNim->fetch(PDO::FETCH_ASSOC);
 
-    if ($row) {
-        $nim = $row['nim'];
-        $nama = $row['nama_mahasiswa'];
-        $prodi = $row['prodi'];
-        $id = $row['id_mahasiswa'];
-    } else {
-        $nim = 'K3522068';
-        $nama = 'Nama Default';
-        $prodi = 'PRODI';
-    }
+  if ($row) {
+    $nim = $row['nim'];
+    $nama = $row['nama_mahasiswa'];
+    $prodi = $row['prodi'];
+    $id = $row['id_mahasiswa'];
+  } else {
+    $nim = 'K3522068';
+    $nama = 'Nama Default';
+    $prodi = 'PRODI';
+  }
 } catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+  echo "Connection failed: " . $e->getMessage();
 }
 
 // Function to get document status
-function getDocumentStatus($nama_mahasiswa, $document_type)
+function getDocumentStatus($nama_mahasiswa, $id, $document_type)
 {
-    try {
-        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  try {
+    $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $columnMap = [
-            'Lembar Persetujuan Laporan Tugas Akhir' => 'lembar_persetujuan_laporan_ta(ujian)',
-            'Formulir Pendaftaran Ujian Tugas Akhir' => 'form_pendaftaran_ujian_ta(ujian)',
-            'Lembar Kehadiran Seminar Proposal' => 'lembar_kehadiran_sempro(ujian)',
-            'Buku Konsultasi Tugas Akhir' => 'buku_konsultasi_ta(ujian)',
-            'Berita Acara' => 'lembar_berita_acara(seminar)',
-        ];
-
-        if (!isset($columnMap[$document_type])) {
-            return 'Dokumen tidak valid';
-        }
-
-        $column = $columnMap[$document_type];
-
-        $sql = "SELECT `$column` FROM mahasiswa WHERE username = :nama";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([':nama' => $nama_mahasiswa]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $result && $result[$column] !== null ? 'Menunggu Verifikasi' : 'Belum Upload';
-    } catch (PDOException $e) {
-        return 'Error';
-    }
-}
-function areAllDocumentsVerified($nama_mahasiswa, $id)
-{
-    $documents = [
-        'Form Pendaftaran dan Persetujuan Tema',
-        'Bukti Pembayaran',
-        'Bukti Transkrip Nilai',
-        'Bukti Lulus Mata kuliah Magang / PI'
+    // Mapping document name to column
+    $columnMap = [
+        'Lembar Persetujuan Laporan Tugas Akhir' => 'lembar_persetujuan_laporan_ta_ujian',
+        'Formulir Pendaftaran Ujian Tugas Akhir' => 'form_pendaftaran_ujian_ta_ujian',
+        'Lembar Kehadiran Seminar Proposal' => 'lembar_kehadiran_sempro_ujian',
+        'Buku Konsultasi Tugas Akhir' => 'buku_konsultasi_ta_ujian',
+        'Berita Acara' => 'lembar_berita_acara_seminar',
     ];
 
-    foreach ($documents as $doc) {
-        $status = getDocumentStatus($nama_mahasiswa, $id, $doc);
-        if ($status !== 'Terverifikasi') {
-            return false;
-        }
+    if (!isset($columnMap[$document_type])) {
+      return 'Dokumen tidak valid';
     }
-    return true;
+
+    $column = $columnMap[$document_type];
+
+    // Step 1: Check verification status in tugas_akhir
+    $sql2 = "SELECT `$column` FROM ujian WHERE id_mahasiswa = :id";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute([':id' => $id]);
+    $verify = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+    if ($verify && $verify[$column] == 1) {
+      return 'Terverifikasi'; // If verification status is 1
+    }
+
+    // Step 2: Check if the file exists in mahasiswa
+    $sql = "SELECT `$column` FROM mahasiswa WHERE username = :nama";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([':nama' => $nama_mahasiswa]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($result && !empty($result[$column])) {
+      return 'Menunggu Verifikasi'; // File exists & verification is 0
+    }
+
+    return 'Belum Upload'; // No file & verification = 0
+  } catch (PDOException $e) {
+    return 'Error: ' . $e->getMessage();
+  }
 }
+
+function areAllDocumentsVerified($nama_mahasiswa, $id)
+{
+  $documents = [
+    'Form Pendaftaran dan Persetujuan Tema',
+    'Bukti Pembayaran',
+    'Bukti Transkrip Nilai',
+    'Bukti Lulus Mata kuliah Magang / PI'
+  ];
+
+  foreach ($documents as $doc) {
+    $status = getDocumentStatus($nama_mahasiswa, $id, $doc);
+    if ($status !== 'Terverifikasi') {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+// Contoh penggunaan fungsi
+$document_type = 'Bukti Pembayaran'; // Ubah sesuai dokumen yang ingin dicek
+$status = getDocumentStatus($nama_mahasiswa, $id, $document_type);
+echo "Status dokumen: " . $status;
+
+
 ?>
 
 <!DOCTYPE html>
@@ -277,7 +302,7 @@ function areAllDocumentsVerified($nama_mahasiswa, $id)
                                         ];
 
                                         foreach ($documents as $doc) {
-                                            $status = getDocumentStatus($nama_mahasiswa, $doc);
+                                            $status = getDocumentStatus($nama_mahasiswa, $id, $doc);
                                             $statusClass = '';
 
                                             switch ($status) {

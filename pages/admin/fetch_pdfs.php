@@ -31,9 +31,9 @@ if ($event == "seminar_proposal") {
     die("Invalid event selected.");
 }
 
-// Generate query column names dynamically
-$docColumns = implode(", ", array_map(fn($col) => "m.$col", $documents));
-$verificationColumns = implode(", ", array_map(fn($col) => "e.$col AS verified_$col", $documents));
+// Gunakan backtick untuk mengapit nama kolom yang mengandung tanda kurung
+$docColumns = implode(", ", array_map(fn($col) => "m.`$col`", $documents));
+$verificationColumns = implode(", ", array_map(fn($col) => "e.`$col` AS `verified_$col`", $documents));
 
 // Fetch document data from `mahasiswa` and verification status from the event table
 $query = "SELECT m.id_mahasiswa, $docColumns, $verificationColumns 

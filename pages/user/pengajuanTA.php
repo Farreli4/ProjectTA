@@ -36,10 +36,10 @@ function getDocumentStatus($nama_mahasiswa, $id, $document_type)
 
     // Mapping document name to column
     $columnMap = [
-      'Form Pendaftaran dan Persetujuan Tema' => 'form_pendaftaran_persetujuan_tema(ta)',
-      'Bukti Pembayaran' => 'bukti_pembayaran(ta)',
-      'Bukti Transkrip Nilai' => 'bukti_transkip_nilai(ta)',
-      'Bukti Lulus Mata kuliah Magang / PI' => 'bukti_kelulusan_magang(ta)',
+      'Form Pendaftaran dan Persetujuan Tema' => 'form_pendaftaran_persetujuan_tema_ta',
+      'Bukti Pembayaran' => 'bukti_pembayaran_ta',
+      'Bukti Transkrip Nilai' => 'bukti_transkip_nilai_ta',
+      'Bukti Lulus Mata kuliah Magang / PI' => 'bukti_kelulusan_magang_ta',
     ];
 
     if (!isset($columnMap[$document_type])) {

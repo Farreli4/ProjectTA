@@ -82,16 +82,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         $columnName = '';
         switch ($fileCategory) {
             case 'Lembar Persetujuan Laporan Tugas Akhir':
-                $columnName = 'lembar_persetujuan_laporan_ta(ujian)';
+                $columnName = 'lembar_persetujuan_laporan_ta_ujian';
                 break;
             case 'Form Pendaftaran Ujian Tugas Akhir':
-                $columnName = 'form_pendaftaran_ujian_ta(ujian)';
+                $columnName = 'form_pendaftaran_ujian_ta_ujian';
                 break;
             case 'Lembar Kehadiran Seminar Proposal':
-                $columnName = 'lembar_kehadiran_sempro(ujian)';
+                $columnName = 'lembar_kehadiran_sempro_ujian';
                 break;
             case 'Buku Konsultasi Tugas Akhir':
-                $columnName = 'buku_konsultasi_ta(ujian)';
+                $columnName = 'buku_konsultasi_ta_ujian';
                 break;
             default:
                 throw new Exception("Kategori file tidak valid");
@@ -145,19 +145,19 @@ function getFileStatus($nama_mahasiswa, $tipe_file)
         $columnName = '';
         switch ($tipe_file) {
             case 'Lembar Persetujuan Laporan Tugas Akhir':
-                $columnName = 'lembar_persetujuan_laporan_ta(ujian)';
+                $columnName = 'lembar_persetujuan_laporan_ta_ujian';
                 break;
             case 'Form Pendaftaran Ujian Tugas Akhir':
-                $columnName = 'form_pendaftaran_ujian_ta(ujian)';
+                $columnName = 'form_pendaftaran_ujian_ta_ujian';
                 break;
             case 'Lembar Kehadiran Seminar Proposal':
-                $columnName = 'lembar_kehadiran_sempro(ujian)';
+                $columnName = 'lembar_kehadiran_sempro_ujian';
                 break;
             case 'Buku Konsultasi Tugas Akhir':
-                $columnName = 'buku_konsultasi_ta(ujian)';
+                $columnName = 'buku_konsultasi_ta_ujian';
                 break;
             case 'Lembar Berita Acara (Foto, Buku Kehadiran, dll)':
-                $columnName = 'lembar_berita_acara(seminar)';
+                $columnName = 'lembar_berita_acara_seminar';
                 break;
         }
 
@@ -379,7 +379,7 @@ $driveLinks = [
 
                             <h4>Perhatikan petunjuk sebelum melakukan Upload:</h4>
                             <ul class="requirements-list">
-                                <li>Upload Lembar Persetujuan Laporan Tugas Akhir (TA) yang sudah di tandatangani oleh Dosen Pembimbing 1 dan 2</li>
+                                <li>Upload Lembar Persetujuan Laporan Tugas Akhir _ta yang sudah di tandatangani oleh Dosen Pembimbing 1 dan 2</li>
                                 <li>Upload Lembar Kehadiran Seminar Proposal dengan minimal menghadiri 5x Seminar Proposal</li>
                                 <li>Upload Surat dengan format <span style="color: red;">PDF</span></li>
                                 <li>Format penamaan dokumen: NIM_Nama File_Nama (Contoh: K<?php echo htmlspecialchars($nim); ?>_Buku Konsultasi TA_Muhmmad Anthony)</li>
@@ -620,7 +620,7 @@ $driveLinks = [
                     Swal.fire({
                         icon: 'warning',
                         title: 'Perhatian!',
-                        text: 'Silakan lengkapi semua file pada Upload Tugas Akhir (TA) terlebih dahulu.',
+                        text: 'Silakan lengkapi semua file pada Upload Tugas Akhir _ta terlebih dahulu.',
                         confirmButtonText: 'OK',
                         customClass: {
                             popup: 'custom-popup', // Class untuk modal

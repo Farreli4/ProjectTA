@@ -82,13 +82,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         $columnName = '';
         switch ($fileCategory) {
             case 'Form Pendaftaran Seminar Proposal':
-                $columnName = 'form_pendaftaran_sempro(seminar)';
+                $columnName = 'form_pendaftaran_sempro_seminar';
                 break;
             case 'Lembar Persetujuan Proposal Tugas Akhir':
-                $columnName = 'lembar_persetujuan_proposal_ta(seminar)';
+                $columnName = 'lembar_persetujuan_proposal_ta_seminar';
                 break;
             case 'Buku Konsultasi TA':
-                $columnName = 'buku_konsultasi_ta(seminar)';
+                $columnName = 'buku_konsultasi_ta_seminar';
                 break;
             default:
                 throw new Exception("Kategori file tidak valid");
@@ -142,25 +142,25 @@ function getFileStatus($nama_mahasiswa, $fileCategory)
         $columnName = '';
         switch ($fileCategory) {
             case 'Form Pendaftaran Seminar Proposal':
-                $columnName = 'form_pendaftaran_sempro(seminar)';
+                $columnName = 'form_pendaftaran_sempro_seminar';
                 break;
             case 'Lembar Persetujuan Proposal Tugas Akhir':
-                $columnName = 'lembar_persetujuan_proposal_ta(seminar)';
+                $columnName = 'lembar_persetujuan_proposal_ta_seminar';
                 break;
             case 'Buku Konsultasi TA':
-                $columnName = 'buku_konsultasi_ta(seminar)';
+                $columnName = 'buku_konsultasi_ta_seminar';
                 break;
             case 'Form Pendaftaran dan Persetujuan Tema':
-                $columnName = 'form_pendaftaran_persetujuan_tema(TA)';
+                $columnName = 'form_pendaftaran_persetujuan_tema_ta';
                 break;
             case 'Bukti Pembayaran':
-                $columnName = 'bukti_pembayaran(TA)';
+                $columnName = 'bukti_pembayaran_ta';
                 break;
             case 'Bukti Transkrip Nilai':
-                $columnName = 'bukti_transkip_nilai(TA)';
+                $columnName = 'bukti_transkip_nilai_ta';
                 break;
             case 'Bukti Kelulusan Mata kuliah Magang / PI':
-                $columnName = 'bukti_kelulusan_magang(TA)';
+                $columnName = 'bukti_kelulusan_magang_ta';
                 break;
         }
 
@@ -555,7 +555,7 @@ $driveLinks = [
                     Swal.fire({
                         icon: 'warning',
                         title: 'Perhatian!',
-                        text: 'Silakan lengkapi semua file pada Upload Tugas Akhir (TA) terlebih dahulu.',
+                        text: 'Silakan lengkapi semua file pada Upload Tugas Akhir _ta terlebih dahulu.',
                         confirmButtonText: 'OK',
                         customClass: {
                             popup: 'custom-popup', // Class untuk modal
