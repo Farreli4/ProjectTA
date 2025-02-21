@@ -356,78 +356,60 @@
       </div>
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
-      <?php 
-        $current_page = basename($_SERVER['PHP_SELF']); 
-      ?>
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link <?= ($current_page == 'index.php') ? 'active' : ''; ?>" href="index.php">
+            <a class="nav-link" href="index.php">
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?= ($current_page == 'daftarDosen.php') ? 'active' : ''; ?>" href="daftarDosen.php">
+            <a class="nav-link" href="daftarDosen.php">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Daftar Dosen</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?= ($current_page == 'daftarMahasiswa.php') ? 'active' : ''; ?>" href="daftarMahasiswa.php">
+            <a class="nav-link" href="daftarMahasiswa.php">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Daftar Mahasiswa</span>
             </a>
           </li>
-
-          <!-- Pendaftaran Dropdown -->
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" 
-              aria-expanded="<?= in_array($current_page, ['pendaftaranTA.php', 'pendaftaranSeminar.php', 'pendaftaranUjian.php']) ? 'true' : 'false'; ?>" 
-              aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="icon-layout menu-icon"></i>
               <span class="menu-title">Pendaftaran</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse <?= in_array($current_page, ['pendaftaranTA.php', 'pendaftaranSeminar.php', 'pendaftaranUjian.php']) ? 'show' : ''; ?>" id="ui-basic">
+            <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item">
-                  <a class="nav-link <?= ($current_page == 'pendaftaranTA.php') ? 'active' : ''; ?>" href="pendaftaranTA.php">Tugas Akhir</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link <?= ($current_page == 'pendaftaranSeminar.php') ? 'active' : ''; ?>" href="pendaftaranSeminar.php">Seminar</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link <?= ($current_page == 'pendaftaranUjian.php') ? 'active' : ''; ?>" href="pendaftaranUjian.php">Ujian</a>
-                </li>
+                <li class="nav-item"> <a class="nav-link" href="pendaftaranTA.php">Tugas Akhir</a></li>
+                <li class="nav-item"> <a class="nav-link" href="pendaftaranSeminar.php">Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="pendaftaranUjian.php">Ujian</a></li>
               </ul>
             </div>
           </li>
-
-          <!-- Dokumen Dropdown -->
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" 
-              aria-expanded="<?= in_array($current_page, ['dokumenTA.php', 'dokumenSeminar.php', 'dokumenUjian.php']) ? 'true' : 'false'; ?>" 
-              aria-controls="ui-basic2">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Dokumen</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse <?= in_array($current_page, ['dokumenTA.php', 'dokumenSeminar.php', 'dokumenUjian.php']) ? 'show' : ''; ?>" id="ui-basic2">
+            <div class="collapse" id="ui-basic2">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item">
-                  <a class="nav-link <?= ($current_page == 'dokumenTA.php') ? 'active' : ''; ?>" href="dokumenTA.php">Tugas Akhir</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link <?= ($current_page == 'dokumenSeminar.php') ? 'active' : ''; ?>" href="dokumenSeminar.php">Seminar</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link <?= ($current_page == 'dokumenUjian.php') ? 'active' : ''; ?>" href="dokumenUjian.php">Ujian</a>
-                </li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenTA.php">Tugas Akhir</a></li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenSeminar.php">Seminar</a></li>
+                <li class="nav-item"> <a class="nav-link" href="dokumenUjian.php">Ujian</a></li>
               </ul>
             </div>
           </li>
-
+          <li class="nav-item">
+            <a class="nav-link" href="../../index.php">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Log Out</span>
+            </a>
+          </li>
         </ul>
       </nav>
 
@@ -570,6 +552,91 @@
             .btn-update:hover {
                 background-color: #0056b3;
             }
+           .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+          }
+
+          .popup-content {
+              background: white;
+              padding: 20px;
+              border-radius: 10px;
+              width: 50%;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+              animation: fadeIn 0.3s ease-in-out;
+          }
+
+          /* Animasi */
+          @keyframes fadeIn {
+              from {
+                  opacity: 0;
+                  transform: translate(-50%, -60%);
+              }
+              to {
+                  opacity: 1;
+                  transform: translate(-50%, -50%);
+              }
+          }
+
+          .close-btn {
+              position: absolute;
+              top: 10px;
+              right: 15px;
+              font-size: 20px;
+              cursor: pointer;
+              color: #555;
+              transition: color 0.2s;
+          }
+
+          .close-btn:hover {
+              color: red;
+          }
+
+          /* Style untuk tabel */
+          .popup-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 10px;
+          }
+
+          .popup-table th, .popup-table td {
+              padding: 10px;
+              text-align: center;
+              border-bottom: 1px solid #ddd;
+          }
+
+          .popup-table th {
+              background-color: #1b4f72;
+              color: white;
+              font-weight: bold;
+          }
+
+          /* Style untuk tombol Verify */
+          .verify-btn {
+              padding: 6px 12px;
+              border: none;
+              border-radius: 5px;
+              background-color: #007bff;
+              color: white;
+              cursor: pointer;
+              font-size: 14px;
+              transition: background 0.2s ease-in-out;
+          }
+
+          .verify-btn:hover {
+              background-color: #0056b3;
+          }
           </style>
 
           <div class="row"> 
@@ -596,7 +663,7 @@
 
                                     $sql1 = "SELECT mahasiswa.id_mahasiswa, mahasiswa.nama_mahasiswa, mahasiswa.nim, seminar_proposal.tanggal_seminar, seminar_proposal.status_seminar
                                             FROM mahasiswa 
-                                            INNER JOIN seminar_proposal ON mahasiswa.id_mahasiswa = seminar_proposal.id_mahasiswa";
+                                            LEFT JOIN seminar_proposal ON mahasiswa.id_mahasiswa = seminar_proposal.id_mahasiswa";
                                     $result = $conn->query($sql1);
 
                                     $event = "seminar_proposal";
@@ -642,128 +709,85 @@
         <div id="popup" class="popup">
           <div class="popup-content">
               <span class="close-btn">&times;</span>
-              <h2>Documents</h2>
-              <div id="popup-content-table">
+              <h3>Dokumen</h3>
+              <div class="table-responsive">
+                  <table class="popup-table">
+                      <thead>
+                          <tr>
+                              <th>Keterangan</th>
+                              <th>Aksi</th>
+                              <th>Dokumen</th>
+                          </tr>
+                      </thead>
+                      <tbody id="popup-content-table">
+
+                      </tbody>
+                  </table>
               </div>
           </div>
-      </div>
 
         <script>
-          document.addEventListener("DOMContentLoaded", function () {
-    // Open Modal
-    let openBtn = document.getElementById("open");
-    if (openBtn) {
-        openBtn.onclick = function () {
-            document.getElementById("myModal").style.display = "flex";
-        };
-    }
+          document.addEventListener("click", function (event) {
+            if (event.target.closest(".folder-btn")) {
+                let button = event.target.closest(".folder-btn");
+                let eventParam = button.getAttribute("data-event");
+                let userId = button.getAttribute("data-userid");
 
-    // Close Modal
-    let closeBtn = document.querySelector(".close");
-    if (closeBtn) {
-        closeBtn.onclick = function () {
-            document.getElementById("myModal").style.display = "none";
-        };
-    }
+                console.log("Clicked button for event:", eventParam, "User ID:", userId);
 
-    // Change select background color
-    function changeSelectColor(selectElement) {
-        var selectedValue = selectElement.value;
+                fetch("fetch_pdfs.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({ event: eventParam, userId: userId })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("popup-content-table").innerHTML = data;
+                    document.getElementById("popup").style.display = "block";
+                })
+                .catch(error => console.error("AJAX Error:", error));
+            }
+        });
 
-        if (selectedValue === "dijadwalkan") {
-            selectElement.style.backgroundColor = "rgb(255, 251, 0)";
-        } else if (selectedValue === "ditunda") {
-            selectElement.style.backgroundColor = "rgb(255, 99, 71)";
-        } else if (selectedValue === "selesai") {
-            selectElement.style.backgroundColor = "rgb(34, 139, 34)";
-        }
-    }
-
-    document.querySelectorAll("select[name='status_ujian']").forEach(function (select) {
-        changeSelectColor(select);
-    });
-
-    document.addEventListener("change", function (event) {
-        if (event.target.matches("select[name='status_ujian']")) {
-            changeSelectColor(event.target);
-        }
-    });
-
-    document.addEventListener("click", function (event) {
-        let button = event.target.closest(".folder-btn");
-
-        if (button) {
-            let eventParam = button.getAttribute("data-event");
-            let userId = button.getAttribute("data-userid");
-
-            console.log("Clicked button for event:", eventParam, "User ID:", userId);
-
-            fetch("fetch_pdfs.php", {
-              method: "POST",
-              headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              body: new URLSearchParams({ event: eventParam, userId: userId }),
-          })
-          .then(response => response.text())
-          .then(data => {
-              console.log("Response from fetch_pdfs.php:", data); // Debugging
-              document.getElementById("popup-content-table").innerHTML = data;
-              document.getElementById("popup").style.display = "block";
-          })
-          .catch(error => console.error("AJAX Error:", error));
-
-        }
-    });
-
-    let closePopupBtn = document.querySelector(".close-btn");
-    if (closePopupBtn) {
-        closePopupBtn.addEventListener("click", function () {
+        // 🔹 Event untuk menutup pop-up saat tombol close diklik
+        document.querySelector(".close-btn").addEventListener("click", function () {
             document.getElementById("popup").style.display = "none";
         });
-    }
 
-    document.addEventListener("click", function (event) {
-        if (event.target.matches(".verify-btn")) {
-            let button = event.target;
-            let userId = button.getAttribute("data-userid");
-            let eventParam = button.getAttribute("data-event");
-            let column = button.getAttribute("data-column");
+        // 🔹 Event untuk verifikasi data
+        document.addEventListener("click", function (event) {
+            if (event.target.matches(".verify-btn")) {
+                let button = event.target;
+                let userId = button.getAttribute("data-userid");
+                let eventParam = button.getAttribute("data-event");
+                let column = button.getAttribute("data-column");
 
-            fetch("verify.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({ userId: userId, event: eventParam, column: column }),
-            }).then(() => {
-                document.querySelector(".folder-btn[data-event='" + eventParam + "']").click();
-            });
-        }
-    });
-});
+                fetch("verify.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({ userId: userId, event: eventParam, column: column })
+                })
+                .then(() => {
+                    document.querySelector(".folder-btn[data-event='" + eventParam + "']").click();
+                });
+            }
+        });
 
 
-                  </script>
+</script>
 
               
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                    Copyright © 2025.
-                    <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-                    All rights reserved.
-                  </span>
-                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                    <a href="https://wa.me/628112951003" target="_blank">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-                      +6281 1295 1003
-                    </a>
-                  </span>
-                </div>
-
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://politekniknest.ac.id/" target="_blank">Anak Magang UNS</a></span>
-                </div>
-              </footer>
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin ../../Template</a> from BootstrapDash. All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
+          </div>
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
+          </div>
+        </footer> 
         <!-- partial -->
       </div>
       <!-- main-panel ends -->

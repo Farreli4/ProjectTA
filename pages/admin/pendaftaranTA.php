@@ -569,8 +569,93 @@
               text-decoration: none;
           }
           
-          
+          .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+          }
+
+          .popup-content {
+              background: white;
+              padding: 20px;
+              border-radius: 10px;
+              width: 50%;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+              animation: fadeIn 0.3s ease-in-out;
+          }
+
+          /* Animasi */
+          @keyframes fadeIn {
+              from {
+                  opacity: 0;
+                  transform: translate(-50%, -60%);
+              }
+              to {
+                  opacity: 1;
+                  transform: translate(-50%, -50%);
+              }
+          }
+
+          .close-btn {
+              position: absolute;
+              top: 10px;
+              right: 15px;
+              font-size: 20px;
+              cursor: pointer;
+              color: #555;
+              transition: color 0.2s;
+          }
+
+          .close-btn:hover {
+              color: red;
+          }
+
+          /* Style untuk tabel */
+          .popup-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 10px;
+          }
+
+          .popup-table th, .popup-table td {
+              padding: 10px;
+              text-align: center;
+              border-bottom: 1px solid #ddd;
+          }
+
+          .popup-table th {
+              background-color: #1b4f72;
+              color: white;
+              font-weight: bold;
+          }
+
+          /* Style untuk tombol Verify */
+          .verify-btn {
+              padding: 6px 12px;
+              border: none;
+              border-radius: 5px;
+              background-color: #007bff;
+              color: white;
+              cursor: pointer;
+              font-size: 14px;
+              transition: background 0.2s ease-in-out;
+          }
+
+          .verify-btn:hover {
+              background-color: #0056b3;
+          }          
           </style>
+          
 <div class="row">  
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
@@ -717,35 +802,54 @@
 });
 
             
-    function changeColor(selectElement) {
+function changeColor(selectElement) {
     var selectedValue = selectElement.value;
 
     if (selectedValue === 'Revisi') {
-        selectElement.style.backgroundColor = 'rgb(255, 251, 0)';
+        selectElement.style.backgroundColor = 'yellow';
     } else if (selectedValue === 'Ditolak') {
-        selectElement.style.backgroundColor = 'rgb(255, 99, 71)';
+        selectElement.style.backgroundColor = 'red';
     } else if (selectedValue === 'Disetujui') {
-        selectElement.style.backgroundColor = 'rgb(34, 139, 34)';
+        selectElement.style.backgroundColor = 'green';
     } else {
         selectElement.style.backgroundColor = 'rgb(174, 215, 242)';
+        selectElement.style.color = 'black';
     }
 }
 
 function toggleRevisiTextbox(selectElement) {
     var mahasiswaId = selectElement.closest('tr').querySelector('input[name="id_mahasiswa"]').value;
     var revisiTextbox = document.getElementById('revisi-textbox-' + mahasiswaId);
+    var revisiText = document.getElementById('revisi-text-' + mahasiswaId);
     var textarea = revisiTextbox ? revisiTextbox.querySelector('textarea') : null;
 
-    if (!revisiTextbox || !textarea) return;
+    if (!revisiTextbox || !textarea || !revisiText) return;
 
     if (selectElement.value === 'Revisi') {
         revisiTextbox.style.display = 'block';
         textarea.disabled = false;
     } else {
-        revisiTextbox.style.display = 'none'; 
-        textarea.disabled = true; 
+        revisiTextbox.style.display = 'none';
+        textarea.disabled = true;
+        revisiText.innerText = ''; // Menghapus teks jika bukan revisi
     }
 }
+
+// Saat tombol update ditekan, komentar berubah menjadi teks kecil tanpa border
+document.querySelectorAll('.btn-inverse-success').forEach(button => {
+    button.addEventListener('click', function (event) {
+        var form = this.closest('form');
+        var revisiTextbox = form.querySelector('.revisi-textbox');
+        var textarea = revisiTextbox ? revisiTextbox.querySelector('textarea') : null;
+        var revisiText = form.closest('tr').querySelector('.small-text');
+
+        if (textarea && textarea.value.trim() !== '') {
+            revisiText.innerText = textarea.value;
+            revisiText.style.display = 'block';
+            revisiTextbox.style.display = 'none';
+        }
+    });
+});
 
 window.onload = function () {
     document.querySelectorAll('select[name="status_pengajuan"]').forEach(function (select) {
@@ -763,46 +867,29 @@ window.onload = function () {
         }
     });
 };
+
 </script>
 
+<div id="popup" class="popup">
+          <div class="popup-content">
+              <span class="close-btn">&times;</span>
+              <h3>Dokumen</h3>
+              <div class="table-responsive">
+                  <table class="popup-table">
+                      <thead>
+                          <tr>
+                              <th>Keterangan</th>
+                              <th>Dokumen</th>
+                              <th>Aksi</th>
+                          </tr>
+                      </thead>
+                      <tbody id="popup-content-table">
 
-<style>
-  .popup {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-            }
-
-            .popup-content {
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                width: 50%;
-                margin: 10% auto;
-                position: relative;
-            }
-
-            .close-btn {
-                position: absolute;
-                top: 10px;
-                right: 15px;
-                font-size: 20px;
-                cursor: pointer;
-            }
-  .small-text {
-              font-size: 12px;
-              color: #666;
-              margin-top: 5px;
-              border: none;
-              background: none;
-              display: inline-block;
-          }
-</style>
-
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
 
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
