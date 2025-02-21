@@ -1,26 +1,47 @@
 <?php
 session_start();
 $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
-$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Mengubah query untuk mengambil nim dan nama_mahasiswa
-$check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
-$checkNim = $conn->prepare($check);
-$checkNim->execute([':nama' => $nama_mahasiswa]);
-$row = $checkNim->fetch(PDO::FETCH_ASSOC);
+try {
+  // Database connection
+  $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if ($row) {
-  $nim = $row['nim'];
-  $nama = $row['nama_mahasiswa'];
-  $prodi = $row['prodi'];
-} else {
-  $nim = 'K3522068';
-  $nama = 'Nama Default';
-  $prodi = 'PRODI';
-  echo "NIM: " . $nim . "<br>";
-  echo "Nama: " . $nama . "<br>";
-  echo "Prodi: " . $prodi;
+  // Get student info and id_mahasiswa in one query
+  $check = "SELECT m.nim, m.nama_mahasiswa, m.prodi, m.id_mahasiswa 
+            FROM mahasiswa m 
+            WHERE m.username = :nama";
+  $stmt = $conn->prepare($check);
+  $stmt->execute([':nama' => $nama_mahasiswa]);
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($row) {
+    $nim = $row['nim'];
+    $nama = $row['nama_mahasiswa'];
+    $prodi = $row['prodi'];
+    $id_mahasiswa = $row['id_mahasiswa'];
+
+    // Get nilai from ujian table using the retrieved id_mahasiswa
+    $nilai_query = "SELECT nilai FROM ujian WHERE id_mahasiswa = :id_mahasiswa";
+    $nilai_stmt = $conn->prepare($nilai_query);
+    $nilai_stmt->execute([':id_mahasiswa' => $id_mahasiswa]);
+    $nilai_row = $nilai_stmt->fetch(PDO::FETCH_ASSOC);
+
+    $nilai = $nilai_row ? $nilai_row['nilai'] : 'Belum ada nilai';
+  } else {
+    $nim = 'K3522068';
+    $nama = 'Nama Default';
+    $prodi = 'PRODI';
+    $nilai = 'Belum ada nilai';
+  }
+
+  // For debugging - can be removed in production
+  if (isset($id_mahasiswa)) {
+    echo "<!-- Debug info: id_mahasiswa = " . htmlspecialchars($id_mahasiswa) . " -->";
+  }
+} catch (PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
+  die();
 }
 ?>
 
@@ -112,7 +133,7 @@ if ($row) {
               </div>
               <!-- Garis pembatas -->
               <div style="border-top: 1px solid #ddd; margin: 10px 0;"></div>
-              <a class="dropdown-item" href="../../login.php">
+              <a class="dropdown-item" href="../../index.php">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
@@ -195,7 +216,7 @@ if ($row) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../../login.php">
+            <a class="nav-link" href="../../index.php">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Log Out</span>
             </a>
@@ -205,58 +226,36 @@ if ($row) {
       <!-- MAIN-->
       <div class="main-panel">
         <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-12 grid-margin">
-              <h3 style="margin-bottom: 15px;">Welcome <span class="text-primary"><?php echo htmlspecialchars($nama); ?></span></h3>
-              <h6>NIM: <?php echo htmlspecialchars($nim); ?></h6>
-            </div>
-          </div>
           <div class="container">
             <h1>Data Ujian</h1>
+            <div class="info-box">
+              <p>
+                <span class="label" style="font-size: 18px; font-weight: bold;">Nama Mahasiswa:</span>
+                <span class="value" style="font-size: 18px;"><?php echo htmlspecialchars($nama); ?></span>
+              </p>
+              <p>
+                <span class="label" style="font-size: 18px; font-weight: bold;">NIM:</span>
+                <span class="value" style="font-size: 18px;"><?php echo htmlspecialchars($nim); ?></span>
+              </p>
+              <p>
+                <span class="label" style="font-size: 18px; font-weight: bold;">Program Studi:</span>
+                <span class="value" style="font-size: 18px;"><?php echo htmlspecialchars($prodi); ?></span>
+              </p>
+            </div>
 
-            <?php
-            // Include your existing connection file
-            require_once('../../config/connection.php');
-
-            // Buat koneksi baru karena koneksi sebelumnya sudah ditutup
-            $conn = new mysqli($host, $username, $password, $database);
-
-            // Cek koneksi
-            if ($conn->connect_error) {
-              die("Connection failed: " . $conn->connect_error);
-            }
-
-            // Sesuaikan query dengan struktur tabel Anda
-            $nim = ""; // Isi dengan NIM mahasiswa yang sedang login
-            $sql = "SELECT nama, nim, nilai FROM nama_tabel WHERE nim = '$nim'";
-            $result = $conn->query($sql);
-
-            if ($result && $result->num_rows > 0) {
-              $data = $result->fetch_assoc();
-            ?>
-              <div class="info-box">
-                <p><span class="label">Nama Mahasiswa:</span> <?php echo htmlspecialchars($data['nama']); ?></p>
-                <p><span class="label">NIM:</span> <?php echo htmlspecialchars($data['nim']); ?></p>
+            <div class="result-box">
+              <h2>Hasil Ujian Online Anda</h2>
+              <div class="score">
+                <?php
+                if ($nilai !== 'Belum ada nilai') {
+                  echo htmlspecialchars($nilai);
+                } else {
+                  echo "Belum ada nilai";
+                }
+                ?>
               </div>
-
-              <div class="result-box">
-                <h2>Hasil Ujian Online Anda</h2>
-                <div class="score">
-                  <?php echo htmlspecialchars($data['nilai']); ?>
-                </div>
-              </div>
-            <?php
-            } else {
-              echo "<div class='info-box'>
-                    <p>Nilai belum tersedia. Silakan cek kembali nanti.</p>
-                  </div>";
-            }
-
-            // Tutup koneksi
-            $conn->close();
-            ?>
+            </div>
           </div>
-
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
           <footer class="footer" style="display: flex;">
@@ -271,7 +270,38 @@ if ($row) {
       <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
+    <style>
+      .container {
+        margin-bottom: 100px;
+      }
 
+      .info-box {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      .result-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .score {
+        font-size: 48px;
+        color: #4B49AC;
+        font-weight: bold;
+        margin: 20px 0;
+      }
+
+      .label {
+        font-weight: bold;
+        color: #4B49AC;
+      }
+    </style>
     <!-- plugins:js -->
     <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
