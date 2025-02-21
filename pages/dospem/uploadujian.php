@@ -6,7 +6,7 @@ ob_start();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Upload Laporan TA</title>
+    <title>Upload File</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -105,7 +105,7 @@ try {
         $nama_mahasiswa = $stmt_nama->fetchColumn();
 
         // Create notification
-        $message = "File Laporan TA Ujian telah di upload oleh siswa " . $nama_mahasiswa . ".";
+        $message = "File Seminar Proposal telah di upload oleh siswa " . $nama_mahasiswa . ".";
         $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status) VALUES (?, ?, ?, 'unread')";
         $stmt_notify = $conn->prepare($notification_sql);
         $stmt_notify->execute([$id_dosen, $id_mahasiswa, $message]);
