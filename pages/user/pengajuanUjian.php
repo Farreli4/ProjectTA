@@ -164,7 +164,7 @@ function areAllDocumentsVerified($nama_mahasiswa, $id)
                             </div>
                             <!-- Garis pembatas -->
                             <div style="border-top: 1px solid #ddd; margin: 10px 0;"></div>
-                            <a class="dropdown-item" href="../../login.php">
+                            <a class="dropdown-item" href="../../index.php">
                                 <i class="ti-power-off text-primary"></i>
                                 Logout
                             </a>
@@ -248,7 +248,7 @@ function areAllDocumentsVerified($nama_mahasiswa, $id)
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../login.php">
+                        <a class="nav-link" href="../../index.php">
                             <i class="icon-head menu-icon"></i>
                             <span class="menu-title">Log Out</span>
                         </a>
