@@ -50,7 +50,7 @@ function checkTAVerificationStatus($nama_mahasiswa)
             bukti_pembayaran_ta,
             bukti_transkip_nilai_ta,
             bukti_kelulusan_magang_ta
-        FROM tugas_akhir 
+        FROM verifikasi_dokumen
         WHERE id_mahasiswa = :id";
 
         $stmt = $conn->prepare($sql);
@@ -89,7 +89,7 @@ function checkSeminarDocsVerification($nama_mahasiswa)
             form_pendaftaran_sempro_seminar,
             lembar_persetujuan_proposal_ta_seminar,
             buku_konsultasi_ta_seminar
-        FROM seminar_proposal 
+        FROM verifikasi_dokumen
         WHERE id_mahasiswa = :id";
 
         $stmt = $conn->prepare($sql);
@@ -174,7 +174,7 @@ function getDocumentStatus($nama_mahasiswa, $id, $document_type)
         $column = $columnMap[$document_type];
 
         // Step 1: Check verification status in tugas_akhir
-        $sql2 = "SELECT `$column` FROM seminar_proposal WHERE id_mahasiswa = :id";
+        $sql2 = "SELECT `$column` FROM verifikasi_dokumen WHERE id_mahasiswa = :id";
         $stmt2 = $conn->prepare($sql2);
         $stmt2->execute([':id' => $id]);
         $verify = $stmt2->fetch(PDO::FETCH_ASSOC);

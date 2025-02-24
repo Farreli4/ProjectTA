@@ -49,7 +49,7 @@ function getDocumentStatus($nama_mahasiswa, $id, $document_type)
     $column = $columnMap[$document_type];
 
     // Step 1: Check verification status in tugas_akhir
-    $sql2 = "SELECT `$column` FROM tugas_akhir WHERE id_mahasiswa = :id";
+    $sql2 = "SELECT `$column` FROM verifikasi_dokumen WHERE id_mahasiswa = :id";
     $stmt2 = $conn->prepare($sql2);
     $stmt2->execute([':id' => $id]);
     $verify = $stmt2->fetch(PDO::FETCH_ASSOC);

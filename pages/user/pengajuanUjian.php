@@ -1,7 +1,7 @@
 <?php
 session_start();
 $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
-$event = 'tugas_akhir';
+$event = 'ujian';
 
 try {
     $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
@@ -47,10 +47,11 @@ function checkTAVerificationStatus($nama_mahasiswa)
 
         // Check verification status for all required TA documents
         $sql = "SELECT 
-            form_pendaftaran_sempro_seminar,
-            lembar_persetujuan_proposal_ta_seminar,
-            buku_konsultasi_ta_seminar
-        FROM tugas_akhir 
+            form_pendaftaran_persetujuan_tema_ta,
+            bukti_pembayaran_ta,
+            bukti_transkip_nilai_ta,
+            bukti_kelulusan_magang_ta
+        FROM verifikasi_dokumen
         WHERE id_mahasiswa = :id";
 
         $stmt = $conn->prepare($sql);
@@ -86,12 +87,10 @@ function checkSeminarDocsVerification($nama_mahasiswa)
         $id = $result['id_mahasiswa'];
 
         $sql = "SELECT 
-            lembar_berita_acara_seminar,
-            lembar_persetujuan_laporan_ta_ujian,
-            form_pendaftaran_ujian_ta_ujian,
-            lembar_kehadiran_sempro_ujian,
-            buku_konsultasi_ta_ujian
-        FROM seminar_proposal 
+            form_pendaftaran_sempro_seminar,
+            lembar_persetujuan_proposal_ta_seminar,
+            buku_konsultasi_ta_seminar
+        FROM verifikasi_dokumen
         WHERE id_mahasiswa = :id";
 
         $stmt = $conn->prepare($sql);
@@ -178,7 +177,7 @@ function getDocumentStatus($nama_mahasiswa, $id, $document_type)
         $column = $columnMap[$document_type];
 
         // Step 1: Check verification status in tugas_akhir
-        $sql2 = "SELECT `$column` FROM ujian WHERE id_mahasiswa = :id";
+        $sql2 = "SELECT `$column` FROM verifikasi_dokumen WHERE id_mahasiswa = :id";
         $stmt2 = $conn->prepare($sql2);
         $stmt2->execute([':id' => $id]);
         $verify = $stmt2->fetch(PDO::FETCH_ASSOC);
@@ -206,10 +205,11 @@ function getDocumentStatus($nama_mahasiswa, $id, $document_type)
 function areAllDocumentsVerified($nama_mahasiswa, $id)
 {
     $documents = [
-        'Form Pendaftaran dan Persetujuan Tema',
-        'Bukti Pembayaran',
-        'Bukti Transkrip Nilai',
-        'Bukti Lulus Mata kuliah Magang / PI'
+        'Lembar Persetujuan Laporan Tugas Akhir',
+        'Formulir Pendaftaran Ujian Tugas Akhir',
+        'Lembar Kehadiran Seminar Proposal',
+        'Buku Konsultasi Tugas Akhir',
+        'Berita Acara'
     ];
 
     foreach ($documents as $doc) {

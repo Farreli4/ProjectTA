@@ -7,7 +7,7 @@ try {
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   // Get student info
-  $check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
+  $check = "SELECT id_mahasiswa, nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
   $checkNim = $conn->prepare($check);
   $checkNim->execute([':nama' => $nama_mahasiswa]);
   $row = $checkNim->fetch(PDO::FETCH_ASSOC);
@@ -16,6 +16,7 @@ try {
     $nim = $row['nim'];
     $nama = $row['nama_mahasiswa'];
     $prodi = $row['prodi'];
+    $id = $row['id_mahasiswa'];
   } else {
     $nim = 'K3522068';
     $nama = 'Nama Default';
@@ -45,12 +46,11 @@ function checkTAVerificationStatus($nama_mahasiswa)
 
     // Check verification status for all required TA documents
     $sql = "SELECT 
-            lembar_berita_acara_seminar,
-            lembar_persetujuan_laporan_ta_ujian,
-            form_pendaftaran_ujian_ta_ujian,
-            lembar_kehadiran_sempro_ujian,
-            buku_konsultasi_ta_ujian
-      FROM tugas_akhir 
+            form_pendaftaran_persetujuan_tema_ta,
+            bukti_pembayaran_ta,
+            bukti_transkip_nilai_ta,
+            bukti_kelulusan_magang_ta
+      FROM verifikasi_dokumen
       WHERE id_mahasiswa = :id";
 
     $stmt = $conn->prepare($sql);
@@ -86,9 +86,10 @@ function checkSeminarDocsVerification($nama_mahasiswa)
     $id = $result['id_mahasiswa'];
 
     $sql = "SELECT 
-          lembar_hasil_nilai_dosbim1_nilai,
-          lembar_hasil_nilai_dosbim2_nilai
-      FROM seminar_proposal 
+            form_pendaftaran_sempro_seminar,
+            lembar_persetujuan_proposal_ta_seminar,
+            buku_konsultasi_ta_seminar
+      FROM verifikasi_dokumen
       WHERE id_mahasiswa = :id";
 
     $stmt = $conn->prepare($sql);
@@ -106,6 +107,47 @@ function checkSeminarDocsVerification($nama_mahasiswa)
   }
 }
 
+function checkUjianVerificationStatus($nama_mahasiswa)
+{
+  try {
+    $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Get student ID first
+    $stmt = $conn->prepare("SELECT id_mahasiswa FROM mahasiswa WHERE username = :nama");
+    $stmt->execute([':nama' => $nama_mahasiswa]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$result) {
+      return false;
+    }
+
+    $id = $result['id_mahasiswa'];
+
+    // Check verification status for all required TA documents
+    $sql = "SELECT 
+            lembar_berita_acara_seminar,
+            lembar_persetujuan_laporan_ta_ujian,
+            form_pendaftaran_ujian_ta_ujian,
+            lembar_kehadiran_sempro_ujian,
+            buku_konsultasi_ta_ujian
+      FROM verifikasi_dokumen
+      WHERE id_mahasiswa = :id";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([':id' => $id]);
+    $verificationStatus = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($verificationStatus) {
+      return array_sum($verificationStatus) === count($verificationStatus);
+    }
+
+    return false;
+  } catch (PDOException $e) {
+    error_log("Error checking TA verification: " . $e->getMessage());
+    return false;
+  }
+}
 // Add restriction check based on page
 $currentPage = basename($_SERVER['PHP_SELF']);
 
@@ -148,13 +190,50 @@ if ($currentPage === 'pengajuanSeminar.php') {
         });
       });
     </script>
+  <?php
+    exit();
+  }
+} else if ($currentPage === 'pengajuanNilai.php') {
+  if (!checkTAVerificationStatus($nama_mahasiswa) || !checkSeminarDocsVerification($nama_mahasiswa) || !checkUjianVerificationStatus($nama_mahasiswa)) {
+  ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Perhatian!',
+          text: 'Pastikan Semua dokumen pada page pengajuan Ujian terverifikasi, lalu submit pengajuan terlebih dahulu.',
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = 'pengajuanUjian.php';
+          }
+        });
+      });
+    </script>
 <?php
     exit();
   }
-} 
+}
 
+function areAllDocumentsVerified($nama_mahasiswa, $id)
+{
+  $documents = [
+    'Form Pendaftaran Seminar Proposal',
+    'Lembar Persetujuan Proposal Tugas Akhir',
+    'Buku Konsultasi Tugas Akhir'
+  ];
+
+  foreach ($documents as $doc) {
+    $status = getDocumentStatus($nama_mahasiswa, $id, $doc);
+    if ($status !== 'Terverifikasi') {
+      return false;
+    }
+  }
+  return true;
+}
 // Function to get document status
-function getDocumentStatus($nama_mahasiswa, $document_type)
+function getDocumentStatus($nama_mahasiswa, $id, $document_type)
 {
   try {
     $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
@@ -171,14 +250,28 @@ function getDocumentStatus($nama_mahasiswa, $document_type)
 
     $column = $columnMap[$document_type];
 
+    // Check verification status in seminar_proposal table
+    $sql2 = "SELECT `$column` FROM verifikasi_dokumen WHERE id_mahasiswa = :id";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->execute([':id' => $id]);
+    $verify = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+    if ($verify && $verify[$column] == 1) {
+      return 'Terverifikasi'; // Document is verified
+    }
+
     $sql = "SELECT `$column` FROM mahasiswa WHERE username = :nama";
     $stmt = $conn->prepare($sql);
     $stmt->execute([':nama' => $nama_mahasiswa]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    return $result && $result[$column] !== null ? 'Menunggu Verifikasi' : 'Belum Upload';
+    if ($result && !empty($result[$column])) {
+      return 'Menunggu Verifikasi'; // File exists but not verified
+    }
+
+    return 'Belum Upload'; // No file uploaded
   } catch (PDOException $e) {
-    return 'Error';
+    return 'Error: ' . $e->getMessage();
   }
 }
 ?>
@@ -379,7 +472,7 @@ function getDocumentStatus($nama_mahasiswa, $document_type)
                     ];
 
                     foreach ($documents as $doc) {
-                      $status = getDocumentStatus($nama_mahasiswa, $doc);
+                      $status = getDocumentStatus($nama_mahasiswa, $id, $doc);
                       $statusClass = '';
 
                       switch ($status) {
