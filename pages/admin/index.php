@@ -10,7 +10,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>Dashboard Admin</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="../../Template/skydash/vendors/feather/feather.css">
   <link rel="stylesheet" href="../../Template/skydash/vendors/ti-icons/css/themify-icons.css">
@@ -25,7 +25,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+  <link rel="shortcut icon" href="../../assets/img/Logo.webp" />
 
   <link rel="stylesheet" type="text/css" href="../../assets/css/css/admin/dashboard.css">
   <link rel="stylesheet" href="../../assets/css/css/admin/dashboard.css">

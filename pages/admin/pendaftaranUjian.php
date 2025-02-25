@@ -22,7 +22,7 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>Pendaftaran Ujian</title>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- plugins:css -->
@@ -36,7 +36,7 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
   <!-- inject:css -->
   <link rel="stylesheet" href="../../Template/skydash/css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="../../Template/skydash/images/favicon.png" />
+  <link rel="shortcut icon" href="../../assets/img/Logo.webp" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   <link rel="stylesheet" type="text/css" href="../../assets/css/css/admin/dosen.css">
   <link rel="stylesheet" href="../../assets/css/css/admin/dosen.css">
