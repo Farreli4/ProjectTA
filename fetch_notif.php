@@ -16,7 +16,7 @@ if (isset($_SESSION['username'])) {
         // If it's a dosen_pembimbing, fetch notifications for that user
         if ($rowDosen) {
             $user_id = $rowDosen['id_dosen'];
-            $sql = "SELECT id, message, created_at FROM notif WHERE id_dosen = :user_id AND status = 'unread'";
+            $sql = "SELECT id, message, created_at FROM notif WHERE id_dosen = :user_id AND status_dosen = 'unread'";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['user_id' => $user_id]);
             $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -36,13 +36,13 @@ if (isset($_SESSION['username'])) {
 
             if ($rowMahasiswa) {
                 $user_id = $rowMahasiswa['id_mahasiswa'];
-                $sql = "SELECT id, message, created_at FROM notif WHERE id_mahasiswa = :user_id AND status = 'unread'";
+                $sql = "SELECT id, message, created_at FROM notif WHERE id_mahasiswa = :user_id AND status_mahasiswa = 'unread'";
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute(['user_id' => $user_id]);
                 $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 if (empty($notifications)) {
-                    echo json_encode(['message' => $user_id]);
+                    echo json_encode(['message' => 'No unread notifications for dosen_pembimbing']);
                 } else {
                     echo json_encode($notifications);
                 }
