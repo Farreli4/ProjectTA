@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2025 at 03:47 AM
+-- Generation Time: Feb 25, 2025 at 04:14 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -145,7 +145,8 @@ CREATE TABLE `mahasiswa_dosen` (
 
 INSERT INTO `mahasiswa_dosen` (`id_mahasiswa`, `id_dosen`) VALUES
 (1, 1),
-(2, 1);
+(2, 1),
+(3, 6);
 
 -- --------------------------------------------------------
 
@@ -159,9 +160,19 @@ CREATE TABLE `notif` (
   `id_dosen` int(11) DEFAULT NULL,
   `id_mahasiswa` int(11) DEFAULT NULL,
   `message` text DEFAULT NULL,
-  `status` enum('unread','read') DEFAULT 'unread',
+  `status_admin` enum('unread','read') NOT NULL DEFAULT 'unread',
+  `status_dosen` enum('unread','read') NOT NULL DEFAULT 'unread',
+  `status_mahasiswa` enum('unread','read') NOT NULL DEFAULT 'unread',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notif`
+--
+
+INSERT INTO `notif` (`id`, `admin`, `id_dosen`, `id_mahasiswa`, `message`, `status_admin`, `status_dosen`, `status_mahasiswa`, `created_at`) VALUES
+(1, NULL, 6, 3, 'Pengajuan tugas akhir milik Nur dikembalikan lagi karena johnson maem', 'unread', 'unread', 'unread', '2025-02-25 02:49:07'),
+(2, NULL, 1, 1, 'Status ujian untuk mahasiswa Rai telah diperbarui.', 'unread', 'unread', 'unread', '2025-02-25 03:02:19');
 
 -- --------------------------------------------------------
 
@@ -230,7 +241,7 @@ CREATE TABLE `tugas_akhir` (
 INSERT INTO `tugas_akhir` (`id_mahasiswa`, `id_ta`, `tema`, `judul`, `alasan`, `tujuan`, `file_ta`, `status_pengajuan`, `alasan_revisi`, `status_tanggapan`, `tanggal_pengajuan`, `tanggal_disetujui`, `dosen_pembimbing`, `form_pendaftaran_persetujuan_tema_ta`, `bukti_pembayaran_ta`, `bukti_transkip_nilai_ta`, `bukti_kelulusan_magang_ta`, `create_at`) VALUES
 (1, 5, '', '', '', '', '', 'Revisi', 'belum maem', 0, '0000-00-00', '0000-00-00', 'dosen_1', 1, 1, 1, 1, '2025-02-21 08:53:03'),
 (2, 6, '', '', '', '', '', 'Ditolak', '', 0, '0000-00-00', '0000-00-00', '1', 0, 0, 0, 0, '2025-02-12 00:35:49'),
-(3, 7, '', '', '', '', '', 'Revisi', '', 0, '0000-00-00', '0000-00-00', '', 0, 0, 0, 0, '2025-02-07 04:02:17'),
+(3, 7, '', '', '', '', '', 'Revisi', 'johnson maem', 0, '0000-00-00', '0000-00-00', '6', 0, 0, 0, 0, '2025-02-25 02:49:07'),
 (4, 8, '', '', '', '', '', 'Disetujui', '', 0, '0000-00-00', '0000-00-00', '', 0, 0, 0, 0, '2025-02-07 04:01:46');
 
 -- --------------------------------------------------------
@@ -263,7 +274,7 @@ CREATE TABLE `ujian` (
 --
 
 INSERT INTO `ujian` (`id_mahasiswa`, `id_ujian`, `pernyataan_persetujuan`, `tanggal_disetujui`, `tanggal_ujian`, `pembimbing`, `lbta`, `penguji`, `nilai`, `status_ujian`, `lembar_persetujuan_laporan_ta_ujian`, `form_pendaftaran_ujian_ta_ujian`, `lembar_kehadiran_sempro_ujian`, `buku_konsultasi_ta_ujian`, `lembar_hasil_nilai_dosbim1_nilai`, `lembar_hasil_nilai_dosbim2_nilai`) VALUES
-(1, 0, NULL, NULL, '2025-01-24', NULL, NULL, NULL, NULL, 'dijadwalkan', 0, 0, 0, 0, 0, 0);
+(1, 0, NULL, NULL, '2025-01-24', NULL, NULL, NULL, 90, 'dijadwalkan', 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -379,7 +390,7 @@ ALTER TABLE `mahasiswa`
 -- AUTO_INCREMENT for table `notif`
 --
 ALTER TABLE `notif`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tugas_akhir`
