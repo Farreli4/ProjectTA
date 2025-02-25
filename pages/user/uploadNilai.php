@@ -36,6 +36,47 @@ function checkTAFilesStatus($nama_mahasiswa)
     return true; // Semua file sudah diupload
 }
 
+function checkUjianVerificationStatus($nama_mahasiswa)
+{
+  try {
+    $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Get student ID first
+    $stmt = $conn->prepare("SELECT id_mahasiswa FROM mahasiswa WHERE username = :nama");
+    $stmt->execute([':nama' => $nama_mahasiswa]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$result) {
+      return false;
+    }
+
+    $id = $result['id_mahasiswa'];
+
+    // Check verification status for all required TA documents
+    $sql = "SELECT 
+            lembar_berita_acara_seminar,
+            lembar_persetujuan_laporan_ta_ujian,
+            form_pendaftaran_ujian_ta_ujian,
+            lembar_kehadiran_sempro_ujian,
+            buku_konsultasi_ta_ujian
+      FROM verifikasi_dokumen
+      WHERE id_mahasiswa = :id";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([':id' => $id]);
+    $verificationStatus = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($verificationStatus) {
+      return array_sum($verificationStatus) === count($verificationStatus);
+    }
+
+    return false;
+  } catch (PDOException $e) {
+    error_log("Error checking TA verification: " . $e->getMessage());
+    return false;
+  }
+}
 
 // Mengubah query untuk mengambil nim dan nama_mahasiswa
 $check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
@@ -57,9 +98,13 @@ if ($row) {
 }
 // Proses upload file jika ada
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
-    $file = $_FILES['file_upload'];
-    $fileType = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    $fileCategory = $_POST['file_type'] ?? '';
+    // Cek apakah semua dokumen TA telah terverifikasi
+    if (!checkUjianVerificationStatus($nama_mahasiswa)) {
+        showNotification('error', 'Maaf, semua dokumen Ujian harus terverifikasi sebelum Anda dapat mengunggah dokumen nilai.');
+    } else {
+        $file = $_FILES['file_upload'];
+        $fileType = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $fileCategory = $_POST['file_type'] ?? '';
 
     // Format nama file
     $newFileName = $nama_mahasiswa . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
@@ -127,6 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
     } catch (Exception $e) {
         showNotification('error', 'Error: ' . $e->getMessage());
     }
+}
 }
 
 // Fungsi untuk mendapatkan status file dari database
@@ -611,14 +657,14 @@ $driveLinks = [
         </style>
 
         <?php
-        if (!checkTAFilesStatus($nama_mahasiswa)) {
+        if (!checkTAFilesStatus($nama_mahasiswa) || !checkUjianVerificationStatus($nama_mahasiswa)) {
         ?>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Perhatian!',
-                        text: 'Silakan lengkapi semua dokumen pada Upload Ujian terlebih dahulu.',
+                        text: 'Silakan lengkapi semua dokumen pada Upload Ujian terlebih dahulu dan pastikan dokumen tersebut terverfikasi di page pengajuan ujian.',
                         confirmButtonText: 'OK',
                         customClass: {
                             popup: 'custom-popup', // Class untuk modal

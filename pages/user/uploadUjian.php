@@ -33,6 +33,44 @@ function checkTAFilesStatus($nama_mahasiswa)
     return true; // Semua file sudah diupload
 }
 
+function checkSeminarDocsVerification($nama_mahasiswa)
+{
+    try {
+        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $conn->prepare("SELECT id_mahasiswa FROM mahasiswa WHERE username = :nama");
+        $stmt->execute([':nama' => $nama_mahasiswa]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return false;
+        }
+
+        $id = $result['id_mahasiswa'];
+
+        $sql = "SELECT 
+            form_pendaftaran_sempro_seminar,
+            lembar_persetujuan_proposal_ta_seminar,
+            buku_konsultasi_ta_seminar,
+            lembar_berita_acara_seminar
+        FROM verifikasi_dokumen
+        WHERE id_mahasiswa = :id";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        $verificationStatus = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($verificationStatus) {
+            return array_sum($verificationStatus) === count($verificationStatus);
+        }
+
+        return false;
+    } catch (PDOException $e) {
+        error_log("Error checking seminar verification: " . $e->getMessage());
+        return false;
+    }
+}
 
 // Mengubah query untuk mengambil nim dan nama_mahasiswa
 $check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
@@ -54,9 +92,13 @@ if ($row) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
-    $file = $_FILES['file_upload'];
-    $fileType = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    $fileCategory = $_POST['file_type'] ?? '';
+    // Cek apakah semua dokumen TA telah terverifikasi
+    if (!checkSeminarDocsVerification($nama_mahasiswa)) {
+        showNotification('error', 'Maaf, semua dokumen Seminar harus terverifikasi sebelum Anda dapat mengunggah dokumen ujian.');
+    } else {
+        $file = $_FILES['file_upload'];
+        $fileType = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $fileCategory = $_POST['file_type'] ?? '';
 
     $newFileName = $nama_mahasiswa . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
 
@@ -133,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         showNotification('error', 'Error: ' . $e->getMessage());
     }
 }
-
+}
 // Fungsi untuk mendapatkan status file dari database
 function getFileStatus($nama_mahasiswa, $tipe_file)
 {
@@ -612,14 +654,14 @@ $driveLinks = [
 
 
         <?php
-        if (!checkTAFilesStatus($nama_mahasiswa)) {
+        if (!checkTAFilesStatus($nama_mahasiswa) || !checkSeminarDocsVerification($nama_mahasiswa)) {
         ?>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Perhatian!',
-                        text: 'Silakan lengkapi semua dokumen pada Upload Seminar dan Upload Berita Acara terlebih dahulu.',
+                        text: 'Silakan lengkapi semua dokumen pada Upload Seminar dan Upload Berita Acara terlebih dahulu dan pastikan dokumen tersebut terverfikasi di page pengajuan seminar.',
                         confirmButtonText: 'OK',
                         customClass: {
                             popup: 'custom-popup', // Class untuk modal
