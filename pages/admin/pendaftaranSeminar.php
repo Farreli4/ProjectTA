@@ -110,52 +110,106 @@
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item dropdown">
+        <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
-              <span class="count"></span>
+              <span class="count" id="notificationCount"></span> 
+              <!-- Notification count here -->
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-success">
-                    <i class="ti-info-alt mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Application Error</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="ti-settings mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Settings</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="ti-user mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
+            <div id="notifications">
+            <script>
+              function fetchNotifications() {
+                $.ajax({
+                  url: '../../fetch_notif.php',
+                  method: 'GET',
+                  success: function(data) {
+                    const notifications = JSON.parse(data);
+                    const notificationCount = $('#notificationCount');
+                    const notificationList = $('#notifications');
+                          
+                    notificationCount.text(notifications.length);
+                    notificationList.empty();
+
+                    if (notifications.length === 0 || notifications.message === 'No unread notifications') {
+                      notificationList.append(`
+                        <a class="dropdown-item preview-item">
+                          <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal"></h6>
+                          </div>
+                        </a>
+                      `);
+                    } else {
+                      notifications.forEach(function(notification) {
+                      const notificationItem = `
+                        <a class="dropdown-item preview-item" data-notification-id="${notification.id}">
+                          <div class="preview-thumbnail">
+                            <div class="preview-icon bg-info">
+                              <i class="ti-info-alt mx-0"></i>
+                            </div>
+                          </div>
+                          <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal">${notification.message}</h6>
+                            <p class="font-weight-light small-text mb-0 text-muted">${timeAgo(notification.created_at)}</p>
+                          </div>
+                        </a>
+                        `;
+                        notificationList.append(notificationItem);
+                      });
+                    }
+                  },
+                error: function() {
+                  console.log("Error fetching notifications.");
+                }
+              });
+            }
+
+              function timeAgo(time) {
+                const timeAgo = new Date(time);
+                const currentTime = new Date();
+                const diffInSeconds = Math.floor((currentTime - timeAgo) / 1000);
+
+                if (diffInSeconds < 60) {
+                  return `${diffInSeconds} seconds ago`;
+                }
+                const diffInMinutes = Math.floor(diffInSeconds / 60);
+                if (diffInMinutes < 60) {
+                  return `${diffInMinutes} minutes ago`;
+                }
+                const diffInHours = Math.floor(diffInMinutes / 60);
+                if (diffInHours < 24) {
+                  return `${diffInHours} hours ago`;
+                }
+                const diffInDays = Math.floor(diffInHours / 24);
+                return `${diffInDays} days ago`;
+            }
+
+              $(document).on('click', '.dropdown-item', function() {
+                const notificationId = $(this).data('notification-id');
+                markNotificationAsRead(notificationId);
+              });
+
+              function markNotificationAsRead(notificationId) {
+                $.ajax({
+                  url: '../../mark_read.php',
+                  method: 'POST',
+                  data: { id: notificationId },
+                  success: function(response) {
+                  console.log(response);
+                  fetchNotifications();
+                },
+                error: function() {
+                  console.log("Error marking notification as read.");
+                }
+              });
+            }
+
+            $(document).ready(function() {
+              fetchNotifications();
+              setInterval(fetchNotifications, 30000);
+            });
+          </script>
+              </div>
             </div>
           </li>
           <li class="nav-item nav-profile dropdown">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2025 at 04:14 AM
+-- Generation Time: Feb 25, 2025 at 05:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,6 +35,13 @@ CREATE TABLE `admin` (
   `nomor_telepon` varchar(25) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `nama_admin`, `username`, `password`, `nomor_telepon`, `create_at`) VALUES
+(1, 'admin', 'admin', 'admin', '0867384628', '2025-02-25 04:05:10');
 
 -- --------------------------------------------------------
 
@@ -171,8 +178,9 @@ CREATE TABLE `notif` (
 --
 
 INSERT INTO `notif` (`id`, `admin`, `id_dosen`, `id_mahasiswa`, `message`, `status_admin`, `status_dosen`, `status_mahasiswa`, `created_at`) VALUES
-(1, NULL, 6, 3, 'Pengajuan tugas akhir milik Nur dikembalikan lagi karena johnson maem', 'unread', 'unread', 'unread', '2025-02-25 02:49:07'),
-(2, NULL, 1, 1, 'Status ujian untuk mahasiswa Rai telah diperbarui.', 'unread', 'unread', 'unread', '2025-02-25 03:02:19');
+(1, 1, 6, 3, 'Pengajuan tugas akhir milik Nur dikembalikan lagi karena johnson maem', 'read', 'unread', 'unread', '2025-02-25 02:49:07'),
+(2, 1, 1, 1, 'Status ujian untuk mahasiswa Rai telah diperbarui.', 'read', 'unread', 'unread', '2025-02-25 03:02:19'),
+(3, NULL, NULL, 1, 'File lembar_persetujuan_laporan_ta_ujian untuk mahasiswa Rai telah diverifikasi.', 'read', 'unread', 'unread', '2025-02-25 03:54:45');
 
 -- --------------------------------------------------------
 
@@ -301,6 +309,13 @@ CREATE TABLE `verifikasi_dokumen` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `verifikasi_dokumen`
+--
+
+INSERT INTO `verifikasi_dokumen` (`id_mahasiswa`, `bukti_pembayaran_TA`, `bukti_transkip_nilai_TA`, `bukti_kelulusan_magang_TA`, `form_pendaftaran_persetujuan_tema_TA`, `form_pendaftaran_sempro_seminar`, `lembar_persetujuan_proposal_ta_seminar`, `buku_konsultasi_ta_seminar`, `lembar_berita_acara_seminar`, `lembar_persetujuan_laporan_ta_ujian`, `form_pendaftaran_ujian_ta_ujian`, `lembar_kehadiran_sempro_ujian`, `buku_konsultasi_ta_ujian`, `lembar_hasil_nilai_dosbim1_nilai`, `lembar_hasil_nilai_dosbim2_nilai`) VALUES
+(1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -362,7 +377,7 @@ ALTER TABLE `ujian`
 -- Indexes for table `verifikasi_dokumen`
 --
 ALTER TABLE `verifikasi_dokumen`
-  ADD PRIMARY KEY (`id_mahasiswa`);
+  ADD KEY `fk_verifikasi_mahasiswa` (`id_mahasiswa`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -372,7 +387,7 @@ ALTER TABLE `verifikasi_dokumen`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `dosen_pembimbing`
@@ -390,7 +405,7 @@ ALTER TABLE `mahasiswa`
 -- AUTO_INCREMENT for table `notif`
 --
 ALTER TABLE `notif`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tugas_akhir`
@@ -438,7 +453,7 @@ ALTER TABLE `ujian`
 -- Constraints for table `verifikasi_dokumen`
 --
 ALTER TABLE `verifikasi_dokumen`
-  ADD CONSTRAINT `idonid` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_verifikasi_mahasiswa` FOREIGN KEY (`id_mahasiswa`) REFERENCES `mahasiswa` (`id_mahasiswa`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

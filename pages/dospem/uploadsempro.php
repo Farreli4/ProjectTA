@@ -36,7 +36,7 @@ try {
                     window.history.back();
                 });
                 </script>";
-            exit();
+            
         }
 
         // Proses file
