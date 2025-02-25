@@ -824,7 +824,6 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
 
 </script>
 
-
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
