@@ -23,6 +23,8 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Skydash Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <!-- plugins:css -->
   <link rel="stylesheet" href="../../Template/skydash/vendors/feather/feather.css">
   <link rel="stylesheet" href="../../Template/skydash/vendors/ti-icons/css/themify-icons.css">
@@ -810,15 +812,39 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
     let userId = $(this).data("userid");
     let event = $(this).data("event");
     let column = $(this).data("column");
+    let button = $(this);
 
-    $(this).prop("disabled", true).text("Verifying...");
+    Swal.fire({
+        title: "Konfirmasi Verifikasi",
+        text: "Apakah Anda yakin ingin memverifikasi dokumen ini?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Verifikasi!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            button.prop("disabled", true).text("Verifying...");
 
-    $.post("verify.php", { userId: userId, event: event, column: column }, function (response) {
-        console.log(response);
-        alert("Verification successful!");
-        location.reload();
-    }).fail(function (xhr) {
-        console.error("Error:", xhr.responseText);
+            $.post("verify.php", { userId: userId, event: event, column: column }, function (response) {
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: "Dokumen telah diverifikasi.",
+                    icon: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
+                });
+            }).fail(function (xhr) {
+                Swal.fire({
+                    title: "Gagal!",
+                    text: "Terjadi kesalahan dalam verifikasi.",
+                    icon: "error"
+                });
+                button.prop("disabled", false).text("Verify");
+            });
+        }
     });
 });
 

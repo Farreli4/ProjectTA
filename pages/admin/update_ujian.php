@@ -104,7 +104,7 @@ if (isset($_POST['id_mahasiswa'], $_POST['status_ujian'], $_POST['nilai'], $_POS
 
     // Tambahkan notifikasi ke dosen
     $message = "Status ujian untuk mahasiswa " . $nama_mahasiswa . " telah diperbarui.";
-    $notif_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status) VALUES (?, ?, ?, 'unread')";
+    $notif_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status_dosen, status_mahasiswa) VALUES (?, ?, ?, 'unread', 'unread')";
     $stmt_notify = $conn->prepare($notif_sql);
     $stmt_notify->bind_param("iis", $id_dosen, $id_mahasiswa, $message);
 

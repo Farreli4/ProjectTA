@@ -832,7 +832,7 @@
           $("#popup").hide();
       });
           
-
+      // Pop Up Verifikasi
       $(document).off("click", ".verify-btn").on("click", ".verify-btn", function (e) {
     e.preventDefault(); 
 

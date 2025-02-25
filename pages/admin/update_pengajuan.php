@@ -140,7 +140,7 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset(
         $message = "Pengajuan tugas akhir milik ". $nama_mahasiswa . " dikembalikan lagi karena $alasan_revisi";
     }
 
-    $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status) VALUES (?, ?, ?, 'unread')";
+    $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status_dosen, status_admin) VALUES (?, ?, ?, 'unread', 'unread')";
     $stmt_notify = $conn->prepare($notification_sql);
     if (!$stmt_notify) {
         die("Error preparing notification query: " . $conn->error);

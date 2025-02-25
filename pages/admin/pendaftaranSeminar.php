@@ -7,6 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Skydash Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- plugins:css -->
   <link rel="stylesheet" href="../../Template/skydash/vendors/feather/feather.css">
   <link rel="stylesheet" href="../../Template/skydash/vendors/ti-icons/css/themify-icons.css">
@@ -725,19 +726,30 @@
                   </div>
               </div>
           </div>
-                
-            </div>
         </div>
 
+        <!--Pop Up Dokumen-->
         <div id="popup" class="popup">
           <div class="popup-content">
               <span class="close-btn">&times;</span>
-              <h2>Documents</h2>
-              <div id="popup-content">
+              <h3>Dokumen</h3>
+              <div class="table-responsive">
+                  <table class="popup-table">
+                      <thead>
+                          <tr>
+                              <th>Keterangan</th>
+                              <th>Dokumen</th>
+                              <th>Aksi</th>
+                          </tr>
+                      </thead>
+                      <tbody id="popup-content">
+
+                      </tbody>
+                  </table>
               </div>
           </div>
       </div>
-      </div>
+
       
 
         <script>
@@ -756,29 +768,6 @@
             document.getElementById("myModal").style.display = "none";
         };
     }
-
-    // Change select background color
-    function changeSelectColor(selectElement) {
-        var selectedValue = selectElement.value;
-
-        if (selectedValue === "dijadwalkan") {
-            selectElement.style.backgroundColor = "rgb(255, 251, 0)";
-        } else if (selectedValue === "ditunda") {
-            selectElement.style.backgroundColor = "rgb(255, 99, 71)";
-        } else if (selectedValue === "selesai") {
-            selectElement.style.backgroundColor = "rgb(34, 139, 34)";
-        }
-    }
-
-    document.querySelectorAll("select[name='status_ujian']").forEach(function (select) {
-        changeSelectColor(select);
-    });
-
-    document.addEventListener("change", function (event) {
-        if (event.target.matches("select[name='status_ujian']")) {
-            changeSelectColor(event.target);
-        }
-    });
 
     $(document).on("click", ".folder-btn", function () {
           let event = $(this).data("event");
@@ -811,18 +800,64 @@
     let userId = $(this).data("userid");
     let event = $(this).data("event");
     let column = $(this).data("column");
+    let button = $(this);
 
-    $(this).prop("disabled", true).text("Verifying...");
+    Swal.fire({
+        title: "Konfirmasi Verifikasi",
+        text: "Apakah Anda yakin ingin memverifikasi dokumen ini?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Verifikasi!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            button.prop("disabled", true).text("Verifying...");
 
-    $.post("verify.php", { userId: userId, event: event, column: column }, function (response) {
-        console.log(response);
-        alert("Verification successful!");
-        location.reload();
-    }).fail(function (xhr) {
-        console.error("Error:", xhr.responseText);
+            $.post("verify.php", { userId: userId, event: event, column: column }, function (response) {
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: "Dokumen telah diverifikasi.",
+                    icon: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
+                });
+            }).fail(function (xhr) {
+                Swal.fire({
+                    title: "Gagal!",
+                    text: "Terjadi kesalahan dalam verifikasi.",
+                    icon: "error"
+                });
+                button.prop("disabled", false).text("Verify");
+            });
+        }
     });
 });
 
+// Change select background color
+function changeSelectColor(selectElement) {
+        var selectedValue = selectElement.value;
+
+        if (selectedValue === "dijadwalkan") {
+            selectElement.style.backgroundColor = "rgb(255, 251, 0)";
+        } else if (selectedValue === "ditunda") {
+            selectElement.style.backgroundColor = "rgb(255, 99, 71)";
+        } else if (selectedValue === "selesai") {
+            selectElement.style.backgroundColor = "rgb(34, 139, 34)";
+        }
+    }
+
+    document.querySelectorAll("select[name='status_ujian']").forEach(function (select) {
+        changeSelectColor(select);
+    });
+
+    document.addEventListener("change", function (event) {
+        if (event.target.matches("select[name='status_ujian']")) {
+            changeSelectColor(event.target);
+        }
+    });
 
 </script>
 
@@ -830,14 +865,24 @@
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin ../../Template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                    Copyright © 2025.
+                    <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+                    All rights reserved.
+                  </span>
+                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                    <a href="https://wa.me/628112951003" target="_blank">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                      +6281 1295 1003
+                    </a>
+                  </span>
+                </div>
+
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://politekniknest.ac.id/" target="_blank">Anak Magang UNS</a></span>
+                </div>
+              </footer>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
