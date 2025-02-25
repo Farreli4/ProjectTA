@@ -49,7 +49,7 @@ foreach ($documents as $columnName) {
     $verifiedColumn = "verified_" . $columnName;
 
     $downloadButton = (!empty($fileData)) ? 
-        "<a href='download2.php?id=$userId&column=$columnName' class='download-btn'>⬇ Download</a>" : 
+        "<a href='download.php?id=$userId&column=$columnName' class='download-btn'>⬇ Download</a>" : 
         "<span style='color: red;'>No File</span>";
 
     $verified = (!empty($row[$verifiedColumn]) && $row[$verifiedColumn] == 1) ? 
