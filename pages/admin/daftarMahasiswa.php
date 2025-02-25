@@ -572,6 +572,11 @@
                     <input type="text" id="edit_username" name="username" required>
                   </div>
 
+                  <div class="form-group">
+                    <label for="edit_username">Password:</label>
+                    <input type="password" id="edit_password" name="password" required>
+                  </div>
+
                   <button type="submit" class="btn-submit">Simpan Perubahan</button>
                 </form>
               </div>
@@ -867,6 +872,7 @@
                     document.getElementById("edit_kelas").value = event.target.getAttribute("data-kelas");
                     document.getElementById("edit_telepon").value = event.target.getAttribute("data-telepon");
                     document.getElementById("edit_username").value = event.target.getAttribute("data-username");
+                    document.getElementById("edit_password").value = event.target.getAttribute("data-password");
 
                     document.getElementById("editModal").style.display = "flex";
                   }
