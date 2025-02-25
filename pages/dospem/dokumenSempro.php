@@ -72,7 +72,7 @@ try {
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
           <span class="icon-menu"></span>
         </button>
-        
+
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
@@ -80,48 +80,101 @@ try {
               <span class="count"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-success">
-                    <i class="ti-info-alt mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Application Error</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="ti-settings mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Settings</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="ti-user mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
+              <div id="notifications">
+                <script>
+                  function fetchNotifications() {
+                    $.ajax({
+                      url: '../../fetch_notif.php',
+                      method: 'GET',
+                      success: function(data) {
+                        const notifications = JSON.parse(data);
+                        const notificationCount = $('#notificationCount');
+                        const notificationList = $('#notifications');
+
+                        notificationCount.text(notifications.length);
+                        notificationList.empty();
+
+                        if (notifications.length === 0 || notifications.message === 'No unread notifications') {
+                          notificationList.append(`
+                        <a class="dropdown-item preview-item">
+                          <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal"></h6>
+                          </div>
+                        </a>
+                      `);
+                        } else {
+                          notifications.forEach(function(notification) {
+                            const notificationItem = `
+                        <a class="dropdown-item preview-item" data-notification-id="${notification.id}">
+                          <div class="preview-thumbnail">
+                            <div class="preview-icon bg-info">
+                              <i class="ti-info-alt mx-0"></i>
+                            </div>
+                          </div>
+                          <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal">${notification.message}</h6>
+                            <p class="font-weight-light small-text mb-0 text-muted">${timeAgo(notification.created_at)}</p>
+                          </div>
+                        </a>
+                        `;
+                            notificationList.append(notificationItem);
+                          });
+                        }
+                      },
+                      error: function() {
+                        console.log("Error fetching notifications.");
+                      }
+                    });
+                  }
+
+                  function timeAgo(time) {
+                    const timeAgo = new Date(time);
+                    const currentTime = new Date();
+                    const diffInSeconds = Math.floor((currentTime - timeAgo) / 1000);
+
+                    if (diffInSeconds < 60) {
+                      return `${diffInSeconds} seconds ago`;
+                    }
+                    const diffInMinutes = Math.floor(diffInSeconds / 60);
+                    if (diffInMinutes < 60) {
+                      return `${diffInMinutes} minutes ago`;
+                    }
+                    const diffInHours = Math.floor(diffInMinutes / 60);
+                    if (diffInHours < 24) {
+                      return `${diffInHours} hours ago`;
+                    }
+                    const diffInDays = Math.floor(diffInHours / 24);
+                    return `${diffInDays} days ago`;
+                  }
+
+                  $(document).on('click', '.dropdown-item', function() {
+                    const notificationId = $(this).data('notification-id');
+                    markNotificationAsRead(notificationId);
+                  });
+
+                  function markNotificationAsRead(notificationId) {
+                    $.ajax({
+                      url: '../../mark_read.php',
+                      method: 'POST',
+                      data: {
+                        id: notificationId
+                      },
+                      success: function(response) {
+                        console.log(response);
+                        fetchNotifications();
+                      },
+                      error: function() {
+                        console.log("Error marking notification as read.");
+                      }
+                    });
+                  }
+
+                  $(document).ready(function() {
+                    fetchNotifications();
+                    setInterval(fetchNotifications, 30000);
+                  });
+                </script>
+              </div>
 
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
@@ -412,33 +465,33 @@ try {
                                 // Tombol Download
                                 if (!empty($row['lembar_persetujuan_proposal_ta_seminar'])) {
                                   echo "<td>
-                                <a href='downloadsempro.php?id=" . $id . "' target='_blank' 
-                                  class='btn btn-outline-primary btn-fw'>
-                                    <i class='mdi mdi-download'></i> Download
-                                </a>
-                              </td>";
+                                          <a href='downloadsempro.php?id=" . $id . "' target='_blank' 
+                                            class='btn btn-outline-primary btn-fw'>
+                                              <i class='mdi mdi-download'></i> Download
+                                          </a>
+                                        </td>";
                                 } else {
                                   echo "<td><span class='badge badge-warning'>No file</span></td>";
                                 }
 
                                 // Form Upload
                                 echo '<td>
-                        <form id="uploadForm_' . $id . '" method="POST" action="../../pages/dospem/uploadsempro.php" 
-                              enctype="multipart/form-data" onsubmit="return validateForm(' . $id . ')">
-                            <input type="file" 
-                                  name="lembar_persetujuan_proposal_ta_seminar" 
-                                  id="file_' . $id . '" 
-                                  accept=".pdf" 
-                                  style="display: none;"
-                                  onchange="handleFileSelect(' . $id . ')">
-                            <input type="hidden" name="id_mahasiswa" value="' . $id . '">
-                            <button type="button" 
-                                    onclick="document.getElementById(\'file_' . $id . '\').click();" 
-                                    class="btn btn-outline-primary btn-fw">
-                                <i class="mdi mdi-upload"></i> Upload
-                            </button>
-                        </form>
-                    </td>';
+                                        <form id="uploadForm_' . $id . '" method="POST" action="../../pages/dospem/uploadsempro.php" 
+                                              enctype="multipart/form-data" onsubmit="return validateForm(' . $id . ')">
+                                            <input type="file" 
+                                                  name="lembar_persetujuan_proposal_ta_seminar" 
+                                                  id="file_' . $id . '" 
+                                                  accept=".pdf" 
+                                                  style="display: none;"
+                                                  onchange="handleFileSelect(' . $id . ')">
+                                            <input type="hidden" name="id_mahasiswa" value="' . $id . '">
+                                            <button type="button" 
+                                                    onclick="document.getElementById(\'file_' . $id . '\').click();" 
+                                                    class="btn btn-outline-primary btn-fw">
+                                                <i class="mdi mdi-upload"></i> Upload
+                                            </button>
+                                        </form>
+                                    </td>';
                                 echo "</tr>";
                               }
                             }

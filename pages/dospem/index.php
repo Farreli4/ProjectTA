@@ -88,7 +88,6 @@ if ($row) {
     }
   </style>
 </head>
-
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->

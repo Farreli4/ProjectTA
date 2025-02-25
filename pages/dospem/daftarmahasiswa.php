@@ -61,7 +61,7 @@ try {
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="icon-menu"></span>
                 </button>
-                
+
 
                 <!--NAVBAR KANAN-->
                 <ul class="navbar-nav navbar-nav-right">
@@ -264,6 +264,18 @@ try {
                                             try {
                                                 $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
 
+                                                // Check connection
+                                                if ($conn->connect_error) {
+                                                    throw new Exception("Connection failed: " . $conn->connect_error);
+                                                }
+
+                                                // Get dosen name (assuming it's passed via GET or POST)
+                                                if (isset($_SESSION['nama_dosen'])) {
+                                                    $nama_dosen = $_SESSION['nama_dosen'];
+                                                } else {
+                                                    throw new Exception("Nama dosen tidak ditemukan");
+                                                }
+
                                                 // Check dosen
                                                 $check_dosen_sql = "SELECT id_dosen FROM dosen_pembimbing WHERE nama_dosen=?";
                                                 $stmt_check_dosen = $conn->prepare($check_dosen_sql);
@@ -276,8 +288,7 @@ try {
                                                 $stmt_check_dosen->store_result();
 
                                                 if ($stmt_check_dosen->num_rows == 0) {
-                                                    echo "<div class='alert alert-warning'>Dosen tidak ditemukan.</div>";
-                                                    exit;
+                                                    throw new Exception("Dosen tidak ditemukan");
                                                 }
 
                                                 $stmt_check_dosen->bind_result($id_dosen);
@@ -297,58 +308,61 @@ try {
 
                                                 if ($result_im->num_rows == 0) {
                                                     echo "<div class='alert alert-info'>Tidak ada mahasiswa yang dibimbing.</div>";
-                                                    exit;
-                                                }
+                                                } else {
+                                                    // If we have students, show the table
+                                                    echo '<table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Nama</th>
+                                                                <th>Nim</th>
+                                                                <th>Prodi</th>
+                                                                <th>Kelas</th>
+                                                                <th>No Telepon</th>
+                                                                <th>Tema</th>
+                                                                <th>Judul</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>';
 
-                                                // If we have students, show the table
-                                                echo '<table class="table table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>No</th>
-                                                            <th>Nama</th>
-                                                            <th>Nim</th>
-                                                            <th>Prodi</th>
-                                                            <th>Kelas</th>
-                                                            <th>No Telepon</th>
-                                                            <th>Tema</th>
-                                                            <th>Judul</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>';
+                                                    $id_mahasiswa_list = [];
+                                                    while ($row = $result_im->fetch_assoc()) {
+                                                        $id_mahasiswa_list[] = $row['id_mahasiswa'];
+                                                    }
 
-                                                $id_mahasiswa_list = [];
-                                                while ($row = $result_im->fetch_assoc()) {
-                                                    $id_mahasiswa_list[] = $row['id_mahasiswa'];
-                                                }
-
-                                                $id_mahasiswa_placeholder = str_repeat('?,', count($id_mahasiswa_list) - 1) . '?';
-                                                $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, kelas, nomor_telepon, tema, judul 
+                                                    if (count($id_mahasiswa_list) > 0) {
+                                                        $id_mahasiswa_placeholder = str_repeat('?,', count($id_mahasiswa_list) - 1) . '?';
+                                                        $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, kelas, nomor_telepon, tema, judul 
                                                         FROM mahasiswa 
                                                         WHERE id_mahasiswa IN ($id_mahasiswa_placeholder)";
 
-                                                $stmt1 = $conn->prepare($sql1);
-                                                if (!$stmt1) {
-                                                    throw new Exception("Error preparing mahasiswa detail query: " . $conn->error);
+                                                        $stmt1 = $conn->prepare($sql1);
+                                                        if (!$stmt1) {
+                                                            throw new Exception("Error preparing mahasiswa detail query: " . $conn->error);
+                                                        }
+
+                                                        $types = str_repeat('i', count($id_mahasiswa_list));
+                                                        $stmt1->bind_param($types, ...$id_mahasiswa_list);
+                                                        $stmt1->execute();
+                                                        $result = $stmt1->get_result();
+
+                                                        $no = 1;
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            echo "<tr>";
+                                                            echo "<td>" . $no++ . "</td>";
+                                                            echo "<td>" . htmlspecialchars($row['nama_mahasiswa']) . "</td>";
+                                                            echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
+                                                            echo "<td>" . htmlspecialchars($row['prodi']) . "</td>";
+                                                            echo "<td>" . htmlspecialchars($row['kelas']) . "</td>";
+                                                            echo "<td>" . htmlspecialchars($row['nomor_telepon']) . "</td>";
+                                                            echo "<td>" . htmlspecialchars($row['tema']) . "</td>";
+                                                            echo "<td>" . htmlspecialchars($row['judul']) . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    }
+
+                                                    echo '</tbody></table>';
                                                 }
-
-                                                $stmt1->bind_param(str_repeat('i', count($id_mahasiswa_list)), ...$id_mahasiswa_list);
-                                                $stmt1->execute();
-                                                $result = $stmt1->get_result();
-
-                                                while ($row = $result->fetch_assoc()) {
-                                                    echo "<tr>";
-                                                    echo "<td>" . htmlspecialchars($row['id_mahasiswa']) . "</td>";
-                                                    echo "<td>" . htmlspecialchars($row['nama_mahasiswa']) . "</td>";
-                                                    echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
-                                                    echo "<td>" . htmlspecialchars($row['prodi']) . "</td>";
-                                                    echo "<td>" . htmlspecialchars($row['kelas']) . "</td>";
-                                                    echo "<td>" . htmlspecialchars($row['nomor_telepon']) . "</td>";
-                                                    echo "<td>" . htmlspecialchars($row['tema']) . "</td>";
-                                                    echo "<td>" . htmlspecialchars($row['judul']) . "</td>";
-                                                    echo "</tr>";
-                                                }
-
-                                                echo '</tbody></table>';
                                             } catch (Exception $e) {
                                                 echo "<div class='alert alert-danger'>" . htmlspecialchars($e->getMessage()) . "</div>";
                                             } finally {
@@ -397,4 +411,4 @@ try {
     <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
     <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
     <script src="../../Template/skydash/js/off-canvas.js"></script>
-    <script
+    
