@@ -7,6 +7,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Skydash Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <!-- plugins:css -->
   <link rel="stylesheet" href="../../Template/skydash/vendors/feather/feather.css">
   <link rel="stylesheet" href="../../Template/skydash/vendors/ti-icons/css/themify-icons.css">
@@ -505,6 +507,10 @@
               color: white;
           }
 
+          h4 {
+            text-align: center;
+          }
+
           /* Input tanggal */
           input[type="date"] {
               border: 1px solid #ccc;
@@ -573,7 +579,7 @@
               cursor: pointer;
               text-decoration: none;
           }
-          
+          /* Style untuk pop-up */
           .popup {
             display: none;
             position: fixed;
@@ -658,6 +664,12 @@
 
           .verify-btn:hover {
               background-color: #0056b3;
+          }
+
+          /* Style untuk teks "No File" */
+          .no-file {
+              color: red;
+              font-weight: bold;
           }          
           </style>
           
@@ -665,7 +677,7 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <p class="card-title">Daftar Tugas Akhir</p>
+                <h4>Pendaftar Tugas Akhir Politeknik Nest Sukoharjo</h4>
                 <div class="table-responsive">
                     <table>
                         <thead>
@@ -753,16 +765,49 @@
         </div>
     </div>
 </div>
+
+<!--Pop Up Dokumen-->
 <div id="popup" class="popup">
           <div class="popup-content">
               <span class="close-btn">&times;</span>
-              <h2>Documents</h2>
-              <div id="popup-content">
+              <h3>Dokumen</h3>
+              <div class="table-responsive">
+                  <table class="popup-table">
+                      <thead>
+                          <tr>
+                              <th>Keterangan</th>
+                              <th>Dokumen</th>
+                              <th>Aksi</th>
+                          </tr>
+                      </thead>
+                      <tbody id="popup-content">
+
+                      </tbody>
+                  </table>
               </div>
           </div>
       </div>
 
-        <script>
+
+
+      
+<script>
+  // Open Modal
+  let openBtn = document.getElementById("open");
+    if (openBtn) {
+        openBtn.onclick = function () {
+            document.getElementById("myModal").style.display = "flex";
+        };
+    }
+
+    // Close Modal
+    let closeBtn = document.querySelector(".close");
+    if (closeBtn) {
+        closeBtn.onclick = function () {
+            document.getElementById("myModal").style.display = "none";
+        };
+    }
+
           $(document).on("click", ".folder-btn", function () {
           let event = $(this).data("event");
           let userId = $(this).data("userid");
@@ -794,17 +839,42 @@
     let userId = $(this).data("userid");
     let event = $(this).data("event");
     let column = $(this).data("column");
+    let button = $(this);
 
-    $(this).prop("disabled", true).text("Verifying...");
+    Swal.fire({
+        title: "Konfirmasi Verifikasi",
+        text: "Apakah Anda yakin ingin memverifikasi dokumen ini?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Verifikasi!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            button.prop("disabled", true).text("Verifying...");
 
-    $.post("verify.php", { userId: userId, event: event, column: column }, function (response) {
-        console.log(response);
-        alert("Verification successful!");
-        location.reload();
-    }).fail(function (xhr) {
-        console.error("Error:", xhr.responseText);
+            $.post("verify.php", { userId: userId, event: event, column: column }, function (response) {
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: "Dokumen telah diverifikasi.",
+                    icon: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
+                });
+            }).fail(function (xhr) {
+                Swal.fire({
+                    title: "Gagal!",
+                    text: "Terjadi kesalahan dalam verifikasi.",
+                    icon: "error"
+                });
+                button.prop("disabled", false).text("Verify");
+            });
+        }
     });
 });
+
 
             
 function changeColor(selectElement) {
@@ -874,27 +944,6 @@ window.onload = function () {
 };
 
 </script>
-
-<div id="popup" class="popup">
-          <div class="popup-content">
-              <span class="close-btn">&times;</span>
-              <h3>Dokumen</h3>
-              <div class="table-responsive">
-                  <table class="popup-table">
-                      <thead>
-                          <tr>
-                              <th>Keterangan</th>
-                              <th>Dokumen</th>
-                              <th>Aksi</th>
-                          </tr>
-                      </thead>
-                      <tbody id="popup-content-table">
-
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
 
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
