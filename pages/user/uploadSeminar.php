@@ -101,79 +101,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         $fileType = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         $fileCategory = $_POST['file_type'] ?? '';
 
-    // Format nama file
-    $newFileName = $nama_mahasiswa . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
+        // Format nama file
+        $newFileName = $nama_mahasiswa . '_' . str_replace(' ', '_', $fileCategory) . '_' . $nama_mahasiswa . '.' . $fileType;
 
-    // Validasi file
-    if ($fileType != "pdf") {
-        showNotification('error', 'Maaf, hanya file PDF yang diperbolehkan.');
-    } elseif ($file['size'] > 2000000) { // 2MB
-        showNotification('error', 'Maaf, ukuran file terlalu besar (maksimal 2MB).');
-    }
-
-    try {
-        // Koneksi ke database
-        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Baca file sebagai binary
-        $fileContent = file_get_contents($file['tmp_name']);
-        if ($fileContent === false) {
-            throw new Exception("Gagal membaca file");
+        // Validasi file
+        if ($fileType != "pdf") {
+            showNotification('error', 'Maaf, hanya file PDF yang diperbolehkan.');
+        } elseif ($file['size'] > 2000000) { // 2MB
+            showNotification('error', 'Maaf, ukuran file terlalu besar (maksimal 2MB).');
         }
 
-        // Tentukan nama kolom berdasarkan tipe file
-        $columnName = '';
-        switch ($fileCategory) {
-            case 'Form Pendaftaran Seminar Proposal':
-                $columnName = 'form_pendaftaran_sempro_seminar';
-                break;
-            case 'Lembar Persetujuan Proposal Tugas Akhir':
-                $columnName = 'lembar_persetujuan_proposal_ta_seminar';
-                break;
-            case 'Buku Konsultasi TA':
-                $columnName = 'buku_konsultasi_ta_seminar';
-                break;
-            default:
-                throw new Exception("Kategori file tidak valid");
-        }
+        try {
+            // Koneksi ke database
+            $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Cek apakah data mahasiswa sudah ada
-        $checkSql = "SELECT username FROM mahasiswa WHERE username = :nama";
-        $checkStmt = $conn->prepare($checkSql);
-        $checkStmt->execute([':nama' => $nama_mahasiswa]);
+            // Baca file sebagai binary
+            $fileContent = file_get_contents($file['tmp_name']);
+            if ($fileContent === false) {
+                throw new Exception("Gagal membaca file");
+            }
 
-        if ($checkStmt->rowCount() > 0) {
-            // Update data yang sudah ada
-            $sql = "UPDATE mahasiswa SET `$columnName` = :file_content WHERE username = :nama";
-        } else {
-            // Insert data baru dengan kolom minimal yang diperlukan
-            $sql = "INSERT INTO mahasiswa (nama_mahasiswa, `$columnName`) 
+            // Tentukan nama kolom berdasarkan tipe file
+            $columnName = '';
+            switch ($fileCategory) {
+                case 'Form Pendaftaran Seminar Proposal':
+                    $columnName = 'form_pendaftaran_sempro_seminar';
+                    break;
+                case 'Lembar Persetujuan Proposal Tugas Akhir':
+                    $columnName = 'lembar_persetujuan_proposal_ta_seminar';
+                    break;
+                case 'Buku Konsultasi TA':
+                    $columnName = 'buku_konsultasi_ta_seminar';
+                    break;
+                default:
+                    throw new Exception("Kategori file tidak valid");
+            }
+
+            // Cek apakah data mahasiswa sudah ada
+            $checkSql = "SELECT username FROM mahasiswa WHERE username = :nama";
+            $checkStmt = $conn->prepare($checkSql);
+            $checkStmt->execute([':nama' => $nama_mahasiswa]);
+
+            if ($checkStmt->rowCount() > 0) {
+                // Update data yang sudah ada
+                $sql = "UPDATE mahasiswa SET `$columnName` = :file_content WHERE username = :nama";
+            } else {
+                // Insert data baru dengan kolom minimal yang diperlukan
+                $sql = "INSERT INTO mahasiswa (nama_mahasiswa, `$columnName`) 
                    VALUES (:nama, :file_content)";
+            }
+
+            $stmt = $conn->prepare($sql);
+            $params = [
+                ':nama' => $nama_mahasiswa,
+                ':file_content' => $fileContent
+            ];
+
+            // Tambahkan parameter nama jika melakukan INSERT
+            if ($checkStmt->rowCount() == 0) {
+                $params[':nama'] = $nama_mahasiswa;
+            }
+
+            $result = $stmt->execute($params);
+
+            if ($result) {
+                showNotification('success', 'File berhasil diupload! Silakan tunggu verifikasi dari admin.');
+            } else {
+                throw new Exception("Gagal menyimpan ke database");
+            }
+        } catch (Exception $e) {
+            showNotification('error', 'Error: ' . $e->getMessage());
         }
-
-        $stmt = $conn->prepare($sql);
-        $params = [
-            ':nama' => $nama_mahasiswa,
-            ':file_content' => $fileContent
-        ];
-
-        // Tambahkan parameter nama jika melakukan INSERT
-        if ($checkStmt->rowCount() == 0) {
-            $params[':nama'] = $nama_mahasiswa;
-        }
-
-        $result = $stmt->execute($params);
-
-        if ($result) {
-            showNotification('success', 'File berhasil diupload! Silakan tunggu verifikasi dari admin.');
-        } else {
-            throw new Exception("Gagal menyimpan ke database");
-        }
-    } catch (Exception $e) {
-        showNotification('error', 'Error: ' . $e->getMessage());
     }
-}
 }
 // Fungsi untuk mendapatkan status file dari database
 function getFileStatus($nama_mahasiswa, $fileCategory)
@@ -236,6 +236,7 @@ $driveLinks = [
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Skydash Admin</title>
     <!-- plugins:css -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="../../Template/skydash/vendors/feather/feather.css">
     <link rel="stylesheet" href="../../Template/skydash/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="../../Template/skydash/vendors/css/vendor.bundle.base.css">
@@ -294,7 +295,101 @@ $driveLinks = [
 
                         <!-- NOTIFIKASI -->
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+                            <div id="notifications">
+                                <script>
+                                    function fetchNotifications() {
+                                        $.ajax({
+                                            url: '../../fetch_notif.php',
+                                            method: 'GET',
+                                            success: function(data) {
+                                                const notifications = JSON.parse(data);
+                                                const notificationCount = $('#notificationCount');
+                                                const notificationList = $('#notifications');
+
+                                                notificationCount.text(notifications.length);
+                                                notificationList.empty();
+
+                                                if (notifications.length === 0 || notifications.message === 'No unread notifications') {
+                                                    notificationList.append(`
+                        <a class="dropdown-item preview-item">
+                          <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal"></h6>
+                          </div>
+                        </a>
+                      `);
+                                                } else {
+                                                    notifications.forEach(function(notification) {
+                                                        const notificationItem = `
+                        <a class="dropdown-item preview-item" data-notification-id="${notification.id}">
+                          <div class="preview-thumbnail">
+                            <div class="preview-icon bg-info">
+                              <i class="ti-info-alt mx-0"></i>
+                            </div>
+                          </div>
+                          <div class="preview-item-content">
+                            <h6 class="preview-subject font-weight-normal">${notification.message}</h6>
+                            <p class="font-weight-light small-text mb-0 text-muted">${timeAgo(notification.created_at)}</p>
+                          </div>
+                        </a>
+                        `;
+                                                        notificationList.append(notificationItem);
+                                                    });
+                                                }
+                                            },
+                                            error: function() {
+                                                console.log("Error fetching notifications.");
+                                            }
+                                        });
+                                    }
+
+                                    function timeAgo(time) {
+                                        const timeAgo = new Date(time);
+                                        const currentTime = new Date();
+                                        const diffInSeconds = Math.floor((currentTime - timeAgo) / 1000);
+
+                                        if (diffInSeconds < 60) {
+                                            return `${diffInSeconds} seconds ago`;
+                                        }
+                                        const diffInMinutes = Math.floor(diffInSeconds / 60);
+                                        if (diffInMinutes < 60) {
+                                            return `${diffInMinutes} minutes ago`;
+                                        }
+                                        const diffInHours = Math.floor(diffInMinutes / 60);
+                                        if (diffInHours < 24) {
+                                            return `${diffInHours} hours ago`;
+                                        }
+                                        const diffInDays = Math.floor(diffInHours / 24);
+                                        return `${diffInDays} days ago`;
+                                    }
+
+                                    $(document).on('click', '.dropdown-item', function() {
+                                        const notificationId = $(this).data('notification-id');
+                                        markNotificationAsRead(notificationId);
+                                    });
+
+                                    function markNotificationAsRead(notificationId) {
+                                        $.ajax({
+                                            url: '../../mark_read.php',
+                                            method: 'POST',
+                                            data: {
+                                                id: notificationId
+                                            },
+                                            success: function(response) {
+                                                console.log(response);
+                                                fetchNotifications();
+                                            },
+                                            error: function() {
+                                                console.log("Error marking notification as read.");
+                                            }
+                                        });
+                                    }
+
+                                    $(document).ready(function() {
+                                        fetchNotifications();
+                                        setInterval(fetchNotifications, 30000);
+                                    });
+                                </script>
+                            </div>
                         </div>
                     </li>
 
@@ -415,7 +510,7 @@ $driveLinks = [
                         <h6>NIM: <?php echo htmlspecialchars($nim); ?></h6>
 
                         <div class="alert-info">
-                        Disini kamu dapat melakukan upload Dokumen. Setelah Dokumen terupload, tunggu beberapa waktu hingga status pada halaman pengejuan berubah menjadi <span class="text-success">Terverifikasi.</span>
+                            Disini kamu dapat melakukan upload Dokumen. Setelah Dokumen terupload, tunggu beberapa waktu hingga status pada halaman pengejuan berubah menjadi <span class="text-success">Terverifikasi.</span>
                         </div>
                         <div class="upload-container">
 
@@ -709,6 +804,142 @@ $driveLinks = [
                 border: 1px solid #ef9a9a;
             }
         </style>
+        <script>
+            $(document).ready(function() {
+                // Create a search results container
+                $('body').append('<div id="search-results" style="display: none; position: absolute; top: 60px; right: 20px; width: 300px; max-height: 400px; overflow-y: auto; background: white; border: 1px solid #ddd; border-radius: 4px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1);"></div>');
+
+                // Search function
+                $("#navbar-search-input").on("keyup", function() {
+                    var searchText = $(this).val().toLowerCase().trim();
+                    var resultsContainer = $("#search-results");
+                    resultsContainer.empty();
+
+                    if (searchText.length < 2) {
+                        resultsContainer.hide();
+                        return;
+                    }
+
+                    // Search in all clickable elements with text
+                    var results = [];
+
+                    // Search in menu items
+                    $(".nav-item a").each(function() {
+                        var link = $(this);
+                        var text = link.text().trim();
+
+                        if (text.toLowerCase().indexOf(searchText) > -1) {
+                            results.push({
+                                element: link,
+                                text: text,
+                                type: 'Menu Item',
+                                href: link.attr('href')
+                            });
+                        }
+                    });
+
+                    // Search in cards
+                    $(".card, .submission-card").each(function() {
+                        var card = $(this);
+                        var cardText = card.text().trim();
+                        var link = card.closest('a');
+
+                        if (cardText.toLowerCase().indexOf(searchText) > -1 && link.length) {
+                            results.push({
+                                element: link,
+                                text: cardText.substring(0, 30) + (cardText.length > 30 ? '...' : ''),
+                                type: 'Card',
+                                href: link.attr('href')
+                            });
+                        }
+                    });
+
+                    // Display results
+                    if (results.length > 0) {
+                        resultsContainer.append('<div style="padding: 10px; background: #f8f9fa; border-bottom: 1px solid #ddd;"><strong>Search Results</strong></div>');
+
+                        for (var i = 0; i < results.length; i++) {
+                            var result = results[i];
+                            resultsContainer.append(
+                                '<div class="search-result-item" style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;" data-href="' +
+                                result.href + '">' +
+                                '<div style="font-size: 12px; color: #6c757d;">' + result.type + '</div>' +
+                                '<div>' + highlightText(result.text, searchText) + '</div>' +
+                                '</div>'
+                            );
+                        }
+
+                        resultsContainer.show();
+                    } else {
+                        resultsContainer.append('<div style="padding: 10px;">No results found</div>');
+                        resultsContainer.show();
+                    }
+                });
+
+                // Handle clicking on search results
+                $(document).on('click', '.search-result-item', function() {
+                    var href = $(this).data('href');
+                    if (href && href !== '#' && href !== 'javascript:void(0)') {
+                        window.location.href = href;
+                    } else {
+                        // Handle items without a direct href (like dropdown toggles)
+                        var searchText = $("#navbar-search-input").val().toLowerCase();
+                        var clicked = false;
+
+                        // Try to click on the matching menu item
+                        $(".nav-item a").each(function() {
+                            if (!clicked && $(this).text().toLowerCase().indexOf(searchText) > -1) {
+                                $(this).click();
+                                clicked = true;
+                                return false;
+                            }
+                        });
+
+                        // If no menu item was clicked, try to click on matching card
+                        if (!clicked) {
+                            $(".card, .submission-card").each(function() {
+                                if (!clicked && $(this).text().toLowerCase().indexOf(searchText) > -1) {
+                                    $(this).closest('a').click();
+                                    clicked = true;
+                                    return false;
+                                }
+                            });
+                        }
+                    }
+
+                    $("#search-results").hide();
+                });
+
+                // Close search results when clicking outside
+                $(document).on('click', function(e) {
+                    if (!$(e.target).closest('#search-results').length && !$(e.target).closest('#navbar-search-input').length) {
+                        $("#search-results").hide();
+                    }
+                });
+
+                // Close search results when pressing Escape
+                $(document).on('keydown', function(e) {
+                    if (e.key === "Escape") {
+                        $("#search-results").hide();
+                    }
+                });
+
+                // Helper function to highlight search text
+                function highlightText(text, searchText) {
+                    if (!text) return '';
+
+                    var index = text.toLowerCase().indexOf(searchText.toLowerCase());
+                    if (index >= 0) {
+                        return text.substring(0, index) +
+                            '<span style="background-color: #ffeb3b; font-weight: bold;">' +
+                            text.substring(index, index + searchText.length) +
+                            '</span>' +
+                            text.substring(index + searchText.length);
+                    }
+                    return text;
+                }
+            });
+        </script>
         <!-- plugins:js -->
         <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
         <!-- endinject -->

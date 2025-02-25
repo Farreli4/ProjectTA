@@ -228,6 +228,7 @@ function areAllDocumentsVerified($nama_mahasiswa, $id)
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Skydash Admin</title>
     <!-- plugins:css -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="../../Template/skydash/vendors/feather/feather.css">
     <link rel="stylesheet" href="../../Template/skydash/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="../../Template/skydash/vendors/css/vendor.bundle.base.css">
@@ -645,6 +646,142 @@ function areAllDocumentsVerified($nama_mahasiswa, $id)
                     font-size: 0.9rem !important;
                 }
             </style>
+            <script>
+                $(document).ready(function() {
+                    // Create a search results container
+                    $('body').append('<div id="search-results" style="display: none; position: absolute; top: 60px; right: 20px; width: 300px; max-height: 400px; overflow-y: auto; background: white; border: 1px solid #ddd; border-radius: 4px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1);"></div>');
+
+                    // Search function
+                    $("#navbar-search-input").on("keyup", function() {
+                        var searchText = $(this).val().toLowerCase().trim();
+                        var resultsContainer = $("#search-results");
+                        resultsContainer.empty();
+
+                        if (searchText.length < 2) {
+                            resultsContainer.hide();
+                            return;
+                        }
+
+                        // Search in all clickable elements with text
+                        var results = [];
+
+                        // Search in menu items
+                        $(".nav-item a").each(function() {
+                            var link = $(this);
+                            var text = link.text().trim();
+
+                            if (text.toLowerCase().indexOf(searchText) > -1) {
+                                results.push({
+                                    element: link,
+                                    text: text,
+                                    type: 'Menu Item',
+                                    href: link.attr('href')
+                                });
+                            }
+                        });
+
+                        // Search in cards
+                        $(".card, .submission-card").each(function() {
+                            var card = $(this);
+                            var cardText = card.text().trim();
+                            var link = card.closest('a');
+
+                            if (cardText.toLowerCase().indexOf(searchText) > -1 && link.length) {
+                                results.push({
+                                    element: link,
+                                    text: cardText.substring(0, 30) + (cardText.length > 30 ? '...' : ''),
+                                    type: 'Card',
+                                    href: link.attr('href')
+                                });
+                            }
+                        });
+
+                        // Display results
+                        if (results.length > 0) {
+                            resultsContainer.append('<div style="padding: 10px; background: #f8f9fa; border-bottom: 1px solid #ddd;"><strong>Search Results</strong></div>');
+
+                            for (var i = 0; i < results.length; i++) {
+                                var result = results[i];
+                                resultsContainer.append(
+                                    '<div class="search-result-item" style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;" data-href="' +
+                                    result.href + '">' +
+                                    '<div style="font-size: 12px; color: #6c757d;">' + result.type + '</div>' +
+                                    '<div>' + highlightText(result.text, searchText) + '</div>' +
+                                    '</div>'
+                                );
+                            }
+
+                            resultsContainer.show();
+                        } else {
+                            resultsContainer.append('<div style="padding: 10px;">No results found</div>');
+                            resultsContainer.show();
+                        }
+                    });
+
+                    // Handle clicking on search results
+                    $(document).on('click', '.search-result-item', function() {
+                        var href = $(this).data('href');
+                        if (href && href !== '#' && href !== 'javascript:void(0)') {
+                            window.location.href = href;
+                        } else {
+                            // Handle items without a direct href (like dropdown toggles)
+                            var searchText = $("#navbar-search-input").val().toLowerCase();
+                            var clicked = false;
+
+                            // Try to click on the matching menu item
+                            $(".nav-item a").each(function() {
+                                if (!clicked && $(this).text().toLowerCase().indexOf(searchText) > -1) {
+                                    $(this).click();
+                                    clicked = true;
+                                    return false;
+                                }
+                            });
+
+                            // If no menu item was clicked, try to click on matching card
+                            if (!clicked) {
+                                $(".card, .submission-card").each(function() {
+                                    if (!clicked && $(this).text().toLowerCase().indexOf(searchText) > -1) {
+                                        $(this).closest('a').click();
+                                        clicked = true;
+                                        return false;
+                                    }
+                                });
+                            }
+                        }
+
+                        $("#search-results").hide();
+                    });
+
+                    // Close search results when clicking outside
+                    $(document).on('click', function(e) {
+                        if (!$(e.target).closest('#search-results').length && !$(e.target).closest('#navbar-search-input').length) {
+                            $("#search-results").hide();
+                        }
+                    });
+
+                    // Close search results when pressing Escape
+                    $(document).on('keydown', function(e) {
+                        if (e.key === "Escape") {
+                            $("#search-results").hide();
+                        }
+                    });
+
+                    // Helper function to highlight search text
+                    function highlightText(text, searchText) {
+                        if (!text) return '';
+
+                        var index = text.toLowerCase().indexOf(searchText.toLowerCase());
+                        if (index >= 0) {
+                            return text.substring(0, index) +
+                                '<span style="background-color: #ffeb3b; font-weight: bold;">' +
+                                text.substring(index, index + searchText.length) +
+                                '</span>' +
+                                text.substring(index + searchText.length);
+                        }
+                        return text;
+                    }
+                });
+            </script>
             <!-- plugins:js -->
             <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
             <!-- endinject -->

@@ -1,4 +1,25 @@
-<?php include '../../config/connection.php'; ?>
+<?php
+session_start();
+$nama_admin = $_SESSION['username'];
+
+$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$check = "SELECT nomor_telepon, nama_admin FROM admin WHERE username = :nama";
+$checkNomer_telepon = $conn->prepare($check);
+$checkNomer_telepon->execute([':nama' => $nama_admin]);
+$row = $checkNomer_telepon->fetch(PDO::FETCH_ASSOC);
+
+if ($row) {
+  $nomor_telepon = $row['nomor_telepon'];
+  $nama_admin= $row['nama_admin'];
+  
+} else {
+  $nomor_telepon = '0857364562';
+  $nama_admin = 'Nama Default';
+  
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -154,24 +175,26 @@
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="../../Template/skydash/images/faces/face28.jpg" alt="profile" />
+              <img src="../../assets/img/orang.png" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="ti-settings text-primary"></i>
-                Settings
-              </a>
-              <a class="dropdown-item">
-                <i class="ti-power-off text-primary"></i>
-                Logout
-              </a>
+              <div class="dropdown-header">
+                <div class="profile-pic mb-3 d-flex justify-content-center">
+                  <img src="../../assets/img/orang.png" alt="profile" class="rounded-circle" width="50" height="50" />
+                </div>
+                <div class="profile-info text-center">
+                  <p class="font-weight-bold mb-1"><?php echo htmlspecialchars($nama_admin); ?></p>
+                  <p class="text-muted mb-1"><?php echo htmlspecialchars($nomor_telepon); ?></p>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="../../index.php">
+                  <i class="ti-power-off text-primary"></i>
+                  Logout
+                </a>
+              </div>
             </div>
           </li>
-          <li class="nav-item nav-settings d-none d-lg-flex">
-            <a class="nav-link" href="#">
-              <i class="icon-ellipsis"></i>
-            </a>
-          </li>
+         
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="icon-menu"></span>
