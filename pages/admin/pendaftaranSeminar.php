@@ -104,7 +104,6 @@ if ($row) {
                 
                 
                 <?php
-                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
                   if ($conn->connect_error) {
                       die("Connection failed: " . $conn->connect_error);
@@ -124,7 +123,6 @@ if ($row) {
                           $yValues[] = $row['count'];
                       }
                   }
-                  $conn->close();
                   ?>
                   <canvas id="myChart2"></canvas>
                   <script>
@@ -356,7 +354,7 @@ function changeSelectColor(selectElement) {
         <?php
           include '../../pages/footer.php';
         ?>
-        
+
       </div>
       <!-- main-panel ends -->
     </div>   
