@@ -1,5 +1,6 @@
-
+<?php
 session_start();
+include "../../config/connection.php";
 $nama_mahasiswa = $_SESSION['nama'] ?? 'Mahasiswa'; // Default jika tidak ada session
 $nim = $_SESSION['nim'] ?? '12345678';
 
@@ -20,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
     } else {
         try {
             // Koneksi ke database
-            $conn = new PDO("mysql:host=localhost;dbname=sistemta", "root", "");
             $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
             // Baca file sebagai binary
@@ -61,3 +61,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         }
     }
 }
+?>

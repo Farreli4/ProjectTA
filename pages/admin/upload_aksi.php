@@ -13,6 +13,7 @@ if (isset($_POST['submit'])) {
             $spreadsheet = IOFactory::load($fileTmpName);
             $sheet = $spreadsheet->getActiveSheet();
 
+            // Loop through the rows of the spreadsheet
             foreach ($sheet->getRowIterator() as $row) {
                 $data = [];
                 $cellIterator = $row->getCellIterator();

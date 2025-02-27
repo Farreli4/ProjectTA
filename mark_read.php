@@ -1,6 +1,6 @@
 <?php
 session_start();
-$pdo = new PDO('mysql:host=localhost;dbname=sistem_ta', 'root', '');
+include "../../config/connection.php";
 
 // ✅ Check if notification ID is provided in POST
 if (!isset($_POST['id'])) {

@@ -47,8 +47,8 @@ if ($row) {
 
   <link rel="stylesheet" type="text/css" href="../../assets/css/css/dospem/dospem.css">
   <link rel="stylesheet" href="../../assets/css/css/dospem/dospem.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
   <style>
     .card-backgroun {
       position: absolute;
@@ -89,25 +89,39 @@ if ($row) {
     }
   </style>
 </head>
+
 <body>
-  <div class="container-scroller">
+<div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
+    <!--NAVBAR KIRI-->
+
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="https://nestpoliteknik.com/"><img src="../../assets/img/logo2.png" class="mr-2" alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href="https://nestpoliteknik.com/ "><img src="../../assets/img/Logo.webp" alt="logo" /></a>
+        <a class="navbar-brand brand-logo mr-5" href="dashboard.php"><img src="../../assets/img/logo2.png" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="dashboard.php"><img src="../../assets/img/Logo.webp" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="icon-menu"></span>
+        </button>
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
           <span class="icon-menu"></span>
         </button>
-        
+        <ul class="navbar-nav mr-lg-2">
+          <li class="nav-item nav-search d-none d-lg-block">
+            
+          </li>
+        </ul>
+
+        <!--NAVBAR KANAN-->
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
               <span class="count"></span>
             </a>
+
+            <!-- NOTIFIKASI -->
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <div id="notifications">
                 <script>
@@ -207,6 +221,7 @@ if ($row) {
             </div>
           </li>
 
+          <!--PROFIL-->
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
               <img src="../../assets/img/orang.png" alt="profile" />
@@ -221,15 +236,15 @@ if ($row) {
                   <p class="text-muted mb-1"><?php echo htmlspecialchars($nip); ?></p>
                   <p class="text-muted mb-1"><?php echo htmlspecialchars($prodi); ?></p>
                 </div>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../../index.php">
-                  <i class="ti-power-off text-primary"></i>
-                  Logout
-                </a>
               </div>
+              <!-- Garis pembatas -->
+              <div style="border-top: 1px solid #ddd; margin: 10px 0;"></div>
+              <a class="dropdown-item" href="../../index.php">
+                <i class="ti-power-off text-primary"></i>
+                Logout
+              </a>
             </div>
           </li>
-
         </ul>
       </div>
     </nav>

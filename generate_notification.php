@@ -1,5 +1,5 @@
 <?php
-$pdo = new PDO('mysql:host=localhost;dbname=sistem_ta', 'root', '');
+include "../../config/connection.php";
 session_start();
 $username = $_SESSION['username'];
 

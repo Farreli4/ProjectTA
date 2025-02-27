@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
+include "../../config/connection.php";
 
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);

@@ -259,10 +259,7 @@ try {
                                             Tabel <code>Data Mahasiswa Bimbingan</code>
                                         </p>
                                         <div class="table-responsive">
-                                            <?php
-                                        if ($conn->connect_error) {
-                                            die("Koneksi gagal: " . $conn->connect_error);
-                                        }
+                                        <?php
 
                                         if (session_status() == PHP_SESSION_NONE) {
                                             session_start();

@@ -48,7 +48,7 @@ if ($row) {
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <?php
-    include "bar.php";
+    include "sidebar.php";
     ?>
       <!-- partial -->
 
@@ -110,12 +110,6 @@ if ($row) {
                   <div class="row">
                     <div class="col-12">
                       <?php
-                      $servername = "127.0.0.1";
-                      $username = "root";
-                      $password = "";
-                      $dbname = "sistem_ta";
-
-                      $conn = new mysqli($servername, $username, $password, $dbname);
 
                       if ($conn->connect_error) {
                         die("Koneksi gagal: " . $conn->connect_error);

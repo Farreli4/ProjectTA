@@ -50,7 +50,7 @@ if ($row) {
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <?php
-    include "bar.php";
+    include "sidebar.php";
     ?>
 
 <style>
@@ -119,7 +119,6 @@ if ($row) {
                           </thead>
                           <tbody>
                                 <?php
-                                $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
                                 $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, form_pendaftaran_persetujuan_tema_ta, bukti_transkip_nilai_TA, bukti_kelulusan_magang_TA FROM mahasiswa WHERE 1";
                                 $result = $conn->query($sql1);
 

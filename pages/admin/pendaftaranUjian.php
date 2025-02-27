@@ -74,7 +74,9 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
      ?>
       <!-- partial -->
       <?php
-      // Ambil total pendaftar tugas akhir
+          include "sidebar.php";
+
+          // Ambil total pendaftar tugas akhir
           $sqlUjian = "SELECT COUNT(*) AS total FROM ujian";
           $resultUjian = $conn->query($sqlUjian);
           $totalUjian = ($resultUjian->num_rows > 0) ? $resultUjian->fetch_assoc()['total'] : 0;

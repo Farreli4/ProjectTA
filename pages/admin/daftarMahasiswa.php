@@ -48,7 +48,7 @@ if ($row) {
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
      <?php
-    include "bar.php";
+    include "sidebar.php";
     ?>
       <!-- partial -->
 
@@ -133,7 +133,6 @@ if ($row) {
                           </thead>
                           <tbody>
                             <?php
-                            $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
                             $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, kelas, nomor_telepon, username, pass FROM mahasiswa WHERE 1";
                             $result = $conn->query($sql1);
 

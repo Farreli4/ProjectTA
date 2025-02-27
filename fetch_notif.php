@@ -1,6 +1,6 @@
 <?php
 session_start();
-$pdo = new PDO('mysql:host=localhost;dbname=sistem_ta', 'root', '');
+include "../../config/connection.php";
 
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];

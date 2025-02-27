@@ -54,7 +54,7 @@ if ($row) {
     <!-- partial:partials/_navbar.html -->
 
       <?php
-          include "bar.php";
+          include "sidebar.php";
 
           // Ambil total pendaftar tugas akhir
           $sqlTA = "SELECT COUNT(*) AS total FROM tugas_akhir";
