@@ -583,7 +583,11 @@ if ($row) {
 
                   <div class="form-group">
                     <label for="program">Program Studi:</label>
-                    <input type="text" id="program" name="prodi" required>
+                    <select id="program" name="prodi" required>
+                      <option value="Teknologi Informasi">Teknologi Informasi</option>
+                      <option value="Seni Kuliner">Seni Kuliner</option>
+                      <option value="Perhotelan">Perhotelan</option>
+                    </select>
                   </div>
 
                   <div class="form-group">
@@ -641,7 +645,11 @@ if ($row) {
 
                   <div class="form-group">
                     <label for="edit_prodi">Program Studi:</label>
-                    <input type="text" id="edit_prodi" name="prodi" required>
+                    <select id="edit_prodi" name="prodi" required>
+                      <option value="Teknologi Informasi">Teknologi Informasi</option>
+                      <option value="Seni Kuliner">Seni Kuliner</option>
+                      <option value="Perhotelan">Perhotelan</option>
+                    </select>
                   </div>
 
                   <div class="form-group">
@@ -743,6 +751,21 @@ if ($row) {
                 /* Border tetap muncul dengan warna biru */
                 box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
                 /* Efek glow */
+              }
+              select {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                width: 100%;
+                outline: none;
+                background-color: white;
+                font-size: 16px;
+                transition: border 0.3s ease-in-out;
+              }
+
+              select:focus {
+                border: 2px solid #007bff;
+                box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
               }
 
               .btn-submit {
