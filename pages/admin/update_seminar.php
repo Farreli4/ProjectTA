@@ -88,7 +88,7 @@ if (isset($_POST['id_mahasiswa']) && isset($_POST['status_seminar'])) {
     if ($id_dosen) {
         $message = "The seminar status has been updated to '" . $status_seminar . "'.";
 
-        $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status) VALUES (?, ?, ?, 'unread')";
+        $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status_dosen, status_mahasiswa) VALUES (?, ?, ?, 'unread', 'unread')";
         $stmt_notify = $conn->prepare($notification_sql);
         $stmt_notify->bind_param("iis", $id_dosen, $id_mahasiswa, $message);
         

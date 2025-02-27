@@ -27,9 +27,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
+        $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
+
         $stmt = $conn->prepare("INSERT INTO `mahasiswa`(`nama_mahasiswa`, `username`, `pass`, `nim`, `prodi`, `kelas`, `nomor_telepon`) VALUES (?, ?, ?, ?, ?, ?, ?)");
  
-        $stmt->bind_param("sssssss", $nama, $username, $pass, $nim, $prodi, $kelas, $nomor_telepon);
+        $stmt->bind_param("sssssss", $nama, $username, $hashedPass, $nim, $prodi, $kelas, $nomor_telepon);
 
         if ($stmt->execute()) {
             echo "New record created successfully!";
