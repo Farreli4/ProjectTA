@@ -1,5 +1,6 @@
 <?php
 require '../../vendor/autoload.php';
+include '../../config/connection.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 if (isset($_POST['submit'])) {
@@ -17,7 +18,6 @@ if (isset($_POST['submit'])) {
             $sheet = $spreadsheet->getActiveSheet();
 
             // Connect to MySQL database
-            $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
 
             // Loop through the rows of the spreadsheet
             foreach ($sheet->getRowIterator() as $row) {
@@ -30,8 +30,9 @@ if (isset($_POST['submit'])) {
                 }
 
                 if (count($data) > 0) {
+                    $hashedPass = password_hash($data[5], PASSWORD_DEFAULT);
                     $stmt = $conn->prepare("INSERT INTO dosen_pembimbing (nama_dosen, nip, prodi, nomor_telepon, username, pass) VALUES (?, ?, ?, ?, ?, ?)");
-                    $stmt->bind_param("ssssss", $data[0], $data[1], $data[2], $data[3], $data[4], $data[5]);
+                    $stmt->bind_param("ssssss", $data[0], $data[1], $data[2], $data[3], $data[4], $hashedPass);
                     $stmt->execute();
                 }
             }

@@ -1,12 +1,12 @@
 <?php
+include '../../config/connection.php';
 session_start();
 $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
-$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Mengubah query untuk mengambil nim dan nama_mahasiswa
 $check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
-$checkNim = $conn->prepare($check);
+$checkNim = $conn2->prepare($check);
 $checkNim->execute([':nama' => $nama_mahasiswa]);
 $row = $checkNim->fetch(PDO::FETCH_ASSOC);
 

@@ -3,11 +3,12 @@ session_start();
 include 'config/connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password = mysqli_real_escape_string($conn, $_POST['pass']);
+    echo "POST request received.<br>";
+    $username = $_POST['username'];
+    $password = $_POST['pass'];
 
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
+    echo "Username: $username <br>";
+    echo "Password: $password <br>";
 
     $admin_username = "admin";
     $admin_password = "admin";
@@ -17,49 +18,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         header("Location: pages/admin/index.php");
         exit();
-    } else {
-        $query = "SELECT 'dosen_pembimbing' AS source_table, id_dosen, username, pass, nip FROM dosen_pembimbing WHERE username = '$username'
-          UNION 
-          SELECT 'mahasiswa' AS source_table, id_mahasiswa, username, pass, nim FROM mahasiswa WHERE username = '$username'";
-        $result = mysqli_query($conn, $query);
+    }else{
+        $query = "SELECT 'dosen_pembimbing' AS source_table, id_dosen AS id, username, pass FROM dosen_pembimbing WHERE username = ?
+              UNION 
+              SELECT 'mahasiswa' AS source_table, id_mahasiswa AS id, username, pass FROM mahasiswa WHERE username = ?";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ss", $username, $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if (!$result) {
-            $error = "Query error: " . mysqli_error($conn);
-        } else if (mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
+    if ($result->num_rows > 0) {
+        echo "User found in database.<br>";
+
+        $row = $result->fetch_assoc();
+        $hashedPass = $row['pass'];
+
+        if (password_verify($password, $hashedPass)) {
+            echo "Password is correct.<br>";
+
             $_SESSION['username'] = $row['username'];
-            $hashedPass = $row['pass'];
+            $_SESSION['user_id'] = $row['id'];
 
-            if (password_verify($password, $hashedPass)) {
-                if ($row['source_table'] === 'dosen_pembimbing') {
-                    $redirectUrl = "pages/dospem/index.php";
-                } elseif ($row['source_table'] === 'mahasiswa') {
-                    $redirectUrl = "pages/user/dashboard.php";
-                } else {
-                    $error = "Invalid source table!";
-                    $redirectUrl = "login.php";
-                }
-            }else{
-                echo "Password salah";
-            }
-
-            if (!isset($error)) {
-                if (!headers_sent()) {
-                    header("Location: " . $redirectUrl);
-                    exit();
-                } else {
-                    echo "Headers already sent. Using JavaScript redirect...";
-                    echo "<script>window.location.href = '$redirectUrl';</script>";
-                    exit();
-                }
+            if ($row['source_table'] === 'dosen_pembimbing') {
+                $redirectUrl = "pages/dospem/index.php";
+            } elseif ($row['source_table'] === 'mahasiswa') {
+                $redirectUrl = "pages/user/dashboard.php";
             } else {
-                echo "<div class='alert alert-danger'>$error</div>";
+                echo "Invalid user role!";
+                exit();
             }
+
+            echo "Redirecting to: " . $redirectUrl;
+            header("Location: " . $redirectUrl);
+            exit();
         } else {
-            $error = "Username or Password is incorrect!";
+            echo "Password incorrect!<br>";
         }
+    } else {
+        echo "User not found in database.<br>";
     }
 }
+}
+    
+
+    
 ?>
 
 
@@ -155,10 +158,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn w-100 btn-login">Login</button>
                             </form>
-
-                            <!-- Add Google reCAPTCHA -->
-                            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
                             <script>
                                 function togglePassword() {
                                     const passwordInput = document.getElementById('password');

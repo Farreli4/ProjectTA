@@ -10,17 +10,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $data["password"];
 
     // Query to match username and password for admin
-    $query_admin = $conn->prepare("SELECT * FROM admin WHERE username=? AND password=?");
+    $query_admin = $conn2->prepare("SELECT * FROM admin WHERE username=? AND password=?");
     $query_admin->execute(array($username, $password));
     $control_admin = $query_admin->fetch(PDO::FETCH_ASSOC);
 
     // Query to match username and password for dospem
-    $query_dospem = $conn->prepare("SELECT * FROM dosen_pembimbing WHERE username=? AND password=?");
+    $query_dospem = $conn2->prepare("SELECT * FROM dosen_pembimbing WHERE username=? AND password=?");
     $query_dospem->execute(array($username, $password));
     $control_dospem = $query_dospem->fetch(PDO::FETCH_ASSOC);
 
     // Query to match username and password for user
-    $query_user = $conn->prepare("SELECT * FROM users WHERE username=? AND password=?");
+    $query_user = $conn2->prepare("SELECT * FROM users WHERE username=? AND password=?");
     $query_user->execute(array($username, $password));
     $control_user = $query_user->fetch(PDO::FETCH_ASSOC);
 

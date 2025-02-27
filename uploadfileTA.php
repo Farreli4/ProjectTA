@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
         try {
             // Koneksi ke database
             $conn = new PDO("mysql:host=localhost;dbname=sistemta", "root", "");
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
             // Baca file sebagai binary
             $fileContent = file_get_contents($file['tmp_name']);
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
             $sql = "INSERT INTO mahasiswa ($tableName, status) 
                     VALUES ('Pending')";
             
-            $stmt = $conn->prepare($sql);
+            $stmt = $conn2->prepare($sql);
             $stmt->execute([
                 ':nim' => $nim,
                 ':nama_file' => $newFileName,

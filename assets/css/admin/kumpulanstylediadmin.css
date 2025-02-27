@@ -1,0 +1,215 @@
+/* Responsive Table */
+.table-responsive {
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Table Styling */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #1b4f72 !important;
+    color: white;
+}
+
+h4 {
+    text-align: center;
+}
+
+/* Input Fields */
+input, select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    outline: none;
+    transition: border 0.3s ease-in-out;
+}
+
+input:focus, select:focus {
+    border: 2px solid #007bff;
+    box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Specific Dropdown Styling */
+select[name="dosen_pembimbing"] {
+    background-color: #007bff !important;
+    color: white;
+    font-weight: bold;
+}
+
+select[name="dosen_pembimbing"] option {
+    background-color: rgb(162, 199, 241);
+    color: black;
+}
+
+/* Status Dropdown Colors */
+select option[value="dijadwalkan"],
+select option[value="Revisi"] {
+    background: yellow;
+}
+
+select option[value="ditunda"],
+select option[value="Ditolak"] {
+    background: red;
+    color: white;
+}
+
+select option[value="selesai"],
+select option[value="Disetujui"] {
+    background: green;
+    color: white;
+}
+
+/* Buttons */
+.btn-submit, .btn-update, .editBtn, .deleteBtn, .verify-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn-submit {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-submit:hover, .btn-update:hover, .verify-btn:hover {
+    background-color: #0056b3;
+}
+
+.btn-update {
+    background-color: rgb(178, 212, 249);
+    color: white;
+}
+
+.editBtn {
+    background-color: #007bff;
+    color: white;
+}
+
+.editBtn:hover {
+    background-color: #0056b3;
+}
+
+.deleteBtn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.deleteBtn:hover {
+    background-color: #c82333;
+}
+
+/* Modal Styling */
+.modal, .popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content, .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    max-width: 600px;
+    height: 80vh;
+    flex-direction: column;
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.popup:target {
+    display: flex;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: red;
+}
+
+/* Popup Table */
+.popup-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.popup-table th, .popup-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.popup-table th {
+    background-color: #1b4f72;
+    color: white;
+    font-weight: bold;
+}
+
+/* No File Text */
+.no-file {
+    color: red;
+    font-weight: bold;
+}
+
+/* Disable Click */
+#nonclick {
+    pointer-events: none;
+}
+
+/* Active Navigation */
+.nav-link.active {
+    background: #193042;
+    position: relative;
+    color: white !important;
+}

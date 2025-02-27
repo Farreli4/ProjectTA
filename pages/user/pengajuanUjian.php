@@ -4,12 +4,12 @@ $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
 $event = 'ujian';
 
 try {
-    $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    include '../../config/connection.php';
+    $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Get student info
     $check = "SELECT id_mahasiswa, nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
-    $checkNim = $conn->prepare($check);
+    $checkNim = $conn2->prepare($check);
     $checkNim->execute([':nama' => $nama_mahasiswa]);
     $row = $checkNim->fetch(PDO::FETCH_ASSOC);
 
@@ -31,11 +31,11 @@ try {
 function checkTAVerificationStatus($nama_mahasiswa)
 {
     try {
-        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        include '../../config/connection.php';
+        $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Get student ID first
-        $stmt = $conn->prepare("SELECT id_mahasiswa FROM mahasiswa WHERE username = :nama");
+        $stmt = $conn2->prepare("SELECT id_mahasiswa FROM mahasiswa WHERE username = :nama");
         $stmt->execute([':nama' => $nama_mahasiswa]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -54,7 +54,7 @@ function checkTAVerificationStatus($nama_mahasiswa)
         FROM verifikasi_dokumen
         WHERE id_mahasiswa = :id";
 
-        $stmt = $conn->prepare($sql);
+        $stmt = $conn2->prepare($sql);
         $stmt->execute([':id' => $id]);
         $verificationStatus = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -73,10 +73,10 @@ function checkTAVerificationStatus($nama_mahasiswa)
 function checkSeminarDocsVerification($nama_mahasiswa)
 {
     try {
-        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        include '../../config/connection.php';
+        $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $conn->prepare("SELECT id_mahasiswa FROM mahasiswa WHERE username = :nama");
+        $stmt = $conn2->prepare("SELECT id_mahasiswa FROM mahasiswa WHERE username = :nama");
         $stmt->execute([':nama' => $nama_mahasiswa]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -93,7 +93,7 @@ function checkSeminarDocsVerification($nama_mahasiswa)
         FROM verifikasi_dokumen
         WHERE id_mahasiswa = :id";
 
-        $stmt = $conn->prepare($sql);
+        $stmt = $conn2->prepare($sql);
         $stmt->execute([':id' => $id]);
         $verificationStatus = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -158,8 +158,8 @@ if ($currentPage === 'pengajuanSeminar.php') {
 function getDocumentStatus($nama_mahasiswa, $id, $document_type)
 {
     try {
-        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        include '../../config/connection.php';
+        $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Mapping document name to column
         $columnMap = [
@@ -178,7 +178,7 @@ function getDocumentStatus($nama_mahasiswa, $id, $document_type)
 
         // Step 1: Check verification status in tugas_akhir
         $sql2 = "SELECT `$column` FROM verifikasi_dokumen WHERE id_mahasiswa = :id";
-        $stmt2 = $conn->prepare($sql2);
+        $stmt2 = $conn2->prepare($sql2);
         $stmt2->execute([':id' => $id]);
         $verify = $stmt2->fetch(PDO::FETCH_ASSOC);
 
@@ -188,7 +188,7 @@ function getDocumentStatus($nama_mahasiswa, $id, $document_type)
 
         // Step 2: Check if the file exists in mahasiswa
         $sql = "SELECT `$column` FROM mahasiswa WHERE username = :nama";
-        $stmt = $conn->prepare($sql);
+        $stmt = $conn2->prepare($sql);
         $stmt->execute([':nama' => $nama_mahasiswa]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 

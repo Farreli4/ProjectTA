@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
+include "../../config/connection.php";
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];

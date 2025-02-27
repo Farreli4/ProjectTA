@@ -1,13 +1,6 @@
 <?php
 include '../../config/connection.php';
 
-// Pastikan koneksi ke database berhasil
-$conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
-
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-
 // Debugging: Melihat data yang dikirim dari form
 if (!empty($_POST)) {
     echo "<script>console.log(" . json_encode($_POST) . ");</script>";

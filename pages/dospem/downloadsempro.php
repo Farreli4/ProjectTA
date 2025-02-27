@@ -5,11 +5,10 @@ if (isset($_GET['id'])) {
     $id_mahasiswa = $_GET['id'];
 
     try {
-        $conn = new PDO("mysql:host=127.0.0.1;dbname=sistem_ta", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Ambil nama mahasiswa dan file dari database
-        $stmt = $conn->prepare("SELECT nama_mahasiswa, lembar_persetujuan_proposal_ta_seminar FROM mahasiswa WHERE id_mahasiswa = ?");
+        $stmt = $conn2->prepare("SELECT nama_mahasiswa, lembar_persetujuan_proposal_ta_seminar FROM mahasiswa WHERE id_mahasiswa = ?");
         $stmt->execute([$id_mahasiswa]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 

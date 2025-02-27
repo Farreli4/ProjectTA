@@ -1,8 +1,5 @@
 <?php
-$conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+include "../../config/connection.php";
 
 if (isset($_POST['id_mahasiswa']) && isset($_POST['status_pengajuan']) && isset($_POST['dosen_pembimbing'])) {
     $id_mahasiswa = $_POST["id_mahasiswa"];

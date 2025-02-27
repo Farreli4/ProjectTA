@@ -14,14 +14,13 @@ ob_start();
 require '../../config/connection.php';
 
 try {
-    $conn = new PDO("mysql:host=127.0.0.1;dbname=sistem_ta", "root", "");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["lembar_persetujuan_proposal_ta_seminar"])) {
         $id_mahasiswa = $_POST['id_mahasiswa'];
 
         // Cek file sebelumnya
-        $stmt = $conn->prepare("SELECT lembar_persetujuan_proposal_ta_seminar FROM mahasiswa WHERE id_mahasiswa = ?");
+        $stmt = $conn2->prepare("SELECT lembar_persetujuan_proposal_ta_seminar FROM mahasiswa WHERE id_mahasiswa = ?");
         $stmt->execute([$id_mahasiswa]);
         $existingFile = $stmt->fetchColumn();
 
@@ -78,11 +77,11 @@ try {
 
         // Update database
         $sql = "UPDATE mahasiswa SET lembar_persetujuan_proposal_ta_seminar = ? WHERE id_mahasiswa = ?";
-        $stmt = $conn->prepare($sql);
+        $stmt = $conn2->prepare($sql);
         $stmt->execute([$file_content, $id_mahasiswa]);
 
         // Get dosen ID
-        $stmt_dosen = $conn->prepare("SELECT id_dosen FROM mahasiswa_dosen WHERE id_mahasiswa = ?");
+        $stmt_dosen = $conn2->prepare("SELECT id_dosen FROM mahasiswa_dosen WHERE id_mahasiswa = ?");
         $stmt_dosen->execute([$id_mahasiswa]);
         $id_dosen = $stmt_dosen->fetchColumn();
 
@@ -101,14 +100,14 @@ try {
         }
 
         // Get nama mahasiswa
-        $stmt_nama = $conn->prepare("SELECT nama_mahasiswa FROM mahasiswa WHERE id_mahasiswa = ?");
+        $stmt_nama = $conn2->prepare("SELECT nama_mahasiswa FROM mahasiswa WHERE id_mahasiswa = ?");
         $stmt_nama->execute([$id_mahasiswa]);
         $nama_mahasiswa = $stmt_nama->fetchColumn();
 
         // Create notification
         $message = "File Seminar Proposal telah di upload oleh siswa " . $nama_mahasiswa . ".";
         $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status) VALUES (?, ?, ?, 'unread')";
-        $stmt_notify = $conn->prepare($notification_sql);
+        $stmt_notify = $conn2->prepare($notification_sql);
         $stmt_notify->execute([$id_dosen, $id_mahasiswa, $message]);
 
         echo "<script>

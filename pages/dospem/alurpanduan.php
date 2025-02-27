@@ -2,11 +2,11 @@
 session_start();
 $nama_dosen = $_SESSION['username'];
 
-$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+include '../../config/connection.php';
+$conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $check = "SELECT nip, nama_dosen, prodi FROM dosen_pembimbing WHERE username = :nama";
-$checkNip = $conn->prepare($check);
+$checkNip = $conn2->prepare($check);
 $checkNip->execute([':nama' => $nama_dosen]);
 $row = $checkNip->fetch(PDO::FETCH_ASSOC);
 

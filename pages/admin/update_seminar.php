@@ -1,8 +1,6 @@
 <?php
 include '../../config/connection.php';
 
-$conn->connect("127.0.0.1", "root", "", "sistem_ta");
-
 if (isset($_POST['id_mahasiswa']) && isset($_POST['status_seminar'])) {
     $id_mahasiswa = $_POST['id_mahasiswa'];
     $status_seminar = $_POST['status_seminar'];

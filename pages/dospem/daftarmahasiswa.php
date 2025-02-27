@@ -6,11 +6,10 @@ session_start();
 $nama_dosen = $_SESSION['username'];
 
 try {
-    $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $check = "SELECT nip, nama_dosen, prodi FROM dosen_pembimbing WHERE username = :nama";
-    $checkNip = $conn->prepare($check);
+    $checkNip = $conn2->prepare($check);
     $checkNip->execute([':nama' => $nama_dosen]);
     $row = $checkNip->fetch(PDO::FETCH_ASSOC);
 
@@ -262,7 +261,6 @@ try {
                                         <div class="table-responsive">
                                             <?php
                                             try {
-                                                $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
 
                                                 // Check connection
                                                 if ($conn->connect_error) {

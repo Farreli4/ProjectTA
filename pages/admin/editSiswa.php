@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
+include "../../config/connection.php";
 
 $id = $_POST['id_mahasiswa'];
 $nama = $_POST['nama_mahasiswa'];

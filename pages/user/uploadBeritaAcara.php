@@ -16,8 +16,8 @@ if (!isset($_SESSION['upload_status'])) {
 
 
 $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
-$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+include '../../config/connection.php';
+$conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 function checkTAFilesStatus($nama_mahasiswa)
 {
@@ -39,10 +39,10 @@ function checkTAFilesStatus($nama_mahasiswa)
 function checkSeminarDocsVerification($nama_mahasiswa)
 {
     try {
-        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        include '../../config/connection.php';
+        $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $conn->prepare("SELECT id_mahasiswa FROM mahasiswa WHERE username = :nama");
+        $stmt = $conn2->prepare("SELECT id_mahasiswa FROM mahasiswa WHERE username = :nama");
         $stmt->execute([':nama' => $nama_mahasiswa]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -59,7 +59,7 @@ function checkSeminarDocsVerification($nama_mahasiswa)
         FROM verifikasi_dokumen
         WHERE id_mahasiswa = :id";
 
-        $stmt = $conn->prepare($sql);
+        $stmt = $conn2->prepare($sql);
         $stmt->execute([':id' => $id]);
         $verificationStatus = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -77,7 +77,7 @@ function checkSeminarDocsVerification($nama_mahasiswa)
 
 // Mengubah query untuk mengambil nim dan nama_mahasiswa
 $check = "SELECT nim, nama_mahasiswa, prodi FROM mahasiswa WHERE username = :nama";
-$checkNim = $conn->prepare($check);
+$checkNim = $conn2->prepare($check);
 $checkNim->execute([':nama' => $nama_mahasiswa]);
 $row = $checkNim->fetch(PDO::FETCH_ASSOC);
 
@@ -115,8 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
 
         try {
             // Koneksi ke database
-            $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            include '../../config/connection.php';
+            $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Baca file sebagai binary
             $fileContent = file_get_contents($file['tmp_name']);
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
 
             // Cek apakah data mahasiswa sudah ada
             $checkSql = "SELECT username FROM mahasiswa WHERE username = :nama";
-            $checkStmt = $conn->prepare($checkSql);
+            $checkStmt = $conn2->prepare($checkSql);
             $checkStmt->execute([':nama' => $nama_mahasiswa]);
 
             if ($checkStmt->rowCount() > 0) {
@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
                    VALUES (:nama, :file_content)";
             }
 
-            $stmt = $conn->prepare($sql);
+            $stmt = $conn2->prepare($sql);
             $params = [
                 ':nama' => $nama_mahasiswa,
                 ':file_content' => $fileContent
@@ -175,8 +175,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_upload'])) {
 function getFileStatus($nama_mahasiswa, $tipe_file)
 {
     try {
-        $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        include '../../config/connection.php';
+        $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Tentukan nama kolom berdasarkan tipe file    
         $columnName = '';
@@ -197,7 +197,7 @@ function getFileStatus($nama_mahasiswa, $tipe_file)
 
         // Cek apakah file sudah diupload
         $sql = "SELECT `$columnName` FROM mahasiswa WHERE username = :nama";
-        $stmt = $conn->prepare($sql);
+        $stmt = $conn2->prepare($sql);
         $stmt->execute([':nama' => $nama_mahasiswa]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

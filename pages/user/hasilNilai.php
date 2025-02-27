@@ -1,17 +1,16 @@
 <?php
+include '../../config/connection.php';
 session_start();
 $nama_mahasiswa = $_SESSION['username'] ?? 'farel';
 
 try {
-  // Database connection
-  $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   // Get student info and id_mahasiswa in one query
   $check = "SELECT m.nim, m.nama_mahasiswa, m.prodi, m.id_mahasiswa 
             FROM mahasiswa m 
             WHERE m.username = :nama";
-  $stmt = $conn->prepare($check);
+  $stmt = $conn2->prepare($check);
   $stmt->execute([':nama' => $nama_mahasiswa]);
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -23,7 +22,7 @@ try {
 
     // Get nilai from ujian table using the retrieved id_mahasiswa
     $nilai_query = "SELECT nilai FROM ujian WHERE id_mahasiswa = :id_mahasiswa";
-    $nilai_stmt = $conn->prepare($nilai_query);
+    $nilai_stmt = $conn2->prepare($nilai_query);
     $nilai_stmt->execute([':id_mahasiswa' => $id_mahasiswa]);
     $nilai_row = $nilai_stmt->fetch(PDO::FETCH_ASSOC);
 

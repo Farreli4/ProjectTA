@@ -6,11 +6,10 @@ session_start();
 $nama_dosen = $_SESSION['username'];
 
 try {
-  $conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   $check = "SELECT nip, nama_dosen, prodi FROM dosen_pembimbing WHERE username = :nama";
-  $checkNip = $conn->prepare($check);
+  $checkNip = $conn2->prepare($check);
   $checkNip->execute([':nama' => $nama_dosen]);
   $row = $checkNip->fetch(PDO::FETCH_ASSOC);
 
@@ -435,7 +434,7 @@ try {
 
                             // Ambil id_dosen berdasarkan nama_dosen
                             $sql_dosen = "SELECT id_dosen FROM dosen_pembimbing WHERE nama_dosen = ?";
-                            $stmt_dosen = $conn->prepare($sql_dosen);
+                            $stmt_dosen = $conn2->prepare($sql_dosen);
                             $stmt_dosen->execute([$nama_dosen]);
                             $dosen = $stmt_dosen->fetch(PDO::FETCH_ASSOC);
 
@@ -450,7 +449,7 @@ try {
                                     JOIN mahasiswa_dosen md ON m.id_mahasiswa = md.id_mahasiswa
                                     WHERE md.id_dosen = ?
                                     ORDER BY m.nama_mahasiswa ASC";
-                            $stmt = $conn->prepare($sql1);
+                            $stmt = $conn2->prepare($sql1);
                             $stmt->execute([$id_dosen]);
 
                             if ($stmt->rowCount() == 0) {
