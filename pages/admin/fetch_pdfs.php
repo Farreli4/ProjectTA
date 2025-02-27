@@ -24,7 +24,10 @@ if ($event == "seminar_proposal") {
     $documents = [
         "lembar_persetujuan_laporan_ta_ujian", 
         "lembar_kehadiran_sempro_ujian", 
-        "buku_konsultasi_ta_ujian"
+        "buku_konsultasi_ta_ujian",
+        "form_pendaftaran_ujian_ta_ujian",
+        "lembar_hasil_nilai_dosbim1_nilai",
+        "lembar_hasil_nilai_dosbim2_nilai"
     ];
 } else {
     die("Invalid event selected.");

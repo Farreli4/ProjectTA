@@ -735,6 +735,68 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
               color: red;
               font-weight: bold;
           }
+
+          .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        /* Tampilkan modal ketika memiliki class 'active' */
+        .modal.active {
+            display: flex;
+        }
+
+        /* Pastikan modal selalu presisi di tengah */
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 320px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Style input & button */
+        input, button {
+            display: block;
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Style tombol submit */
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
         </style>
 
         <div class="row">
@@ -750,10 +812,10 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
                                         <th>Nama</th>
                                         <th>NIM</th>
                                         <th>Status</th>
-                                        <th>Nilai</th>
                                         <th>Jadwal</th>
                                         <th>Verifikasi</th>
                                         <th>Doc</th>
+                                        <th>Nilai</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -784,12 +846,18 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
                                                       <option value='selesai' " . ($row['status_ujian'] == 'selesai' ? 'selected' : '') . ">Selesai</option>
                                                   </select>
                                               </td>
-                                              <td><input type='text' name='nilai' value='" . ($row['nilai'] ?? '0') . "'></td>
                                               <td><input type='date' name='tanggal_ujian' value='" . $row['tanggal_ujian'] . "'></td>
                                               <td><button class='btn-update' type='submit'>Verifikasi</button></form></td>
                                               <td><button class='folder-btn' data-event='{$event}' data-userid='{$row['id_mahasiswa']}'>
                                                       <span class='material-symbols-outlined'>folder_open</span>
-                                                  </button></td>";
+                                                  </button></td>
+                                                  <td>
+                                                    <button class='btn-add-nilai' data-id='{$row['id_mahasiswa']}'>Add Nilai</button>
+                                                    <p class='nilai-display' id='nilai-display-{$row['id_mahasiswa']}'>" . (!empty($row['nilai']) ? $row['nilai'] : '-') . "</p>
+                                                </td>"
+                                                ;
+                                                
+                                                  
                                       echo "</tr>";
                                   }
 
@@ -823,6 +891,49 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
               </div>
           </div>
       </div>
+
+      
+        <div id="popup" class="popup">
+          <div class="popup-content">
+              <span class="close-btn">&times;</span>
+              <h3>Dokumen</h3>
+              <div class="table-responsive">
+                  <table class="popup-table">
+                      <thead>
+                          <tr>
+                              <th>Keterangan</th>
+                              <th>Dokumen</th>
+                              <th>Aksi</th>
+                          </tr>
+                      </thead>
+                      <tbody id="popup-content">
+
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+
+      <div id="nilaiModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Input Nilai</h3>
+            <form id="nilaiForm">
+                <input type="hidden" id="id_mahasiswa" name="id_mahasiswa">
+                <label>Nilai Dosen Pembimbing 1:</label>
+                <input type="number" id="nilai1" name="nilai1" min="0" max="100">
+                
+                <label>Nilai Dosen Pembimbing 2:</label>
+                <input type="number" id="nilai2" name="nilai2" min="0" max="100">
+
+                <label>Rata-rata:</label>
+                <input type="text" id="rataRata" name="rata_rata" readonly>
+
+                <button type="submit">Simpan</button>
+            </form>
+        </div>
+    </div>
+
 
         <script>
     // Open Modal
@@ -925,19 +1036,84 @@ if (strpos($currentPage, 'pendaftaranTA.php') !== false) {
     });
 });
 
+document.querySelectorAll(".btn-add-nilai").forEach(button => {
+    button.addEventListener("click", function() {
+        let idMahasiswa = this.getAttribute("data-id");
+        document.getElementById("id_mahasiswa").value = idMahasiswa;
+        document.getElementById("nilaiModal").style.display = "block";
+    });
+});
+
+document.querySelector(".close-modal").addEventListener("click", function() {
+    document.getElementById("nilaiModal").style.display = "none";
+});
+
+document.getElementById("nilaiForm").addEventListener("input", function() {
+    let nilai1 = parseFloat(document.getElementById("nilai1").value) || 0;
+    let nilai2 = parseFloat(document.getElementById("nilai2").value) || 0;
+    let rataRata = (nilai1 + nilai2) / 2;
+    document.getElementById("rataRata").value = rataRata.toFixed(2);
+});
+
+document.getElementById("nilaiForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+    let idMahasiswa = document.getElementById("id_mahasiswa").value;
+    
+    fetch("simpan_nilai.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        let rataRata = document.getElementById("rataRata").value;
+        
+         // Menampilkan notifikasi SweetAlert
+         Swal.fire({
+            title: "Sukses!",
+            text: "Nilai telah berhasil disimpan.",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false
+        }).then(() => {
+            // Update tampilan nilai di tabel tanpa reload halaman
+            document.getElementById("nilai-display-" + idMahasiswa).innerText = rataRata;
+            document.getElementById("nilaiModal").style.display = "none";
+        });
+    })
+    .catch(error => {
+        Swal.fire({
+            title: "Gagal!",
+            text: "Terjadi kesalahan saat menyimpan nilai.",
+            icon: "error"
+        });
+    });
+});
+
+
 </script>
 
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin ../../Template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                    Copyright © 2025.
+                    <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+                    All rights reserved.
+                  </span>
+                  <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                    <a href="https://wa.me/628112951003" target="_blank">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                      +6281 1295 1003
+                    </a>
+                  </span>
+                </div>
+
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                  <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://politekniknest.ac.id/" target="_blank">Anak Magang UNS</a></span>
+                </div>
+              </footer>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->

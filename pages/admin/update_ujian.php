@@ -14,10 +14,9 @@ if (!empty($_POST)) {
 }
 
 // Pastikan semua field yang diperlukan tersedia
-if (isset($_POST['id_mahasiswa'], $_POST['status_ujian'], $_POST['nilai'], $_POST['tanggal_ujian'])) {
+if (isset($_POST['id_mahasiswa'], $_POST['status_ujian'], $_POST['tanggal_ujian'])) {
     $id_mahasiswa = (int) $_POST['id_mahasiswa'];
     $status_ujian = trim($_POST['status_ujian']);
-    $nilai = (float) $_POST['nilai'];
     $tgl = $_POST['tanggal_ujian'];
 
     // Validasi status ujian
@@ -31,10 +30,7 @@ if (isset($_POST['id_mahasiswa'], $_POST['status_ujian'], $_POST['nilai'], $_POS
         die("Error: ID mahasiswa tidak valid.");
     }
 
-    // Validasi nilai
-    if (!is_numeric($nilai)) {
-        die("Error: Nilai harus berupa angka.");
-    }
+    
 
     // Validasi tanggal
     $tgl = date('Y-m-d', strtotime($tgl));
@@ -76,14 +72,14 @@ if (isset($_POST['id_mahasiswa'], $_POST['status_ujian'], $_POST['nilai'], $_POS
 
     if ($check_stmt->num_rows > 0) {
         // Jika sudah ada, lakukan update
-        $sql = "UPDATE ujian SET status_ujian = ?, nilai = ?, tanggal_ujian = ? WHERE id_mahasiswa = ?";
+        $sql = "UPDATE ujian SET status_ujian = ?, tanggal_ujian = ? WHERE id_mahasiswa = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sdsi", $status_ujian, $nilai, $tgl, $id_mahasiswa);
+        $stmt->bind_param("sdi", $status_ujian, $tgl, $id_mahasiswa);
     } else {
         // Jika belum ada, lakukan insert
-        $sql = "INSERT INTO ujian (id_mahasiswa, status_ujian, nilai, tanggal_ujian) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO ujian (id_mahasiswa, status_ujian, tanggal_ujian) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isds", $id_mahasiswa, $status_ujian, $nilai, $tgl);
+        $stmt->bind_param("isd", $id_mahasiswa, $status_ujian, $tgl);
     }
     $check_stmt->close();
 
