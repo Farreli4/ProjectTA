@@ -106,7 +106,7 @@ try {
 
         // Create notification
         $message = "File Seminar Proposal telah di upload oleh siswa " . $nama_mahasiswa . ".";
-        $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status) VALUES (?, ?, ?, 'unread')";
+        $notification_sql = "INSERT INTO notif (id_dosen, id_mahasiswa, message, status_mahasiswa) VALUES (?, ?, ?, 'unread')";
         $stmt_notify = $conn2->prepare($notification_sql);
         $stmt_notify->execute([$id_dosen, $id_mahasiswa, $message]);
 
