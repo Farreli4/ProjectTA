@@ -11,7 +11,11 @@ if ($event == "seminar_proposal") {
         "lembar_persetujuan_proposal_ta_seminar", 
         "buku_konsultasi_ta_seminar", 
         "lembar_berita_acara_seminar", 
-        "form_pendaftaran_sempro_seminar"
+        "form_pendaftaran_sempro_seminar",
+        "lembar_persetujuan_laporan_ta_ujian", 
+        "lembar_kehadiran_sempro_ujian", 
+        "buku_konsultasi_ta_ujian",
+        "form_pendaftaran_ujian_ta_ujian",
     ];
 } elseif ($event == "tugas_akhir") {
     $documents = [

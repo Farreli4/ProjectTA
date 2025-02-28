@@ -494,9 +494,7 @@ if ($row) {
           <!-- page-body-wrapper ends -->
         </div>
         <!-- container-scroller -->
-        // Add this to the end of your HTML file, just before the closing
-</body> tag
-
+</body> 
 <script>
   $(document).ready(function() {
     // Create a search results container

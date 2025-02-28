@@ -17,8 +17,6 @@ if (isset($_POST['submit'])) {
             $spreadsheet = IOFactory::load($fileTmpName);
             $sheet = $spreadsheet->getActiveSheet();
 
-            // Connect to MySQL database
-
             // Loop through the rows of the spreadsheet
             foreach ($sheet->getRowIterator() as $row) {
                 $data = [];
@@ -29,7 +27,8 @@ if (isset($_POST['submit'])) {
                     $data[] = $cell->getValue();
                 }
 
-                if (count($data) > 0) {
+                // Pastikan ada data yang cukup sebelum menggunakan indeks tertentu
+                if (count($data) >= 6) {
                     $hashedPass = password_hash($data[5], PASSWORD_DEFAULT);
                     $stmt = $conn->prepare("INSERT INTO dosen_pembimbing (nama_dosen, nip, prodi, nomor_telepon, username, pass) VALUES (?, ?, ?, ?, ?, ?)");
                     $stmt->bind_param("ssssss", $data[0], $data[1], $data[2], $data[3], $data[4], $hashedPass);
@@ -37,9 +36,10 @@ if (isset($_POST['submit'])) {
                 }
             }
 
-            echo "File successfully uploaded and data inserted into database!";
+            // Redirect tanpa mengirim output terlebih dahulu
             $conn->close();
-            header("Location : daftarDosen.php");
+            header("Location: daftarDosen.php");
+            exit();
         } else {
             echo "Please upload a valid Excel file.";
         }
