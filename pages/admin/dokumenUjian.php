@@ -1,12 +1,11 @@
 <?php
 session_start();
 $nama_admin = $_SESSION['username'];
-
-$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+include "../../config/connection.php";
+$conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $check = "SELECT nomor_telepon, nama_admin FROM admin WHERE username = :nama";
-$checkNomer_telepon = $conn->prepare($check);
+$checkNomer_telepon = $conn2->prepare($check);
 $checkNomer_telepon->execute([':nama' => $nama_admin]);
 $row = $checkNomer_telepon->fetch(PDO::FETCH_ASSOC);
 
@@ -536,7 +535,6 @@ if ($row) {
                           </thead>
                           <tbody>
                             <?php
-                            $conn = new mysqli('127.0.0.1', 'root', '', 'sistem_ta');
                             $sql1 = "SELECT id_mahasiswa, nama_mahasiswa, nim, prodi, lembar_persetujuan_laporan_ta_ujian, form_pendaftaran_ujian_ta_ujian, lembar_kehadiran_sempro_ujian FROM mahasiswa WHERE 1";
                             $result = $conn->query($sql1);
 

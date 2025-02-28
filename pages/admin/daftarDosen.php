@@ -1,12 +1,11 @@
 <?php
 session_start();
 $nama_admin = $_SESSION['username'];
-
-$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+include "../../config/connection.php";
+$conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $check = "SELECT nomor_telepon, nama_admin FROM admin WHERE username = :nama";
-$checkNomer_telepon = $conn->prepare($check);
+$checkNomer_telepon = $conn2->prepare($check);
 $checkNomer_telepon->execute([':nama' => $nama_admin]);
 $row = $checkNomer_telepon->fetch(PDO::FETCH_ASSOC);
 
@@ -471,12 +470,6 @@ if ($row) {
                   <div class="row">
                     <div class="col-12">
                       <?php
-                      $servername = "127.0.0.1";
-                      $username = "root";
-                      $password = "";
-                      $dbname = "sistem_ta";
-
-                      $conn = new mysqli($servername, $username, $password, $dbname);
 
                       if ($conn->connect_error) {
                         die("Koneksi gagal: " . $conn->connect_error);

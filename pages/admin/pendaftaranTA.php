@@ -1,12 +1,11 @@
 <?php
 session_start();
 $nama_admin = $_SESSION['username'];
-
-$conn = new PDO("mysql:host=localhost;dbname=sistem_ta", "root", "");
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+include "../../config/connection.php";
+$conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $check = "SELECT nomor_telepon, nama_admin FROM admin WHERE username = :nama";
-$checkNomer_telepon = $conn->prepare($check);
+$checkNomer_telepon = $conn2->prepare($check);
 $checkNomer_telepon->execute([':nama' => $nama_admin]);
 $row = $checkNomer_telepon->fetch(PDO::FETCH_ASSOC);
 
@@ -463,8 +462,6 @@ if ($row) {
       </nav>
 
       <?php
-          // Koneksi ke database
-          $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
           if ($conn->connect_error) {
               die("Koneksi gagal: " . $conn->connect_error);
           }
@@ -489,7 +486,6 @@ if ($row) {
                 </div>
                 <div class="col-md-6 d-flex align-items-center justify-content-center">
                 <?php
-                  $conn->connect("127.0.0.1", "root", "", "sistem_ta");
 
                   if ($conn->connect_error) {
                       die("Connection failed: " . $conn->connect_error);
@@ -539,7 +535,6 @@ if ($row) {
             </div>
           </div>
           <?php
-          $conn = new mysqli("127.0.0.1", "root", "", "sistem_ta");
           if ($conn->connect_error) {
               die("Koneksi gagal: " . $conn->connect_error);
           }
