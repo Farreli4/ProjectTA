@@ -259,76 +259,79 @@ try {
                                             Tabel <code>Data Mahasiswa Bimbingan</code>
                                         </p>
                                         <div class="table-responsive">
-                                        <?php
+                                            <?php
 
-                                        if (session_status() == PHP_SESSION_NONE) {
-                                            session_start();
-                                        }
-                                        
-                                        $nama_dosen = $_SESSION['nama_dosen'];
+                                            if (session_status() == PHP_SESSION_NONE) {
+                                                session_start();
+                                            }
 
-                                        $sql_dosen = "SELECT id_dosen FROM dosen_pembimbing WHERE nama_dosen=?";
-                                        $stmt_dosen = $conn->prepare($sql_dosen);
-                                        $stmt_dosen->bind_param("s", $nama_dosen);
-                                        $stmt_dosen->execute();
-                                        $stmt_dosen->store_result();
+                                            $nama_dosen = $_SESSION['nama_dosen'];
 
-                                        if ($stmt_dosen->num_rows == 0) {
-                                            die("Dosen tidak ditemukan");
-                                        }
-                                        $stmt_dosen->bind_result($id_dosen);
-                                        $stmt_dosen->fetch();
-                                        $stmt_dosen->close();
+                                            $sql_dosen = "SELECT id_dosen FROM dosen_pembimbing WHERE nama_dosen=?";
+                                            $stmt_dosen = $conn->prepare($sql_dosen);
+                                            $stmt_dosen->bind_param("s", $nama_dosen);
+                                            $stmt_dosen->execute();
+                                            $stmt_dosen->store_result();
 
-                                        $limit = 10;
-                                        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                                        $offset = ($page - 1) * $limit;
+                                            if ($stmt_dosen->num_rows == 0) {
+                                                die("Dosen tidak ditemukan");
+                                            }
+                                            $stmt_dosen->bind_result($id_dosen);
+                                            $stmt_dosen->fetch();
+                                            $stmt_dosen->close();
 
-                                        $sql_mahasiswa = "SELECT id_mahasiswa FROM mahasiswa_dosen WHERE id_dosen=? LIMIT ? OFFSET ?";
-                                        $stmt_mahasiswa = $conn->prepare($sql_mahasiswa);
-                                        $stmt_mahasiswa->bind_param("iii", $id_dosen, $limit, $offset);
-                                        $stmt_mahasiswa->execute();
-                                        $result_mahasiswa = $stmt_mahasiswa->get_result();
+                                            $limit = 10;
+                                            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                                            $offset = ($page - 1) * $limit;
 
-                                        $totalQuery = "SELECT COUNT(id_mahasiswa) AS total FROM mahasiswa_dosen WHERE id_dosen=?";
+                                            $sql_mahasiswa = "SELECT id_mahasiswa FROM mahasiswa_dosen WHERE id_dosen=? LIMIT ? OFFSET ?";
+                                            $stmt_mahasiswa = $conn->prepare($sql_mahasiswa);
+                                            $stmt_mahasiswa->bind_param("iii", $id_dosen, $limit, $offset);
+                                            $stmt_mahasiswa->execute();
+                                            $result_mahasiswa = $stmt_mahasiswa->get_result();
 
-                                        $stmt_total = $conn->prepare($totalQuery);
-                                        $stmt_total->bind_param("i", $id_dosen);
-                                        $stmt_total->execute();
-                                        $totalResult = $stmt_total->get_result();
-                                        $totalRow = $totalResult->fetch_assoc();
-                                        $totalData = $totalRow['total'];
-                                        $totalPages = ceil($totalData / $limit);
+                                            $totalQuery = "SELECT COUNT(id_mahasiswa) AS total FROM mahasiswa_dosen WHERE id_dosen=?";
 
-                                        if ($result_mahasiswa->num_rows == 0) {
-                                            echo "<div class='alert alert-info'>Tidak ada mahasiswa yang dibimbing.</div>";
-                                        } else {
-                                            echo '<table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Nama</th>
-                                                        <th>Nim</th>
-                                                        <th>Prodi</th>
-                                                        <th>Kelas</th>
-                                                        <th>No Telepon</th>
-                                                        <th>Tema</th>
-                                                        <th>Judul</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>';
+                                            $stmt_total = $conn->prepare($totalQuery);
+                                            $stmt_total->bind_param("i", $id_dosen);
+                                            $stmt_total->execute();
+                                            $totalResult = $stmt_total->get_result();
+                                            $totalRow = $totalResult->fetch_assoc();
+                                            $totalData = $totalRow['total'];
+                                            $totalPages = ceil($totalData / $limit);
 
-                                            $no = $offset + 1;
-                                            while ($row = $result_mahasiswa->fetch_assoc()) {
-                                                $id_mahasiswa = $row['id_mahasiswa'];
-                                                $sql_detail = "SELECT nama_mahasiswa, nim, prodi, kelas, nomor_telepon, tema, judul FROM mahasiswa WHERE id_mahasiswa=?";
-                                                $stmt_detail = $conn->prepare($sql_detail);
-                                                $stmt_detail->bind_param("i", $id_mahasiswa);
-                                                $stmt_detail->execute();
-                                                $result_detail = $stmt_detail->get_result();
-                                                $data = $result_detail->fetch_assoc();
+                                            if ($result_mahasiswa->num_rows == 0) {
+                                                echo "<div class='alert alert-info'>Tidak ada mahasiswa yang dibimbing.</div>";
+                                            } else {
+                                                echo '<div class="table-responsive">';
+                                                echo '<table class="table table-striped">
+                                                    <thead style="background-color: #f0f0f0;">
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Nama</th>
+                                                            <th>Nim</th>
+                                                            <th>Prodi</th>
+                                                            <th>Kelas</th>
+                                                            <th>No Telepon</th>
+                                                            <th>Tema</th>
+                                                            <th>Judul</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>';
 
-                                                echo "<tr>
+
+
+                                                $no = $offset + 1;
+                                                while ($row = $result_mahasiswa->fetch_assoc()) {
+                                                    $id_mahasiswa = $row['id_mahasiswa'];
+                                                    $sql_detail = "SELECT nama_mahasiswa, nim, prodi, kelas, nomor_telepon, tema, judul FROM mahasiswa WHERE id_mahasiswa=?";
+                                                    $stmt_detail = $conn->prepare($sql_detail);
+                                                    $stmt_detail->bind_param("i", $id_mahasiswa);
+                                                    $stmt_detail->execute();
+                                                    $result_detail = $stmt_detail->get_result();
+                                                    $data = $result_detail->fetch_assoc();
+
+                                                    echo "<tr>
                                                         <td>" . $no++ . "</td>
                                                         <td>" . htmlspecialchars($data['nama_mahasiswa']) . "</td>
                                                         <td>" . htmlspecialchars($data['nim']) . "</td>
@@ -336,119 +339,122 @@ try {
                                                         <td>" . htmlspecialchars($data['kelas']) . "</td>
                                                         <td>" . htmlspecialchars($data['nomor_telepon']) . "</td>
                                                         <td>" . htmlspecialchars($data['tema']) . "</td>
-                                                        <td>" . htmlspecialchars($data['judul']) . "</td>
+                                                        <td style='white-space: normal; word-wrap: break-word; max-width: 200px;'>
+                                                            <strong>" . htmlspecialchars($data['judul']) . "</strong>
+                                                        </td>
+
                                                     </tr>";
-                                            }
-                                            echo '</tbody></table></div>';
-                                        }
-                                        ?>
-
-                                        <hr>
-
-                                        <div class="pagination-container">
-                                            <div class="pagination-info">PAGES <?php echo $page; ?> OF <?php echo $totalPages; ?></div>
-                                            <div class="pagination">
-                                                <?php if ($page > 1): ?>
-                                                    <a href="?page=1" class="btn">FIRST</a>
-                                                    <a href="?page=<?php echo $page - 1; ?>" class="btn">PREV</a>
-                                                <?php endif; ?>
-
-                                                <?php
-                                                if ($totalPages <= 10) {
-                                                    for ($i = 1; $i <= $totalPages; $i++) {
-                                                        echo "<a href='?page=$i' class='btn " . ($i == $page ? "active" : "") . "'>$i</a>";
-                                                    }
-                                                } else {
-                                                    if ($page > 3) echo "<a href='?page=1' class='btn'>1</a> ... ";
-
-                                                    for ($i = max(1, $page - 2); $i <= min($totalPages, $page + 2); $i++) {
-                                                        echo "<a href='?page=$i' class='btn " . ($i == $page ? "active" : "") . "'>$i</a>";
-                                                    }
-
-                                                    if ($page < $totalPages - 2) echo " ... <a href='?page=$totalPages' class='btn'>$totalPages</a>";
                                                 }
-                                                ?>
+                                                echo '</tbody></table></div>';
+                                            }
+                                            ?>
 
-                                                <?php if ($page < $totalPages): ?>
-                                                    <a href="?page=<?php echo $page + 1; ?>" class="btn">NEXT</a>
-                                                    <a href="?page=<?php echo $totalPages; ?>" class="btn">LAST</a>
-                                                <?php endif; ?>
+                                            <hr>
+
+                                            <div class="pagination-container">
+                                                <div class="pagination-info">PAGES <?php echo $page; ?> OF <?php echo $totalPages; ?></div>
+                                                <div class="pagination">
+                                                    <?php if ($page > 1): ?>
+                                                        <a href="?page=1" class="btn">FIRST</a>
+                                                        <a href="?page=<?php echo $page - 1; ?>" class="btn">PREV</a>
+                                                    <?php endif; ?>
+
+                                                    <?php
+                                                    if ($totalPages <= 10) {
+                                                        for ($i = 1; $i <= $totalPages; $i++) {
+                                                            echo "<a href='?page=$i' class='btn " . ($i == $page ? "active" : "") . "'>$i</a>";
+                                                        }
+                                                    } else {
+                                                        if ($page > 3) echo "<a href='?page=1' class='btn'>1</a> ... ";
+
+                                                        for ($i = max(1, $page - 2); $i <= min($totalPages, $page + 2); $i++) {
+                                                            echo "<a href='?page=$i' class='btn " . ($i == $page ? "active" : "") . "'>$i</a>";
+                                                        }
+
+                                                        if ($page < $totalPages - 2) echo " ... <a href='?page=$totalPages' class='btn'>$totalPages</a>";
+                                                    }
+                                                    ?>
+
+                                                    <?php if ($page < $totalPages): ?>
+                                                        <a href="?page=<?php echo $page + 1; ?>" class="btn">NEXT</a>
+                                                        <a href="?page=<?php echo $totalPages; ?>" class="btn">LAST</a>
+                                                    <?php endif; ?>
+                                                </div>
                                             </div>
+                                            <style>
+                                                .pagination-container {
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: flex-end;
+                                                    margin-top: 20px;
+                                                    width: 100%;
+                                                }
+
+                                                .pagination-info {
+                                                    background-color: #333;
+                                                    color: white;
+                                                    padding: 8px 12px;
+                                                    margin-right: 10px;
+                                                    border-radius: 5px;
+                                                }
+
+                                                .pagination {
+                                                    display: flex;
+                                                }
+
+                                                .pagination .btn {
+                                                    margin: 0 5px;
+                                                    padding: 8px 12px;
+                                                    text-decoration: none;
+                                                    background-color: #007bff;
+                                                    color: white;
+                                                    border-radius: 5px;
+                                                }
+
+                                                .pagination .btn.active {
+                                                    background-color: #7E99A3;
+                                                }
+                                            </style>
+                                            <?php
+                                            $conn->close();
+                                            ?>
+
                                         </div>
-                                        <style>
-                                            .pagination-container {
-                                                display: flex;
-                                                align-items: center;
-                                                justify-content: flex-end;
-                                                margin-top: 20px;
-                                                width: 100%;
-                                            }
-
-                                            .pagination-info {
-                                                background-color: #333;
-                                                color: white;
-                                                padding: 8px 12px;
-                                                margin-right: 10px;
-                                                border-radius: 5px;
-                                            }
-
-                                            .pagination {
-                                                display: flex;
-                                            }
-
-                                            .pagination .btn {
-                                                margin: 0 5px;
-                                                padding: 8px 12px;
-                                                text-decoration: none;
-                                                background-color: #007bff;
-                                                color: white;
-                                                border-radius: 5px;
-                                            }
-
-                                            .pagination .btn.active {
-                                                background-color: #7E99A3;
-                                            }
-                                        </style>
-                                        <?php
-                                        $conn->close();
-                                        ?>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Footer -->
-                <footer class="footer">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                            Copyright © 2025.
-                            <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
-                            All rights reserved.
-                        </span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                            <a href="https://wa.me/628112951003" target="_blank">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
-                                +6281 1295 1003
-                            </a>
-                        </span>
-                    </div>
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                            Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a>
-                        </span>
-                    </div>
-                </footer>
+                    <!-- Footer -->
+                    <footer class="footer">
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                                Copyright © 2025.
+                                <a href="https://nestpoliteknik.com/" target="_blank">Politeknik Nest Sukoharjo</a>.
+                                All rights reserved.
+                            </span>
+                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                                <a href="https://wa.me/628112951003" target="_blank">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20" class="me-2">
+                                    +6281 1295 1003
+                                </a>
+                            </span>
+                        </div>
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                                Distributed by <a href="https://www.themewagon.com/" target="_blank">Anak Magang UNS</a>
+                            </span>
+                        </div>
+                    </footer>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Scripts -->
-    <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
-    <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
-    <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
-    <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-    <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
-    <script src="../../Template/skydash/js/off-canvas.js"></script>
+        <!-- Scripts -->
+        <script src="../../Template/skydash/vendors/js/vendor.bundle.base.js"></script>
+        <script src="../../Template/skydash/vendors/chart.js/Chart.min.js"></script>
+        <script src="../../Template/skydash/vendors/datatables.net/jquery.dataTables.js"></script>
+        <script src="../../Template/skydash/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+        <script src="../../Template/skydash/js/dataTables.select.min.js"></script>
+        <script src="../../Template/skydash/js/off-canvas.js"></script>
